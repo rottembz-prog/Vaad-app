@@ -1,0 +1,74 @@
+2026-03-01T20:24:39.396Z [DEBUG] detectFileEncoding failed for expected reason: ENOENT
+2026-03-01T20:24:39.398Z [DEBUG] MDM settings load completed in 33ms
+2026-03-01T20:24:39.407Z [ERROR] Failed to save config with lock: Error: ENOENT: no such file or directory, lstat 'C:\Users\97252\.claude.json'
+2026-03-01T20:24:39.409Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1676.1772396679408
+2026-03-01T20:24:39.409Z [DEBUG] Setting permissions for new file: 600
+2026-03-01T20:24:39.414Z [DEBUG] Temp file written successfully, size: 50 bytes
+2026-03-01T20:24:39.414Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1676.1772396679408 to C:\Users\97252\.claude.json
+2026-03-01T20:24:39.416Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-01T20:24:39.416Z [DEBUG] [init] configureGlobalMTLS starting
+2026-03-01T20:24:39.416Z [DEBUG] [init] configureGlobalMTLS complete
+2026-03-01T20:24:39.416Z [DEBUG] [init] configureGlobalAgents starting
+2026-03-01T20:24:39.416Z [DEBUG] [init] configureGlobalAgents complete
+2026-03-01T20:24:39.521Z [DEBUG] Using bash path: "C:\Program Files\Git\bin\bash.exe"
+2026-03-01T20:24:39.538Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1676.1772396679538
+2026-03-01T20:24:39.538Z [DEBUG] Preserving file permissions: 100666
+2026-03-01T20:24:39.541Z [DEBUG] Temp file written successfully, size: 86 bytes
+2026-03-01T20:24:39.541Z [DEBUG] Applied original permissions to temp file
+2026-03-01T20:24:39.541Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1676.1772396679538 to C:\Users\97252\.claude.json
+2026-03-01T20:24:39.542Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-01T20:24:39.545Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1676.1772396679545
+2026-03-01T20:24:39.545Z [DEBUG] Preserving file permissions: 100666
+2026-03-01T20:24:39.548Z [DEBUG] Temp file written successfully, size: 125 bytes
+2026-03-01T20:24:39.548Z [DEBUG] Applied original permissions to temp file
+2026-03-01T20:24:39.548Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1676.1772396679545 to C:\Users\97252\.claude.json
+2026-03-01T20:24:39.549Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-01T20:24:39.554Z [DEBUG] Git remote URL: null
+2026-03-01T20:24:39.554Z [DEBUG] No git remote URL found
+2026-03-01T20:24:39.556Z [DEBUG] Loading skills from: managed=C:\ProgramData\ClaudeCode\.claude\skills, user=C:\Users\97252\.claude\skills, project=[]
+2026-03-01T20:24:39.558Z [DEBUG] Error log sink initialized
+2026-03-01T20:24:39.574Z [DEBUG] [Claude in Chrome] Found chrome profiles: Default, Profile 1, Profile 2
+2026-03-01T20:24:39.582Z [DEBUG] Loaded 0 unique skills (0 unconditional, 0 conditional, managed: 0, user: 0, project: 0, additional: 0, legacy commands: 0)
+2026-03-01T20:24:39.594Z [DEBUG] [render] initLayout starting
+2026-03-01T20:24:39.629Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-03-01T20:24:39.629Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-03-01T20:24:39.629Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-03-01T20:24:39.629Z [DEBUG] Total plugin skills loaded: 0
+2026-03-01T20:24:39.629Z [DEBUG] Total plugin commands loaded: 0
+2026-03-01T20:24:39.629Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-03-01T20:24:39.630Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills, 5 bundled skills
+2026-03-01T20:24:39.636Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1676.1772396679636
+2026-03-01T20:24:39.636Z [DEBUG] Preserving file permissions: 100666
+2026-03-01T20:24:39.639Z [DEBUG] Temp file written successfully, size: 205 bytes
+2026-03-01T20:24:39.640Z [DEBUG] Applied original permissions to temp file
+2026-03-01T20:24:39.640Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1676.1772396679636 to C:\Users\97252\.claude.json
+2026-03-01T20:24:39.641Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-01T20:24:39.649Z [DEBUG] [render] initLayout complete
+2026-03-01T20:24:39.666Z [DEBUG] Install: Starting installation process (force=false, target=latest)
+2026-03-01T20:24:39.666Z [DEBUG] Install: Calling installLatest(channelOrVersion=latest, forceReinstall=false)
+2026-03-01T20:24:39.668Z [DEBUG] [render] first ink render: 1084ms since process start
+2026-03-01T20:24:39.681Z [DEBUG] [Claude in Chrome] Found edge profiles: Default
+2026-03-01T20:24:39.685Z [DEBUG] [Claude in Chrome] Extension not found in any browser
+2026-03-01T20:24:39.688Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1676.1772396679688
+2026-03-01T20:24:39.689Z [DEBUG] Preserving file permissions: 100666
+2026-03-01T20:24:39.693Z [DEBUG] Temp file written successfully, size: 248 bytes
+2026-03-01T20:24:39.693Z [DEBUG] Applied original permissions to temp file
+2026-03-01T20:24:39.693Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1676.1772396679688 to C:\Users\97252\.claude.json
+2026-03-01T20:24:39.694Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-01T20:24:41.758Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1676.1772396681758
+2026-03-01T20:24:41.758Z [DEBUG] Preserving file permissions: 100666
+2026-03-01T20:24:41.762Z [DEBUG] Temp file written successfully, size: 289 bytes
+2026-03-01T20:24:41.762Z [DEBUG] Applied original permissions to temp file
+2026-03-01T20:24:41.762Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1676.1772396681758 to C:\Users\97252\.claude.json
+2026-03-01T20:24:41.762Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-01T20:24:41.970Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-01T20:24:41.984Z [DEBUG] Downloading native installer version 2.1.63
+2026-03-01T20:24:55.108Z [ERROR] Error: Error: Failed to download binary from https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/2.1.63/win32-x64/claude.exe: Checksum mismatch: expected d7e63e94966b716fa1c073c56d7ce67554505eadea9ccb254eb513027403a026, got 756d3a2a4821273c8f838e71705fd8cb2fecf44a9a50de76f9557406d070d8de
+    at mXE (B:/~BUN/root/claude.exe:2453:4321)
+    at async owf (unknown)
+    at async $FE (unknown)
+    at async AFE (unknown)
+    at async Kl (unknown)
+    at async f (unknown)
+    at processTicksAndRejections (native:7:39)
+2026-03-01T20:24:55.120Z [ERROR] Install command failed: Error: Checksum mismatch: expected d7e63e94966b716fa1c073c56d7ce67554505eadea9ccb254eb513027403a026, got 756d3a2a4821273c8f838e71705fd8cb2fecf44a9a50de76f9557406d070d8de

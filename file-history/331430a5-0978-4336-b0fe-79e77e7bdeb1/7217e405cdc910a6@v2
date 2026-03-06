@@ -1,0 +1,69 @@
+# ============================================================
+# FIX 1 — Remove unnecessary startup entries
+# ============================================================
+Write-Host "`n[FIX 1] Disabling startup programs..." -ForegroundColor Yellow
+
+# Teams (HKCU)
+if (Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "Teams" -ErrorAction SilentlyContinue) {
+    Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "Teams"
+    Write-Host "  [OK] Teams startup disabled"
+} else { Write-Host "  [--] Teams was already not in startup" }
+
+# AVG Browser (HKCU)
+$avgBrowserKey = (Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue).PSObject.Properties |
+    Where-Object { $_.Name -like "AVGBrowser*" } | Select-Object -First 1
+if ($avgBrowserKey) {
+    Remove-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -Name $avgBrowserKey.Name
+    Write-Host "  [OK] AVG Browser startup disabled"
+} else { Write-Host "  [--] AVG Browser was already not in startup" }
+
+# AVG TuneUp UI (HKLM — needs admin)
+if (Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "AVG TuneUp UI" -ErrorAction SilentlyContinue) {
+    Remove-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name "AVG TuneUp UI"
+    Write-Host "  [OK] AVG TuneUp UI startup disabled"
+} else { Write-Host "  [--] AVG TuneUp UI was already not in startup" }
+
+# AVG Secure VPN shortcut (global Startup folder — needs admin)
+$vpnLnk = "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\AVG Secure VPN.lnk"
+if (Test-Path $vpnLnk) {
+    Remove-Item $vpnLnk -Force
+    Write-Host "  [OK] AVG Secure VPN startup shortcut removed"
+} else { Write-Host "  [--] AVG Secure VPN shortcut was already gone" }
+
+# ============================================================
+# FIX 2 — Kill currently running bloat AVG processes
+# ============================================================
+Write-Host "`n[FIX 2] Stopping unnecessary AVG processes..." -ForegroundColor Yellow
+
+$toKill = @("AVGBrowser", "TuneupUI", "Vpn")
+foreach ($proc in $toKill) {
+    $found = Get-Process -Name $proc -ErrorAction SilentlyContinue
+    if ($found) {
+        Stop-Process -Name $proc -Force
+        Write-Host "  [OK] Stopped: $proc"
+    } else {
+        Write-Host "  [--] Not running: $proc"
+    }
+}
+
+# ============================================================
+# FIX 3 — Pause OneDrive sync
+# ============================================================
+Write-Host "`n[FIX 3] Pausing OneDrive sync..." -ForegroundColor Yellow
+
+$oneDrivePath = "$env:LOCALAPPDATA\Microsoft\OneDrive\OneDrive.exe"
+if (Test-Path $oneDrivePath) {
+    Start-Process $oneDrivePath -ArgumentList "/pause" -WindowStyle Hidden
+    Write-Host "  [OK] OneDrive sync paused"
+} else {
+    Write-Host "  [!] OneDrive executable not found at expected path"
+}
+
+# ============================================================
+# Summary
+# ============================================================
+Write-Host "`n=== DONE — Memory snapshot after fixes ===" -ForegroundColor Green
+$mem = Get-WmiObject Win32_OperatingSystem
+$freeGB = [math]::Round($mem.FreePhysicalMemory / 1MB, 2)
+$usedGB = [math]::Round(($mem.TotalVisibleMemorySize - $mem.FreePhysicalMemory) / 1MB, 2)
+Write-Host ("RAM Used: " + $usedGB + " GB  |  RAM Free: " + $freeGB + " GB")

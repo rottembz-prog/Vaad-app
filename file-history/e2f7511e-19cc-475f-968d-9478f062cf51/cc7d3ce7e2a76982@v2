@@ -1,0 +1,25 @@
+param($file)
+$lines = Get-Content $file
+foreach ($line in $lines) {
+    try {
+        $obj = $line | ConvertFrom-Json
+        if ($obj.type -eq 'user' -and $obj.message.role -eq 'user') {
+            $content = $obj.message.content
+            $text = ''
+            if ($content -is [string]) {
+                $text = $content.Substring(0, [Math]::Min(500, $content.Length))
+            } elseif ($content -is [array]) {
+                foreach ($item in $content) {
+                    if ($item.type -eq 'text') {
+                        $text += $item.text.Substring(0, [Math]::Min(500, $item.text.Length))
+                    }
+                }
+            }
+            $ts = if ($obj.timestamp) { $obj.timestamp.Substring(0,16) } else { '' }
+            if ($text.Trim() -ne '') {
+                Write-Host "[$ts] $text"
+                Write-Host '---'
+            }
+        }
+    } catch {}
+}

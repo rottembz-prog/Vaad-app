@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#7c3aed">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>מנהל תקציבים — ועד הורים</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { font-family: 'Heebo', sans-serif; direction: rtl; background: #f8fafc; -webkit-font-smoothing: antialiased; }
+    #root { min-height: 100vh; }
+    input, select, button, textarea { font-family: 'Heebo', sans-serif; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid #7c3aed; outline-offset: 0; }
+    button:active { opacity: 0.85; }
+    ::-webkit-scrollbar { display: none; }
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  </style>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"><div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Heebo,sans-serif;color:#94a3b8;font-size:14px">טוען...</div></div>
+  <script type="text/babel">
+    const { useState, useCallback, useMemo } = React;
+
+    // ─────────────────────────────────────────
+    // DEFAULT DATA
+    // ─────────────────────────────────────────
+    const DEMO_STUDENTS = [
+      { id: 1,  name: "עלמה וולף",        paid: true,  amount: 500, note: "" },
+      { id: 2,  name: "הילה נדם",          paid: true,  amount: 500, note: "" },
+      { id: 3,  name: "עתי מסיקה",         paid: true,  amount: 500, note: "לקזז 24₪" },
+      { id: 4,  name: "עדן מונוביץ",       paid: true,  amount: 500, note: "" },
+      { id: 5,  name: "אמילי אברמוביץ",    paid: true,  amount: 500, note: "" },
+      { id: 6,  name: "טליה אברמוב",       paid: false, amount: 450, note: "שילמה חלקית" },
+      { id: 7,  name: "רום מומלדזה",       paid: true,  amount: 500, note: "" },
+      { id: 8,  name: "דומיניק ימלין",     paid: true,  amount: 500, note: "" },
+      { id: 9,  name: "אגם ויזנסקי",       paid: true,  amount: 500, note: "" },
+      { id: 10, name: "עמית גילאור",       paid: true,  amount: 500, note: "" },
+      { id: 11, name: "אלי גרשון",         paid: true,  amount: 500, note: "" },
+      { id: 12, name: "אילן בינדשטיין",    paid: true,  amount: 500, note: "" },
+      { id: 13, name: "עדי חרמוני יצחק",   paid: true,  amount: 500, note: "" },
+      { id: 14, name: "תום שגיא",          paid: true,  amount: 500, note: "" },
+      { id: 15, name: "נעמי פרי",          paid: true,  amount: 500, note: "" },
+      { id: 16, name: "אריאל עוז",         paid: false, amount: 0,   note: "ליטל תעביר חודש הבא" },
+      { id: 17, name: "מקס דוברי",         paid: true,  amount: 500, note: "" },
+      { id: 18, name: "ארבל שלזינגר",      paid: true,  amount: 500, note: "" },
+      { id: 19, name: "רועי חג׳ג׳",        paid: true,  amount: 500, note: "" },
+      { id: 20, name: "יואב בזיני",        paid: true,  amount: 500, note: "" },
+      { id: 21, name: "סאבה נעמי מלס",     paid: false, amount: 0,   note: "" },
+      { id: 22, name: "רונה לי כהן",       paid: true,  amount: 500, note: "" },
+      { id: 23, name: "הראל בנימיני",      paid: false, amount: 0,   note: "" },
+      { id: 24, name: "אור קלה",           paid: true,  amount: 500, note: "מזומן אצל איילה" },
+      { id: 25, name: "יואב עייש",         paid: true,  amount: 500, note: "" },
+      { id: 26, name: "אמה זלבסקי",        paid: false, amount: 250, note: "שילמה חלקית" },
+      { id: 27, name: "אידו פופובסקי",     paid: true,  amount: 500, note: "" },
+    ];
+
+    const DEMO_EVENTS = [
+      { id: 1,  name: "מתנות ראש השנה לאנני",   date: "ספטמבר 2024", budget: 250,  spent: 230, category: "מתנות",  done: true,  notes: "מארזי ראש השנה לאנני ול-2 סייעות", paidBy: "איילה" },
+      { id: 2,  name: "פעילות תפוח בדבש",        date: "01.10.24",    budget: 100,  spent: 24,  category: "פעילות", done: true,  notes: "תפוחים, דבש ומיץ",               paidBy: "הדס" },
+      { id: 3,  name: "חנוכה - סופגניות",         date: "דצמבר 2024",  budget: 150,  spent: 108, category: "חג",     done: true,  notes: "",                               paidBy: "" },
+      { id: 4,  name: "תעודות",                   date: "07.02.25",    budget: 55,   spent: 0,   category: "מתנות",  done: false, notes: "סוכריות רגל",                    paidBy: "" },
+      { id: 5,  name: "ט״ו בשבט",                 date: "13.02.25",    budget: 150,  spent: 0,   category: "פעילות", done: false, notes: "עציץ לכל ילד",                   paidBy: "" },
+      { id: 6,  name: "יום המשפחה",               date: "28.02.25",    budget: 300,  spent: 0,   category: "פעילות", done: false, notes: "הכנת מתנות להורים",              paidBy: "" },
+      { id: 7,  name: "פורים",                    date: "מרץ 2025",    budget: 100,  spent: 0,   category: "חג",     done: false, notes: "משלוח מנות לאנני",               paidBy: "" },
+      { id: 8,  name: "סדר פסח כיתתי",            date: "28.03.25",    budget: 300,  spent: 0,   category: "פעילות", done: false, notes: "",                               paidBy: "" },
+      { id: 9,  name: "מתנת פסח לאנני",           date: "28.03.25",    budget: 150,  spent: 0,   category: "מתנות",  done: false, notes: "מתנות לחג לאנני ו-2 סייעות",    paidBy: "" },
+      { id: 10, name: "יום העצמאות - פלאפל",      date: "מאי 2025",    budget: 450,  spent: 0,   category: "חג",     done: false, notes: "",                               paidBy: "" },
+      { id: 11, name: "הפעלת ל״ג בעומר",          date: "מאי 2025",    budget: 500,  spent: 0,   category: "פעילות", done: false, notes: "על האש אצל מסיקה",               paidBy: "" },
+      { id: 12, name: "ארוע בנות מצווה",           date: "סוף יוני",    budget: 1700, spent: 0,   category: "ארוע",   done: false, notes: "",                               paidBy: "" },
+      { id: 13, name: "מתנות סוף שנה לילדים",     date: "סוף יוני",    budget: 600,  spent: 0,   category: "מתנות",  done: false, notes: "פיצה שכבתית + הפעלת ג׳ודו",     paidBy: "" },
+      { id: 14, name: "שונות",                    date: "כל השנה",     budget: 250,  spent: 190, category: "שונות",  done: false, notes: "גלידה לאנני",                    paidBy: "" },
+      { id: 15, name: "מתנת סוף שנה לאנני",       date: "סוף יוני",    budget: 400,  spent: 0,   category: "מתנות",  done: false, notes: "ספרים לסייעות + מארז מתוק",     paidBy: "" },
+    ];
+
+    const DEMO_CASH = [
+      { id: 1, date: "01.09.24",  desc: "יתרה משנה שעברה",                  amount: 2020.5, type: "income",  paidBy: "" },
+      { id: 2, date: "01.09.24",  desc: "השלמה יתרה — תשלום נוסף",          amount: 230,    type: "income",  paidBy: "" },
+      { id: 3, date: "15.09.24",  desc: "מארזי ראש השנה — שולם ע״י איילה",  amount: -230,   type: "expense", paidBy: "איילה" },
+      { id: 4, date: "01.10.24",  desc: "פעילות תפוח בדבש — שולם ע״י הדס", amount: -24,    type: "expense", paidBy: "הדס" },
+      { id: 5, date: "15.12.24",  desc: "חנוכה — סופגניות",                  amount: -108,   type: "expense", paidBy: "" },
+      { id: 6, date: "כל השנה",  desc: "גלידה לאנני — שונות",               amount: -190,   type: "expense", paidBy: "" },
+    ];
+
+    const DEMO_GIFTS = [
+      { id: 1, icon: "🎁", name: "מארזי ממתקים",       forWhom: "אנני וסייעות", priceRange: "100–200₪",    tag: "חג",         notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+      { id: 2, icon: "🌸", name: "פרחים + שוקולד",     forWhom: "מורה",         priceRange: "80–120₪",     tag: "יום המורה",  notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+      { id: 3, icon: "📚", name: "ספר + כרטיס מתנה",   forWhom: "אנני",         priceRange: "150–200₪",    tag: "סוף שנה",    notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+      { id: 4, icon: "🌿", name: "עציץ + שתיל",         forWhom: "כיתה",         priceRange: "10₪ לילד",    tag: "ט״ו בשבט",   notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+      { id: 5, icon: "🍪", name: "משלוח מנות כיתתי",   forWhom: "כולם",         priceRange: "15–20₪ לילד", tag: "פורים",      notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+      { id: 6, icon: "🥋", name: "הפעלת ג׳ודו שכבתית", forWhom: "שכבה",         priceRange: "50₪ לילד",    tag: "סוף שנה",    notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+      { id: 7, icon: "🍕", name: "פיצה שכבתית",        forWhom: "שכבה",         priceRange: "30–40₪ לילד", tag: "סוף שנה",    notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+      { id: 8, icon: "🎨", name: "הפעלת אמנות",        forWhom: "כיתה",         priceRange: "40₪ לילד",    tag: "יום המשפחה", notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    ];
+
+    // ─────────────────────────────────────────
+    // CONSTANTS & DESIGN TOKENS
+    // ─────────────────────────────────────────
+    const CAT_COLORS = {
+      "מתנות": { bg: "#fdf2f8", text: "#be185d", dot: "#ec4899" },
+      "פעילות": { bg: "#eff6ff", text: "#1d4ed8", dot: "#3b82f6" },
+      "חג":     { bg: "#f0fdf4", text: "#166534", dot: "#22c55e" },
+      "ארוע":   { bg: "#faf5ff", text: "#7e22ce", dot: "#a855f7" },
+      "שונות":  { bg: "#fff7ed", text: "#c2410c", dot: "#f97316" },
+    };
+
+    const BUDGET_COLORS = {
+      purple: { from: "#7c3aed", to: "#db2777", label: "סגול-ורוד" },
+      blue:   { from: "#1d4ed8", to: "#0891b2", label: "כחול" },
+      green:  { from: "#059669", to: "#0d9488", label: "ירוק" },
+      orange: { from: "#ea580c", to: "#dc2626", label: "כתום" },
+      teal:   { from: "#0f766e", to: "#1d4ed8", label: "טורקיז" },
+    };
+
+    const CAT_LIST = Object.keys(CAT_COLORS);
+    const EMOJIS   = ["🎁","🌸","📚","🌿","🍪","🥋","🍕","🎨","🎉","⭐","🍰","🎪","🧸","🏆","🌈","🎭","🎵","🌺"];
+
+    const S = {  // shared styles
+      input: {
+        width: "100%", padding: "10px 12px", borderRadius: 10,
+        border: "1.5px solid #e2e8f0", fontSize: 13, fontFamily: "inherit",
+        marginBottom: 8, boxSizing: "border-box", direction: "rtl",
+        outline: "none", color: "#0f172a", background: "white",
+      },
+      btn: (bg, color = "white") => ({
+        flex: 1, padding: "11px 0", borderRadius: 12, border: "none",
+        background: bg, color, fontWeight: 700, fontSize: 14,
+        cursor: "pointer", fontFamily: "inherit",
+      }),
+      smallBtn: (border, color) => ({
+        background: "none", border: `1.5px solid ${border}`, borderRadius: 8,
+        padding: "5px 10px", fontSize: 12, cursor: "pointer",
+        fontFamily: "inherit", color, whiteSpace: "nowrap",
+      }),
+    };
+
+    const BUDGET_TABS = [
+      { id: "budget",  label: "תקציב",  icon: "📊" },
+      { id: "collect", label: "גבייה",  icon: "💰" },
+      { id: "gifts",   label: "רעיונות", icon: "🎁" },
+      { id: "cash",    label: "מזומן",  icon: "💵" },
+    ];
+
+    // ─────────────────────────────────────────
+    // SHARED UI COMPONENTS
+    // ─────────────────────────────────────────
+    function Card({ children, style = {} }) {
+      return (
+        <div style={{
+          background: "white", borderRadius: 16, padding: 16,
+          boxShadow: "0 2px 16px rgba(0,0,0,0.07)", marginBottom: 10, ...style,
+        }}>{children}</div>
+      );
+    }
+
+    function Badge({ text, cat }) {
+      const c = CAT_COLORS[cat] || CAT_COLORS["שונות"];
+      return (
+        <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: c.bg, color: c.text, whiteSpace: "nowrap" }}>
+          {text}
+        </span>
+      );
+    }
+
+    function ProgressBar({ pct, color = "#7c3aed", style = {} }) {
+      return (
+        <div style={{ background: "#f1f5f9", borderRadius: 100, height: 7, overflow: "hidden", ...style }}>
+          <div style={{ height: "100%", borderRadius: 100, background: color, width: `${Math.min(Math.max(pct, 0), 100)}%`, transition: "width 0.4s ease" }} />
+        </div>
+      );
+    }
+
+    function BottomNav({ tabs, activeTab, setActiveTab }) {
+      return (
+        <div style={{
+          position: "fixed", bottom: 0, right: 0, left: 0, maxWidth: 480, margin: "0 auto",
+          background: "white", borderTop: "1px solid #f1f5f9",
+          display: "flex", padding: "6px 0 10px",
+          boxShadow: "0 -8px 30px rgba(0,0,0,0.1)", zIndex: 100,
+        }}>
+          {tabs.map(t => (
+            <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
+              flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
+              gap: 2, background: "none", border: "none", cursor: "pointer", padding: "4px 0",
+            }}>
+              <span style={{ fontSize: 19 }}>{t.icon}</span>
+              <span style={{ fontSize: 10, fontWeight: activeTab === t.id ? 800 : 400, fontFamily: "inherit", color: activeTab === t.id ? "#7c3aed" : "#94a3b8" }}>{t.label}</span>
+              {activeTab === t.id && <div style={{ width: 18, height: 3, borderRadius: 100, background: "linear-gradient(90deg,#7c3aed,#db2777)" }} />}
+            </button>
+          ))}
+        </div>
+      );
+    }
+
+    // Reusable inline edit row label
+    function FieldLabel({ children }) {
+      return <div style={{ fontSize: 11, fontWeight: 600, color: "#64748b", marginBottom: 3, marginTop: 4 }}>{children}</div>;
+    }
+
+    // ─────────────────────────────────────────
+    // HOME SCREEN — Budget Manager
+    // ─────────────────────────────────────────
+    const EMPTY_BUDGET_FORM = { name: "", className: "", year: "", colorKey: "purple", feePerStudent: "500" };
+
+    function BudgetListCard({ budget, onSelect, onEdit, onDelete }) {
+      const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.purple;
+      const paidCount  = budget.students.filter(s => s.paid).length;
+      const total      = budget.students.length;
+      const budgetSum  = budget.events.reduce((s, e) => s + e.budget, 0);
+      const collected  = budget.students.reduce((s, st) => s + (st.amount || 0), 0);
+
+      return (
+        <div style={{ background: "white", borderRadius: 20, overflow: "hidden", marginBottom: 14, boxShadow: "0 4px 20px rgba(0,0,0,0.09)" }}>
+          {/* Colored header */}
+          <div style={{ background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`, padding: "14px 16px 12px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div>
+                <div style={{ color: "white", fontWeight: 900, fontSize: 18, marginBottom: 2 }}>{budget.name}</div>
+                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
+              </div>
+              <div style={{ display: "flex", gap: 6 }}>
+                <button onClick={onEdit} style={{ background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "5px 9px", color: "white", cursor: "pointer", fontSize: 14, lineHeight: 1 }} title="ערכי">✏️</button>
+                <button onClick={onDelete} style={{ background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "5px 9px", color: "white", cursor: "pointer", fontSize: 14, lineHeight: 1 }} title="מחקי">✕</button>
+              </div>
+            </div>
+          </div>
+          {/* Stats */}
+          <div style={{ padding: "12px 16px 14px" }}>
+            {total > 0 && (
+              <>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#64748b", marginBottom: 5 }}>
+                  <span>גבייה</span>
+                  <span style={{ fontWeight: 700, color: "#0f172a" }}>{paidCount}/{total} שילמו</span>
+                </div>
+                <ProgressBar pct={total > 0 ? (paidCount / total) * 100 : 0} color={clr.from} style={{ marginBottom: 10 }} />
+              </>
+            )}
+            <div style={{ display: "flex", gap: 16, fontSize: 12, color: "#64748b" }}>
+              <span>📊 ₪{budgetSum.toLocaleString()} תקציב</span>
+              <span>💰 ₪{collected.toLocaleString()} נגבה</span>
+              {budget.feePerStudent && <span>👤 ₪{budget.feePerStudent}/ילד</span>}
+            </div>
+            <button onClick={onSelect} style={{
+              marginTop: 12, width: "100%", padding: "11px 0", borderRadius: 12, border: "none",
+              background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`,
+              color: "white", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "inherit",
+            }}>כנסי לתקציב ←</button>
+          </div>
+        </div>
+      );
+    }
+
+    function BudgetForm({ initial = EMPTY_BUDGET_FORM, onSave, onCancel, title }) {
+      const [form, setForm] = useState({ ...initial });
+      const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+      return (
+        <Card style={{ border: "2px solid #ede9fe" }}>
+          <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 12 }}>{title}</div>
+
+          <FieldLabel>שם הועד / הקבוצה</FieldLabel>
+          <input placeholder="ועד הורים / ועדת ספורט / ..." value={form.name}
+            onChange={e => set("name", e.target.value)} style={S.input} autoFocus />
+
+          <FieldLabel>כיתה / קבוצה</FieldLabel>
+          <input placeholder='כיתה ו׳ / מחלקת א׳ / ...' value={form.className}
+            onChange={e => set("className", e.target.value)} style={S.input} />
+
+          <FieldLabel>שנת לימודים</FieldLabel>
+          <input placeholder="תשפ״ה / 2025-2026" value={form.year}
+            onChange={e => set("year", e.target.value)} style={S.input} />
+
+          <FieldLabel>תשלום פר ילד (₪)</FieldLabel>
+          <input type="number" placeholder="500" value={form.feePerStudent}
+            onChange={e => set("feePerStudent", e.target.value)} style={S.input} />
+
+          <FieldLabel>צבע נושא</FieldLabel>
+          <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
+            {Object.entries(BUDGET_COLORS).map(([key, clr]) => (
+              <button key={key} onClick={() => set("colorKey", key)} style={{
+                width: 36, height: 36, borderRadius: "50%", border: form.colorKey === key ? "3px solid #0f172a" : "3px solid transparent",
+                background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`,
+                cursor: "pointer", outline: "none",
+              }} title={clr.label} />
+            ))}
+          </div>
+
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={() => onSave(form)} style={S.btn("#7c3aed")} disabled={!form.name.trim()}>שמור</button>
+            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+          </div>
+        </Card>
+      );
+    }
+
+    function HomeScreen({ budgets, setBudgets, onSelect }) {
+      const [mode, setMode]         = useState("list"); // list | add | edit
+      const [editingId, setEditingId] = useState(null);
+
+      const addBudget = (form) => {
+        const b = {
+          id: Date.now(),
+          name: form.name.trim(),
+          className: form.className.trim(),
+          year: form.year.trim(),
+          colorKey: form.colorKey,
+          feePerStudent: Number(form.feePerStudent) || 500,
+          students: [], events: [], cashLog: [], gifts: [],
+        };
+        setBudgets(prev => [...prev, b]);
+        setMode("list");
+      };
+
+      const saveBudget = (form) => {
+        setBudgets(prev => prev.map(b => b.id === editingId
+          ? { ...b, name: form.name.trim(), className: form.className.trim(), year: form.year.trim(), colorKey: form.colorKey, feePerStudent: Number(form.feePerStudent) || b.feePerStudent }
+          : b
+        ));
+        setMode("list"); setEditingId(null);
+      };
+
+      const deleteBudget = (id) => {
+        if (window.confirm("למחוק תקציב זה? הנתונים יאבדו לצמיתות.")) {
+          setBudgets(prev => prev.filter(b => b.id !== id));
+        }
+      };
+
+      const editingBudget = budgets.find(b => b.id === editingId);
+
+      return (
+        <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+          {/* Header */}
+          <div style={{
+            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+            padding: "24px 20px 28px",
+          }}>
+            <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 6 }}>מנהל תקציבים</div>
+            <div style={{ color: "white", fontWeight: 900, fontSize: 24 }}>ועד הורים 🏫</div>
+            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, marginTop: 4 }}>בחרי תקציב לניהול</div>
+          </div>
+
+          <div style={{ padding: "20px 14px 30px" }}>
+            {mode === "add" && (
+              <BudgetForm title="➕ תקציב חדש" onSave={addBudget} onCancel={() => setMode("list")} />
+            )}
+            {mode === "edit" && editingBudget && (
+              <BudgetForm
+                title="✏️ עריכת תקציב"
+                initial={{ ...editingBudget, feePerStudent: String(editingBudget.feePerStudent) }}
+                onSave={saveBudget}
+                onCancel={() => { setMode("list"); setEditingId(null); }}
+              />
+            )}
+
+            {budgets.length === 0 && mode === "list" && (
+              <div style={{ textAlign: "center", color: "#94a3b8", padding: "40px 0" }}>
+                <div style={{ fontSize: 40, marginBottom: 12 }}>📋</div>
+                <div style={{ fontSize: 15, fontWeight: 600 }}>אין תקציבים עדיין</div>
+                <div style={{ fontSize: 13, marginTop: 4 }}>לחצי על הכפתור למטה כדי להוסיף</div>
+              </div>
+            )}
+
+            {mode === "list" && budgets.map(b => (
+              <BudgetListCard
+                key={b.id}
+                budget={b}
+                onSelect={() => onSelect(b.id)}
+                onEdit={() => { setEditingId(b.id); setMode("edit"); }}
+                onDelete={() => deleteBudget(b.id)}
+              />
+            ))}
+
+            {mode === "list" && (
+              <button onClick={() => setMode("add")} style={{
+                width: "100%", padding: 16, borderRadius: 16, border: "2px dashed #cbd5e1",
+                background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+                cursor: "pointer", fontFamily: "inherit",
+              }}>+ הוסיפי תקציב חדש</button>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // BUDGET TAB — Events with edit
+    // ─────────────────────────────────────────
+    const EMPTY_EVENT = { name: "", date: "", budget: "", spent: "", category: "פעילות", notes: "", paidBy: "", done: false, type: "expense" };
+
+    function BudgetTab({ events, setEvents }) {
+      const [showAdd, setShowAdd] = useState(false);
+      const [filter, setFilter]  = useState("הכל");
+      const [addForm, setAddForm] = useState(EMPTY_EVENT);
+      const [editId, setEditId]  = useState(null);
+      const [editForm, setEditForm] = useState({});
+
+      const totalExpBudget = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
+      const totalIncBudget = events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
+      const totalSpent     = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.spent, 0);
+      const cats           = ["הכל", ...CAT_LIST];
+      const filtered       = filter === "הכל" ? events : events.filter(e => e.category === filter);
+
+      const addEvent = () => {
+        if (!addForm.name.trim()) return;
+        setEvents([...events, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
+        setAddForm(EMPTY_EVENT); setShowAdd(false);
+      };
+
+      const startEdit  = (ev) => { setEditId(ev.id); setEditForm({ ...ev, budget: String(ev.budget), spent: String(ev.spent), type: ev.type || "expense" }); };
+      const cancelEdit = () => setEditId(null);
+      const saveEdit   = () => {
+        setEvents(events.map(e => e.id === editId ? { ...editForm, id: editId, budget: Number(editForm.budget) || 0, spent: Number(editForm.spent) || 0 } : e));
+        setEditId(null);
+      };
+      const removeEvent = (id) => { if (window.confirm("למחוק ארוע זה?")) setEvents(events.filter(e => e.id !== id)); };
+      const toggleDone  = (id) => setEvents(events.map(e => e.id === id ? { ...e, done: !e.done } : e));
+
+      const EventForm = ({ data, onChange, onSave, onCancel, title }) => (
+        <Card style={{ border: "2px solid #ede9fe" }}>
+          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+          <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+            {["expense", "income"].map(t => (
+              <button key={t} onClick={() => onChange({ ...data, type: t })} style={{
+                flex: 1, padding: "10px 0", borderRadius: 10, border: "none",
+                cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13,
+                background: data.type === t ? (t === "expense" ? "#fee2e2" : "#dcfce7") : "#f1f5f9",
+                color:      data.type === t ? (t === "expense" ? "#ef4444" : "#059669") : "#94a3b8",
+              }}>{t === "expense" ? "📤 הוצאה" : "📥 הכנסה"}</button>
+            ))}
+          </div>
+          <FieldLabel>שם הארוע *</FieldLabel>
+          <input value={data.name} onChange={e => onChange({ ...data, name: e.target.value })} placeholder="שם הארוע" style={S.input} autoFocus />
+          <FieldLabel>תאריך</FieldLabel>
+          <input value={data.date} onChange={e => onChange({ ...data, date: e.target.value })} placeholder="תאריך" style={S.input} />
+          <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ flex: 1 }}>
+              <FieldLabel>תקציב ₪</FieldLabel>
+              <input type="number" value={data.budget} onChange={e => onChange({ ...data, budget: e.target.value })} placeholder="0" style={S.input} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <FieldLabel>{(data.type || "expense") === "income" ? "התקבל ₪" : "שולם ₪"}</FieldLabel>
+              <input type="number" value={data.spent} onChange={e => onChange({ ...data, spent: e.target.value })} placeholder="0" style={S.input} />
+            </div>
+          </div>
+          <FieldLabel>קטגוריה</FieldLabel>
+          <select value={data.category} onChange={e => onChange({ ...data, category: e.target.value })} style={S.input}>
+            {CAT_LIST.map(c => <option key={c}>{c}</option>)}
+          </select>
+          <FieldLabel>הערות</FieldLabel>
+          <input value={data.notes} onChange={e => onChange({ ...data, notes: e.target.value })} placeholder="הערות" style={S.input} />
+          <FieldLabel>{(data.type || "expense") === "income" ? "נגבה ע״י" : "שולם ע״י"}</FieldLabel>
+          <input value={data.paidBy || ""} onChange={e => onChange({ ...data, paidBy: e.target.value })} placeholder={(data.type || "expense") === "income" ? "מי גבה" : "שולם ע״י"} style={S.input} />
+          <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, cursor: "pointer", fontSize: 13 }}>
+            <input type="checkbox" checked={!!data.done} onChange={e => onChange({ ...data, done: e.target.checked })} style={{ width: 16, height: 16 }} />
+            הושלם ✅
+          </label>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={onSave} style={S.btn("#7c3aed")} disabled={!data.name.trim()}>שמור</button>
+            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+          </div>
+        </Card>
+      );
+
+      return (
+        <div>
+          {/* Summary */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
+            {[
+              { l: "תקציב הוצאות", v: `₪${totalExpBudget.toLocaleString()}`, c: "#ef4444", icon: "📤" },
+              { l: "תקציב הכנסות", v: `₪${totalIncBudget.toLocaleString()}`, c: "#059669", icon: "📥" },
+              { l: "שולם בפועל",   v: `₪${totalSpent.toLocaleString()}`,     c: "#db2777", icon: "💸" },
+              { l: "יתרה תקציבית", v: `₪${(totalIncBudget - totalExpBudget).toLocaleString()}`, c: totalIncBudget >= totalExpBudget ? "#7c3aed" : "#ef4444", icon: "💰" },
+            ].map(x => (
+              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
+                <div style={{ fontSize: 18 }}>{x.icon}</div>
+                <div style={{ fontWeight: 900, fontSize: 15, color: x.c }}>{x.v}</div>
+                <div style={{ fontSize: 10, color: "#94a3b8" }}>{x.l}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Filters */}
+          <div style={{ display: "flex", gap: 6, overflowX: "auto", marginBottom: 14, paddingBottom: 2 }}>
+            {cats.map(c => (
+              <button key={c} onClick={() => setFilter(c)} style={{
+                padding: "6px 12px", borderRadius: 20, border: "none", cursor: "pointer",
+                fontFamily: "inherit", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap",
+                background: filter === c ? "#7c3aed" : "#f1f5f9",
+                color:      filter === c ? "white"   : "#64748b",
+              }}>{c}</button>
+            ))}
+          </div>
+
+          {/* Event list */}
+          {filtered.map(ev => {
+            const isIncome = (ev.type || "expense") === "income";
+            return editId === ev.id ? (
+              <EventForm key={ev.id} title="✏️ עריכת ארוע" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+            ) : (
+              <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "#22c55e" : "#7c3aed"}` }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
+                      <button onClick={() => toggleDone(ev.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1 }}>
+                        {ev.done ? "✅" : "⬜"}
+                      </button>
+                      <span style={{ fontWeight: 700, fontSize: 14, color: "#0f172a" }}>{ev.name}</span>
+                      <span style={{ fontSize: 10, fontWeight: 700, padding: "1px 6px", borderRadius: 8, background: isIncome ? "#dcfce7" : "#fee2e2", color: isIncome ? "#059669" : "#ef4444" }}>
+                        {isIncome ? "📥 הכנסה" : "📤 הוצאה"}
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
+                      <Badge text={ev.category} cat={ev.category} />
+                      <span style={{ fontSize: 11, color: "#94a3b8" }}>{ev.date}</span>
+                      {ev.paidBy && <span style={{ fontSize: 11, color: "#94a3b8" }}>• {ev.paidBy}</span>}
+                    </div>
+                    {ev.notes && <div style={{ fontSize: 11, color: "#64748b" }}>📝 {ev.notes}</div>}
+                  </div>
+                  <div style={{ textAlign: "left", flexShrink: 0, marginRight: 8 }}>
+                    <div style={{ fontWeight: 900, fontSize: 16, color: "#0f172a" }}>₪{ev.budget.toLocaleString()}</div>
+                    <div style={{ fontSize: 10, color: "#94a3b8" }}>תקציב</div>
+                    {ev.spent > 0 && <div style={{ fontSize: 12, fontWeight: 700, color: isIncome ? "#059669" : "#db2777", marginTop: 2 }}>₪{ev.spent.toLocaleString()} {isIncome ? "התקבל" : "שולם"}</div>}
+                  </div>
+                </div>
+                {ev.spent > 0 && ev.budget > 0 && (
+                  <ProgressBar
+                    pct={(ev.spent / ev.budget) * 100}
+                    color={isIncome ? "#22c55e" : ((ev.spent / ev.budget) > 1 ? "#ef4444" : (ev.spent / ev.budget) > 0.8 ? "#f59e0b" : "#7c3aed")}
+                    style={{ marginTop: 8, marginBottom: 4 }}
+                  />
+                )}
+                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                  <button onClick={() => startEdit(ev)} style={S.smallBtn("#e2e8f0", "#64748b")}>✏️ ערכי</button>
+                  <button onClick={() => removeEvent(ev.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+                </div>
+              </Card>
+            );
+          })}
+
+          {/* Add form */}
+          {showAdd ? (
+            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onCancel={() => setShowAdd(false)} />
+          ) : (
+            <button onClick={() => setShowAdd(true)} style={{
+              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
+              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+              cursor: "pointer", fontFamily: "inherit",
+            }}>+ הוסיפי ארוע</button>
+          )}
+        </div>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // COLLECT TAB — Students with edit
+    // ─────────────────────────────────────────
+    function CollectTab({ students, setStudents, feePerStudent = 500 }) {
+      const [search,   setSearch]   = useState("");
+      const [showAdd,  setShowAdd]  = useState(false);
+      const [newName,  setNewName]  = useState("");
+      const [editId,   setEditId]   = useState(null);
+      const [editForm, setEditForm] = useState({});
+
+      const paidCount      = students.filter(s => s.paid).length;
+      const totalCollected = students.reduce((s, st) => s + (st.amount || 0), 0);
+      const filtered       = search ? students.filter(s => s.name.includes(search)) : students;
+
+      const toggle = (id) => setStudents(students.map(s =>
+        s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? feePerStudent : s.amount } : s
+      ));
+
+      const addStudent = () => {
+        if (!newName.trim()) return;
+        setStudents([...students, { id: Date.now(), name: newName.trim(), paid: false, amount: 0, note: "" }]);
+        setNewName(""); setShowAdd(false);
+      };
+
+      const startEdit = (s) => { setEditId(s.id); setEditForm({ ...s, amount: String(s.amount) }); };
+      const cancelEdit = () => setEditId(null);
+      const saveEdit = () => {
+        setStudents(students.map(s => s.id === editId
+          ? { ...editForm, id: editId, amount: Number(editForm.amount) || 0, paid: !!editForm.paid }
+          : s
+        ));
+        setEditId(null);
+      };
+      const removeStudent = (id) => { if (window.confirm("למחוק תלמיד זה?")) setStudents(students.filter(s => s.id !== id)); };
+
+      return (
+        <div>
+          {/* Stats */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 16 }}>
+            {[
+              { l: "שילמו",    v: paidCount,                            c: "#059669", icon: "✅" },
+              { l: "לא שילמו", v: students.length - paidCount,          c: "#ef4444", icon: "❌" },
+              { l: "נגבה",     v: `₪${totalCollected.toLocaleString()}`, c: "#7c3aed", icon: "💰" },
+            ].map(x => (
+              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
+                <div style={{ fontSize: 18 }}>{x.icon}</div>
+                <div style={{ fontWeight: 900, fontSize: 18, color: x.c }}>{x.v}</div>
+                <div style={{ fontSize: 10, color: "#94a3b8" }}>{x.l}</div>
+              </div>
+            ))}
+          </div>
+
+          <input placeholder="🔍 חפשי תלמיד..." value={search}
+            onChange={e => setSearch(e.target.value)} style={{ ...S.input, marginBottom: 10 }} />
+
+          {students.length > 0 && (
+            <>
+              <ProgressBar pct={(paidCount / students.length) * 100} color="linear-gradient(90deg,#059669,#7c3aed)" />
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#94a3b8", marginBottom: 14, marginTop: 4 }}>
+                <span>0%</span>
+                <span style={{ fontWeight: 600 }}>{Math.round((paidCount / students.length) * 100)}% שולם</span>
+                <span>100%</span>
+              </div>
+            </>
+          )}
+
+          {filtered.map(s => (
+            editId === s.id ? (
+              <Card key={s.id} style={{ border: "2px solid #ede9fe" }}>
+                <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>✏️ עריכת תלמיד</div>
+                <FieldLabel>שם</FieldLabel>
+                <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} style={S.input} autoFocus />
+                <FieldLabel>סכום ששולם ₪</FieldLabel>
+                <input type="number" value={editForm.amount} onChange={e => setEditForm({ ...editForm, amount: e.target.value })} style={S.input} />
+                <FieldLabel>הערה</FieldLabel>
+                <input value={editForm.note || ""} onChange={e => setEditForm({ ...editForm, note: e.target.value })} placeholder="הערה..." style={S.input} />
+                <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, cursor: "pointer", fontSize: 13 }}>
+                  <input type="checkbox" checked={!!editForm.paid} onChange={e => setEditForm({ ...editForm, paid: e.target.checked })} style={{ width: 16, height: 16 }} />
+                  שולם ✅
+                </label>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button onClick={saveEdit} style={S.btn("#7c3aed")}>שמור</button>
+                  <button onClick={cancelEdit} style={S.btn("#94a3b8")}>ביטול</button>
+                </div>
+              </Card>
+            ) : (
+              <div key={s.id} style={{
+                background: "white", borderRadius: 14, padding: "12px 14px", marginBottom: 8,
+                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+                borderRight: `4px solid ${s.paid ? "#059669" : "#e2e8f0"}`,
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: "#0f172a" }}>
+                      {students.indexOf(s) + 1}. {s.name}
+                    </div>
+                    {s.note && <div style={{ fontSize: 11, color: "#f59e0b", marginTop: 2 }}>📝 {s.note}</div>}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                    {s.paid && <span style={{ fontSize: 12, fontWeight: 700, color: "#059669" }}>₪{s.amount}</span>}
+                    <button onClick={() => toggle(s.id)} style={{
+                      width: 36, height: 36, borderRadius: "50%", border: "none", cursor: "pointer",
+                      background: s.paid ? "#dcfce7" : "#fee2e2", fontSize: 18,
+                    }}>{s.paid ? "✅" : "❌"}</button>
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                  <button onClick={() => startEdit(s)} style={S.smallBtn("#e2e8f0", "#64748b")}>✏️ ערכי</button>
+                  <button onClick={() => removeStudent(s.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+                </div>
+              </div>
+            )
+          ))}
+
+          {showAdd ? (
+            <Card>
+              <FieldLabel>שם התלמיד/ה *</FieldLabel>
+              <input value={newName} onChange={e => setNewName(e.target.value)}
+                placeholder="שם התלמיד/ה" style={S.input} autoFocus
+                onKeyDown={e => e.key === "Enter" && addStudent()} />
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={addStudent} style={S.btn("#7c3aed")}>הוסיפי</button>
+                <button onClick={() => setShowAdd(false)} style={S.btn("#94a3b8")}>ביטול</button>
+              </div>
+            </Card>
+          ) : (
+            <button onClick={() => setShowAdd(true)} style={{
+              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
+              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+              cursor: "pointer", fontFamily: "inherit", marginTop: 4,
+            }}>+ הוסיפי תלמיד/ה</button>
+          )}
+
+          {/* WhatsApp reminder */}
+          {students.filter(s => !s.paid).length > 0 && (
+            <Card style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", marginTop: 12 }}>
+              <div style={{ fontWeight: 700, fontSize: 13, color: "#166534", marginBottom: 6 }}>📱 תזכורת לוואצאפ</div>
+              <div style={{ fontSize: 12, color: "#166534", lineHeight: 1.7, userSelect: "all" }}>
+                שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪{feePerStudent}).<br />
+                טרם שולם: {students.filter(s => !s.paid).map(s => s.name).join(", ")}.<br />
+                ניתן להעביר בפייבוקס / העברה בנקאית. תודה! 🙏
+              </div>
+            </Card>
+          )}
+        </div>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // GIFTS TAB — Global ideas directory (cross-budget)
+    // ─────────────────────────────────────────
+    const EMPTY_GIFT = { icon: "🎁", name: "", forWhom: "", priceRange: "", tag: "", notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null };
+
+    function GiftsTab({ gifts, setGifts }) {
+      const [search,   setSearch]   = useState("");
+      const [showAdd,  setShowAdd]  = useState(false);
+      const [addForm,  setAddForm]  = useState(EMPTY_GIFT);
+      const [editId,   setEditId]   = useState(null);
+      const [editForm, setEditForm] = useState({});
+
+      const filtered = search
+        ? gifts.filter(g => g.name.includes(search) || g.tag.includes(search) || g.forWhom.includes(search) || (g.vendorName || "").includes(search))
+        : gifts;
+
+      const addGift    = () => { if (!addForm.name.trim()) return; setGifts([...gifts, { ...addForm, id: Date.now() }]); setAddForm(EMPTY_GIFT); setShowAdd(false); };
+      const startEdit  = (g) => { setEditId(g.id); setEditForm({ ...g }); };
+      const cancelEdit = () => setEditId(null);
+      const saveEdit   = () => { setGifts(gifts.map(g => g.id === editId ? { ...editForm, id: editId } : g)); setEditId(null); };
+      const removeGift = (id) => { if (window.confirm("למחוק רעיון זה?")) setGifts(gifts.filter(g => g.id !== id)); };
+
+      const handlePhotoUpload = (e, data, onChange) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => onChange({ ...data, photo: ev.target.result });
+        reader.readAsDataURL(file);
+      };
+
+      const GiftForm = ({ data, onChange, onSave, onCancel, title }) => (
+        <Card style={{ border: "2px solid #ede9fe" }}>
+          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+          <FieldLabel>אמוג׳י</FieldLabel>
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
+            {EMOJIS.map(e => (
+              <button key={e} onClick={() => onChange({ ...data, icon: e })} style={{
+                fontSize: 20, background: data.icon === e ? "#ede9fe" : "#f8fafc",
+                border: data.icon === e ? "2px solid #7c3aed" : "2px solid transparent",
+                borderRadius: 8, padding: 4, cursor: "pointer",
+              }}>{e}</button>
+            ))}
+          </div>
+          <FieldLabel>שם הרעיון *</FieldLabel>
+          <input value={data.name} onChange={e => onChange({ ...data, name: e.target.value })} placeholder="שם הרעיון" style={S.input} autoFocus />
+          <FieldLabel>עבור מי</FieldLabel>
+          <input value={data.forWhom} onChange={e => onChange({ ...data, forWhom: e.target.value })} placeholder="אנני, כיתה, הורים..." style={S.input} />
+          <FieldLabel>טווח מחיר</FieldLabel>
+          <input value={data.priceRange} onChange={e => onChange({ ...data, priceRange: e.target.value })} placeholder="50–100₪" style={S.input} />
+          <FieldLabel>תג / אירוע</FieldLabel>
+          <input value={data.tag} onChange={e => onChange({ ...data, tag: e.target.value })} placeholder="סוף שנה, פורים..." style={S.input} />
+          <FieldLabel>שם ספק</FieldLabel>
+          <input value={data.vendorName || ""} onChange={e => onChange({ ...data, vendorName: e.target.value })} placeholder="שם הספק / חנות" style={S.input} />
+          <FieldLabel>טלפון ספק</FieldLabel>
+          <input value={data.vendorPhone || ""} onChange={e => onChange({ ...data, vendorPhone: e.target.value })} placeholder="050-0000000" style={S.input} />
+          <FieldLabel>קישור לספק</FieldLabel>
+          <input value={data.vendorLink || ""} onChange={e => onChange({ ...data, vendorLink: e.target.value })} placeholder="https://..." style={S.input} />
+          <FieldLabel>הערות</FieldLabel>
+          <input value={data.notes} onChange={e => onChange({ ...data, notes: e.target.value })} placeholder="הערות" style={S.input} />
+          <FieldLabel>תמונה</FieldLabel>
+          {data.photo && <img src={data.photo} alt="" style={{ width: "100%", borderRadius: 8, marginBottom: 8, maxHeight: 150, objectFit: "cover" }} />}
+          <input type="file" accept="image/*" onChange={e => handlePhotoUpload(e, data, onChange)}
+            style={{ ...S.input, padding: "6px 12px", cursor: "pointer" }} />
+          <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+            <button onClick={onSave} style={S.btn("#7c3aed")} disabled={!data.name.trim()}>שמור</button>
+            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+          </div>
+        </Card>
+      );
+
+      return (
+        <div>
+          <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 10, textAlign: "center" }}>
+            ספרייה משותפת לכל התקציבים • {gifts.length} רעיונות
+          </div>
+          <input placeholder="🔍 חפשי רעיון, ספק, תג..." value={search}
+            onChange={e => setSearch(e.target.value)} style={{ ...S.input, marginBottom: 12 }} />
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+            {filtered.map(gift => (
+              editId === gift.id ? null : (
+                <div key={gift.id} style={{ background: "white", borderRadius: 16, padding: 14, boxShadow: "0 2px 14px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" }}>
+                  {gift.photo
+                    ? <img src={gift.photo} alt="" style={{ width: "100%", borderRadius: 10, marginBottom: 8, height: 90, objectFit: "cover" }} />
+                    : <div style={{ fontSize: 30, marginBottom: 6 }}>{gift.icon}</div>
+                  }
+                  <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a", marginBottom: 4 }}>{gift.name}</div>
+                  {gift.forWhom    && <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 2 }}>עבור: {gift.forWhom}</div>}
+                  {gift.vendorName && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 2 }}>🏪 {gift.vendorName}</div>}
+                  {gift.vendorPhone && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 2 }}>📞 {gift.vendorPhone}</div>}
+                  {gift.notes      && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>{gift.notes}</div>}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 6, marginBottom: 8 }}>
+                    {gift.tag        && <span style={{ fontSize: 10, fontWeight: 700, background: "#f0fdf4", color: "#059669", borderRadius: 8, padding: "2px 6px" }}>{gift.tag}</span>}
+                    {gift.priceRange && <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>{gift.priceRange}</span>}
+                  </div>
+                  {gift.vendorLink && (
+                    <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#7c3aed", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
+                  )}
+                  <div style={{ display: "flex", gap: 4 }}>
+                    <button onClick={() => startEdit(gift)} style={{ ...S.smallBtn("#e2e8f0", "#64748b"), flex: 1, textAlign: "center" }}>✏️</button>
+                    <button onClick={() => removeGift(gift.id)} style={{ ...S.smallBtn("#fee2e2", "#ef4444"), flex: 1, textAlign: "center" }}>✕</button>
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+
+          {/* Edit form (full width, below grid) */}
+          {editId !== null && (
+            <GiftForm title="✏️ עריכת רעיון" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+          )}
+
+          {showAdd ? (
+            <GiftForm title="➕ רעיון חדש" data={addForm} onChange={setAddForm} onSave={addGift} onCancel={() => setShowAdd(false)} />
+          ) : (
+            <button onClick={() => setShowAdd(true)} style={{
+              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
+              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+              cursor: "pointer", fontFamily: "inherit",
+            }}>+ הוסיפי רעיון</button>
+          )}
+        </div>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // CASH TAB — with edit
+    // ─────────────────────────────────────────
+    const EMPTY_CASH = { date: "", desc: "", amount: "", type: "income", paidBy: "" };
+
+    function CashTab({ cashLog, setCashLog, students = [] }) {
+      const [showAdd,  setShowAdd]  = useState(false);
+      const [addForm,  setAddForm]  = useState(EMPTY_CASH);
+      const [editId,   setEditId]   = useState(null);
+      const [editForm, setEditForm] = useState({});
+
+      const cashBalance           = cashLog.reduce((s, c) => s + c.amount, 0);
+      const totalIn               = cashLog.filter(c => c.amount > 0).reduce((s, c) => s + c.amount, 0);
+      const totalOut              = cashLog.filter(c => c.amount < 0).reduce((s, c) => s + Math.abs(c.amount), 0);
+      const collectedFromStudents = students.reduce((s, st) => s + (st.amount || 0), 0);
+      const totalInKupa           = collectedFromStudents + cashBalance;
+
+      // Group cash log entries by paidBy
+      const byPerson = {};
+      cashLog.forEach(c => {
+        if (c.paidBy) {
+          if (!byPerson[c.paidBy]) byPerson[c.paidBy] = 0;
+          byPerson[c.paidBy] += c.amount;
+        }
+      });
+      const personEntries = Object.entries(byPerson);
+
+      const addEntry = () => {
+        if (!addForm.desc.trim() || !addForm.amount) return;
+        const amt = Number(addForm.amount) * (addForm.type === "expense" ? -1 : 1);
+        setCashLog([...cashLog, { id: Date.now(), ...addForm, amount: amt }]);
+        setAddForm(EMPTY_CASH); setShowAdd(false);
+      };
+
+      const startEdit  = (e) => { setEditId(e.id); setEditForm({ ...e, amount: String(Math.abs(e.amount)), type: e.amount >= 0 ? "income" : "expense" }); };
+      const cancelEdit = () => setEditId(null);
+      const saveEdit   = () => {
+        const amt = Number(editForm.amount) * (editForm.type === "expense" ? -1 : 1);
+        setCashLog(cashLog.map(c => c.id === editId ? { ...editForm, id: editId, amount: amt } : c));
+        setEditId(null);
+      };
+      const removeEntry = (id) => { if (window.confirm("למחוק תנועה זו?")) setCashLog(cashLog.filter(c => c.id !== id)); };
+
+      const CashForm = ({ data, onChange, onSave, onCancel, title }) => (
+        <Card style={{ border: "2px solid #1e293b20" }}>
+          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+          <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+            {["income", "expense"].map(t => (
+              <button key={t} onClick={() => onChange({ ...data, type: t })} style={{
+                flex: 1, padding: "10px 0", borderRadius: 10, border: "none",
+                cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13,
+                background: data.type === t ? (t === "income" ? "#dcfce7" : "#fee2e2") : "#f1f5f9",
+                color:      data.type === t ? (t === "income" ? "#059669" : "#ef4444") : "#94a3b8",
+              }}>{t === "income" ? "✅ הכנסה" : "📤 הוצאה"}</button>
+            ))}
+          </div>
+          <FieldLabel>תיאור *</FieldLabel>
+          <input value={data.desc} onChange={e => onChange({ ...data, desc: e.target.value })} placeholder="תיאור" style={S.input} autoFocus />
+          <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ flex: 1 }}>
+              <FieldLabel>סכום ₪ *</FieldLabel>
+              <input type="number" value={data.amount} onChange={e => onChange({ ...data, amount: e.target.value })} placeholder="0" style={S.input} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <FieldLabel>תאריך</FieldLabel>
+              <input value={data.date} onChange={e => onChange({ ...data, date: e.target.value })} placeholder="01.01.25" style={S.input} />
+            </div>
+          </div>
+          <FieldLabel>שולם / נגבה ע״י (אופציונלי)</FieldLabel>
+          <input value={data.paidBy || ""} onChange={e => onChange({ ...data, paidBy: e.target.value })} placeholder="שם" style={S.input} />
+          <div style={{ display: "flex", gap: 8 }}>
+            <button onClick={onSave} style={S.btn("#0f172a")} disabled={!data.desc.trim() || !data.amount}>שמור</button>
+            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+          </div>
+        </Card>
+      );
+
+      // running balance
+      let running = 0;
+      const withBal = cashLog.map(c => { running += c.amount; return { ...c, bal: running }; });
+
+      return (
+        <div>
+          {/* סה"כ בקופה */}
+          <div style={{
+            background: "linear-gradient(135deg,#1e293b,#0f172a)",
+            borderRadius: 20, padding: 20, color: "white", marginBottom: 12,
+          }}>
+            <div style={{ opacity: 0.6, fontSize: 13, marginBottom: 2 }}>סה״כ בקופה</div>
+            <div style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
+              {totalInKupa < 0 ? "-" : ""}₪{Math.abs(totalInKupa).toLocaleString()}
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14 }}>
+              <div>
+                <div style={{ opacity: 0.5, fontSize: 10 }}>גבייה</div>
+                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>₪{collectedFromStudents.toLocaleString()}</div>
+              </div>
+              <div>
+                <div style={{ opacity: 0.5, fontSize: 10 }}>הכנסות נוספות</div>
+                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>+₪{totalIn.toLocaleString()}</div>
+              </div>
+              <div>
+                <div style={{ opacity: 0.5, fontSize: 10 }}>הוצאות</div>
+                <div style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{totalOut.toLocaleString()}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Breakdown by person */}
+          {personEntries.length > 0 && (
+            <Card style={{ background: "#f8fafc", marginBottom: 12 }}>
+              <div style={{ fontWeight: 700, fontSize: 13, color: "#1e293b", marginBottom: 8 }}>💼 לפי נציג</div>
+              {personEntries.map(([name, total]) => (
+                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: total >= 0 ? "#059669" : "#ef4444" }}>
+                    {total >= 0 ? "+" : ""}₪{Math.abs(total).toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            </Card>
+          )}
+
+          <h3 style={{ fontWeight: 800, fontSize: 15, color: "#1e293b", marginBottom: 10 }}>יומן תנועות</h3>
+
+          {[...withBal].reverse().map(entry => (
+            editId === entry.id ? (
+              <CashForm key={entry.id} title="✏️ עריכת תנועה" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+            ) : (
+              <div key={entry.id} style={{
+                background: "white", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
+                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+                borderRight: `4px solid ${entry.amount > 0 ? "#4ade80" : "#f87171"}`,
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: 14, color: "#0f172a" }}>{entry.desc}</div>
+                    <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
+                      {entry.date}{entry.paidBy && ` • ${entry.paidBy}`}
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "left", flexShrink: 0 }}>
+                    <div style={{ fontWeight: 800, fontSize: 15, color: entry.amount > 0 ? "#059669" : "#ef4444" }}>
+                      {entry.amount > 0 ? "+" : ""}₪{Math.abs(entry.amount).toLocaleString()}
+                    </div>
+                    <div style={{ fontSize: 10, color: "#94a3b8" }}>יתרה ₪{entry.bal.toLocaleString()}</div>
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+                  <button onClick={() => startEdit(entry)} style={S.smallBtn("#e2e8f0", "#64748b")}>✏️ ערכי</button>
+                  <button onClick={() => removeEntry(entry.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+                </div>
+              </div>
+            )
+          ))}
+
+          {showAdd ? (
+            <CashForm title="➕ תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onCancel={() => setShowAdd(false)} />
+          ) : (
+            <button onClick={() => setShowAdd(true)} style={{
+              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
+              background: "transparent", color: "#0f172a", fontWeight: 700, fontSize: 14,
+              cursor: "pointer", fontFamily: "inherit", marginTop: 4,
+            }}>+ רשמי תנועה</button>
+          )}
+        </div>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // BUDGET SCREEN — 4-tab layout for a single budget
+    // ─────────────────────────────────────────
+    function BudgetScreen({ budget, onUpdate, onBack, activeTab, setActiveTab, gifts, setGifts }) {
+      const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.purple;
+
+      const setStudents = (students) => onUpdate({ students });
+      const setEvents   = (events)   => onUpdate({ events });
+      const setCashLog  = (cashLog)  => onUpdate({ cashLog });
+
+      const paidCount   = budget.students.filter(s => s.paid).length;
+      const totalBudget = budget.events.reduce((s, e) => s + e.budget, 0);
+      const totalSpent  = budget.events.reduce((s, e) => s + e.spent, 0);
+      const balance     = budget.cashLog.reduce((s, c) => s + c.amount, 0);
+
+      return (
+        <div style={{ minHeight: "100vh", maxWidth: 480, margin: "0 auto", background: "#f8fafc", fontFamily: "'Heebo', sans-serif", direction: "rtl" }}>
+          {/* Header */}
+          <div style={{
+            background: `linear-gradient(135deg, ${clr.from} 0%, ${clr.to} 100%)`,
+            padding: "14px 16px 52px", position: "relative", overflow: "hidden",
+          }}>
+            <div style={{ position: "absolute", top: -40, left: -20, width: 150, height: 150, borderRadius: "50%", background: "rgba(255,255,255,0.07)" }} />
+            <button onClick={onBack} style={{
+              background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 10,
+              padding: "6px 12px", color: "white", cursor: "pointer", fontFamily: "inherit",
+              fontSize: 13, fontWeight: 600, marginBottom: 10, display: "flex", alignItems: "center", gap: 4,
+            }}>← כל התקציבים</button>
+            <div style={{ color: "white", fontWeight: 900, fontSize: 20, marginBottom: 2 }}>{budget.name}</div>
+            <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
+          </div>
+
+          {/* Floating stat cards */}
+          <div style={{ display: "flex", gap: 8, padding: "0 14px", marginTop: -34, position: "relative", zIndex: 10, overflowX: "auto", paddingBottom: 4 }}>
+            {[
+              { icon: "📊", l: "תקציב", v: `₪${totalBudget.toLocaleString()}`, c: clr.from },
+              { icon: "✅", l: "שולם",  v: `₪${totalSpent.toLocaleString()}`,  c: "#db2777" },
+              { icon: "👧", l: "שילמו", v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "#059669" },
+              { icon: "💵", l: "מזומן", v: `₪${balance.toLocaleString()}`,      c: "#ea580c" },
+            ].map(s => (
+              <div key={s.l} style={{
+                background: "white", borderRadius: 14, padding: "10px 10px", minWidth: 82,
+                boxShadow: "0 4px 18px rgba(0,0,0,0.12)", flex: "0 0 auto", textAlign: "center",
+              }}>
+                <div style={{ fontSize: 16 }}>{s.icon}</div>
+                <div style={{ fontWeight: 900, fontSize: 13, color: s.c, marginTop: 1 }}>{s.v}</div>
+                <div style={{ fontSize: 10, color: "#94a3b8" }}>{s.l}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tab content */}
+          <div style={{ padding: "14px 14px 90px" }}>
+            {activeTab === "budget"  && <BudgetTab  events={budget.events}     setEvents={setEvents} />}
+            {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent} />}
+            {activeTab === "gifts"   && <GiftsTab   gifts={gifts}              setGifts={setGifts} />}
+            {activeTab === "cash"    && <CashTab     cashLog={budget.cashLog}   setCashLog={setCashLog} students={budget.students} />}
+          </div>
+
+          <BottomNav tabs={BUDGET_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
+        </div>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // APP — Root state & routing
+    // ─────────────────────────────────────────
+    const INITIAL_BUDGETS = [{
+      id: 1,
+      name: "ועד הורים",
+      className: "כיתה ו׳",
+      year: "תשפ״ד–תשפ״ה",
+      colorKey: "purple",
+      feePerStudent: 500,
+      students: DEMO_STUDENTS,
+      events:   DEMO_EVENTS,
+      cashLog:  DEMO_CASH,
+      gifts:    [],
+    }];
+
+    function App() {
+      const [budgets,         setBudgets]         = useState(INITIAL_BUDGETS);
+      const [gifts,           setGifts]           = useState(DEMO_GIFTS);
+      const [activeBudgetId,  setActiveBudgetId]  = useState(null);
+      const [activeTab,       setActiveTab]        = useState("budget");
+
+      const activeBudget = budgets.find(b => b.id === activeBudgetId) || null;
+
+      const updateBudget = useCallback((id, updates) => {
+        setBudgets(prev => prev.map(b => b.id === id ? { ...b, ...updates } : b));
+      }, []);
+
+      if (!activeBudget) {
+        return (
+          <HomeScreen
+            budgets={budgets}
+            setBudgets={setBudgets}
+            onSelect={(id) => { setActiveBudgetId(id); setActiveTab("budget"); }}
+          />
+        );
+      }
+
+      return (
+        <BudgetScreen
+          budget={activeBudget}
+          onUpdate={(updates) => updateBudget(activeBudgetId, updates)}
+          onBack={() => setActiveBudgetId(null)}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          gifts={gifts}
+          setGifts={setGifts}
+        />
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

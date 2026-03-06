@@ -1,0 +1,1845 @@
+2026-03-03T19:09:47.215Z [DEBUG] detectFileEncoding failed for expected reason: ENOENT
+2026-03-03T19:09:47.217Z [DEBUG] MDM settings load completed in 61ms
+2026-03-03T19:09:47.269Z [DEBUG] [init] configureGlobalMTLS starting
+2026-03-03T19:09:47.269Z [DEBUG] [init] configureGlobalMTLS complete
+2026-03-03T19:09:47.269Z [DEBUG] [init] configureGlobalAgents starting
+2026-03-03T19:09:47.269Z [DEBUG] [init] configureGlobalAgents complete
+2026-03-03T19:09:47.374Z [DEBUG] Using bash path: "C:\Program Files\Git\bin\bash.exe"
+2026-03-03T19:09:47.399Z [DEBUG] [STARTUP] Loading MCP configs...
+2026-03-03T19:09:47.410Z [DEBUG] [ToolSearch:optimistic] mode=tst-auto, ENABLE_TOOL_SEARCH=undefined, result=true
+2026-03-03T19:09:47.411Z [DEBUG] [STARTUP] Running setup()...
+2026-03-03T19:09:47.421Z [DEBUG] Git remote URL: null
+2026-03-03T19:09:47.421Z [DEBUG] No git remote URL found
+2026-03-03T19:09:47.425Z [DEBUG] Loading skills from: managed=C:\ProgramData\ClaudeCode\.claude\skills, user=C:\Users\97252\.claude\skills, project=[]
+2026-03-03T19:09:47.426Z [DEBUG] Error log sink initialized
+2026-03-03T19:09:47.488Z [DEBUG] [Claude in Chrome] Found chrome profiles: Default, Profile 1, Profile 2
+2026-03-03T19:09:47.491Z [DEBUG] installed_plugins.json doesn't exist, returning empty V2 object
+2026-03-03T19:09:47.491Z [DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+2026-03-03T19:09:47.491Z [DEBUG] getPluginSkills: Processing 0 enabled plugins
+2026-03-03T19:09:47.491Z [DEBUG] Total plugin skills loaded: 0
+2026-03-03T19:09:47.491Z [DEBUG] Total plugin commands loaded: 0
+2026-03-03T19:09:47.492Z [DEBUG] Registered 0 hooks from 0 plugins
+2026-03-03T19:09:47.498Z [DEBUG] Loaded 0 unique skills (0 unconditional, 0 conditional, managed: 0, user: 0, project: 0, additional: 0, legacy commands: 0)
+2026-03-03T19:09:47.498Z [DEBUG] getSkills returning: 0 skill dir commands, 0 plugin skills, 5 bundled skills
+2026-03-03T19:09:47.504Z [DEBUG] [STARTUP] setup() completed in 93ms
+2026-03-03T19:09:47.504Z [DEBUG] [STARTUP] Loading commands and agents...
+2026-03-03T19:09:47.505Z [DEBUG] Total plugin agents loaded: 0
+2026-03-03T19:09:47.506Z [DEBUG] [STARTUP] Commands and agents loaded in 2ms
+2026-03-03T19:09:47.529Z [DEBUG] [STARTUP] Running showSetupScreens()...
+2026-03-03T19:09:47.538Z [DEBUG] Grove: Using fresh cached config
+2026-03-03T19:09:47.565Z [DEBUG] Not in a GitHub repository, skipping path mapping update
+2026-03-03T19:09:47.566Z [DEBUG] [Perfetto] initializePerfettoTracing called, env value: undefined
+2026-03-03T19:09:47.566Z [DEBUG] [3P telemetry] isTelemetryEnabled=false (CLAUDE_CODE_ENABLE_TELEMETRY=undefined)
+2026-03-03T19:09:47.594Z [DEBUG] [keybindings] KeybindingSetup initialized with 104 bindings, 0 warnings
+2026-03-03T19:09:47.719Z [DEBUG] [keybindings] Watching for changes to C:\Users\97252\.claude\keybindings.json
+2026-03-03T19:09:47.729Z [DEBUG] [Claude in Chrome] Found edge profiles: Default
+2026-03-03T19:09:47.734Z [DEBUG] [Claude in Chrome] Extension not found in any browser
+2026-03-03T19:09:48.862Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1348.1772564988862
+2026-03-03T19:09:48.862Z [DEBUG] Preserving file permissions: 100666
+2026-03-03T19:09:48.865Z [DEBUG] Temp file written successfully, size: 4966 bytes
+2026-03-03T19:09:48.865Z [DEBUG] Applied original permissions to temp file
+2026-03-03T19:09:48.865Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1348.1772564988862 to C:\Users\97252\.claude.json
+2026-03-03T19:09:48.866Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-03T19:09:50.237Z [DEBUG] [STARTUP] showSetupScreens() completed in 2708ms
+2026-03-03T19:09:50.237Z [DEBUG] [LSP MANAGER] initializeLspServerManager() called
+2026-03-03T19:09:50.238Z [DEBUG] [LSP MANAGER] Created manager instance, state=pending
+2026-03-03T19:09:50.238Z [DEBUG] [LSP MANAGER] Starting async initialization (generation 1)
+2026-03-03T19:09:50.238Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:09:50.238Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:09:50.241Z [DEBUG] Total LSP servers loaded: 0
+2026-03-03T19:09:50.241Z [DEBUG] [STARTUP] MCP configs loaded in 2842ms
+2026-03-03T19:09:50.258Z [DEBUG] [LSP SERVER MANAGER] getAllLspServers returned 0 server(s)
+2026-03-03T19:09:50.258Z [DEBUG] LSP manager initialized with 0 servers
+2026-03-03T19:09:50.258Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:09:50.262Z [DEBUG] Getting matching hook commands for SessionStart with query: startup
+2026-03-03T19:09:50.262Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:09:50.263Z [DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+2026-03-03T19:09:50.263Z [DEBUG] Initialized versioned plugins system with 0 plugins
+2026-03-03T19:09:50.263Z [DEBUG] LSP server manager initialized successfully
+2026-03-03T19:09:50.263Z [DEBUG] LSP notification handlers registered successfully for all 0 server(s)
+2026-03-03T19:09:50.308Z [DEBUG] [Reconnection] computeInitialTeamContext: No teammate context set (not a teammate)
+2026-03-03T19:09:50.312Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1348.1772564990312
+2026-03-03T19:09:50.312Z [DEBUG] Preserving file permissions: 100666
+2026-03-03T19:09:50.316Z [DEBUG] Temp file written successfully, size: 4966 bytes
+2026-03-03T19:09:50.316Z [DEBUG] Applied original permissions to temp file
+2026-03-03T19:09:50.316Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1348.1772564990312 to C:\Users\97252\.claude.json
+2026-03-03T19:09:50.317Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-03T19:09:50.402Z [DEBUG] [keybindings] KeybindingSetup initialized with 104 bindings, 0 warnings
+2026-03-03T19:09:50.629Z [DEBUG] [REPL:mount] REPL mounted, disabled=false
+2026-03-03T19:09:50.632Z [DEBUG] Official marketplace auto-install skipped: already_attempted
+2026-03-03T19:09:50.634Z [DEBUG] performStartupChecks called
+2026-03-03T19:09:50.636Z [DEBUG] Starting background plugin installations
+2026-03-03T19:09:50.642Z [DEBUG] No CLAUDE.md/rules files found
+2026-03-03T19:09:50.647Z [DEBUG] performBackgroundPluginInstallations called
+2026-03-03T19:09:51.208Z [DEBUG] [claudeai-mcp] Checking gate (cached)...
+2026-03-03T19:09:51.208Z [DEBUG] [claudeai-mcp] Gate returned: true
+2026-03-03T19:09:51.208Z [DEBUG] [claudeai-mcp] Fetching from https://api.anthropic.com/v1/mcp_servers?limit=1000
+2026-03-03T19:09:51.216Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:09:51.324Z [DEBUG] Setting installation status: 0 marketplaces, 0 installable plugins, 0 uninstallable plugins
+2026-03-03T19:09:51.327Z [DEBUG] Fetching plugin security messages from https://raw.githubusercontent.com/anthropics/claude-plugins-official/refs/heads/security/security.json
+2026-03-03T19:09:51.331Z [DEBUG] Org fast mode: disabled (extra_usage_disabled)
+2026-03-03T19:09:51.331Z [DEBUG] Watching for changes in setting files C:\Users\97252\.claude\settings.json...
+2026-03-03T19:09:51.364Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:51.416Z [DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=C:\Users\97252\.local\bin\claude.exe)
+2026-03-03T19:09:51.457Z [DEBUG] rg error (signal=undefined, code=ABORT_ERR, stderr: ), 1119 results
+2026-03-03T19:09:51.458Z [ERROR] AbortError: AbortError: The operation was aborted.
+    at unknown
+    at abortChildProcess (node:child_process:947:42)
+    at onAbortListener2 (node:child_process:35:24)
+2026-03-03T19:09:51.502Z [DEBUG] [claudeai-mcp] Fetched 2 servers
+2026-03-03T19:09:51.516Z [DEBUG] CLAUDE_CODE_WEBSOCKET_AUTH_FILE_DESCRIPTOR not set, no file descriptor token available
+2026-03-03T19:09:51.516Z [DEBUG] MCP server "claude.ai Gmail": Initializing claude.ai proxy transport for server mcpsrv_01DbjzVDncdG4R7TyF1mLi2Q
+2026-03-03T19:09:51.516Z [DEBUG] MCP server "claude.ai Gmail": Using claude.ai proxy at https://mcp-proxy.anthropic.com/v1/mcp/mcpsrv_01DbjzVDncdG4R7TyF1mLi2Q
+2026-03-03T19:09:51.517Z [DEBUG] MCP server "claude.ai Gmail": claude.ai proxy transport created successfully
+2026-03-03T19:09:51.529Z [DEBUG] MCP server "claude.ai Gmail": Starting connection with timeout of 30000ms
+2026-03-03T19:09:51.533Z [DEBUG] MCP server "claude.ai Google Calendar": Initializing claude.ai proxy transport for server mcpsrv_01B4vphh7hRUWfDk9sqoHGx3
+2026-03-03T19:09:51.534Z [DEBUG] MCP server "claude.ai Google Calendar": Using claude.ai proxy at https://mcp-proxy.anthropic.com/v1/mcp/mcpsrv_01B4vphh7hRUWfDk9sqoHGx3
+2026-03-03T19:09:51.534Z [DEBUG] MCP server "claude.ai Google Calendar": claude.ai proxy transport created successfully
+2026-03-03T19:09:51.540Z [DEBUG] MCP server "claude.ai Google Calendar": Starting connection with timeout of 30000ms
+2026-03-03T19:09:51.551Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:51.613Z [DEBUG] Security messages saved successfully
+2026-03-03T19:09:51.668Z [DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+2026-03-03T19:09:51.680Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:52.056Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:52.291Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:09:52.294Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:09:52.301Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:53.077Z [DEBUG] MCP server "claude.ai Gmail": Successfully connected to claudeai-proxy server in 1562ms
+2026-03-03T19:09:53.077Z [DEBUG] MCP server "claude.ai Gmail": Connection established with capabilities: {"hasTools":true,"hasPrompts":false,"hasResources":false,"hasResourceSubscribe":false,"serverVersion":{"name":"mcp-server-gmail","version":"0.1.0"}}
+2026-03-03T19:09:53.078Z [DEBUG] [MCP] Server "claude.ai Gmail" connected with subscribe=false
+2026-03-03T19:09:53.165Z [DEBUG] MCP server "claude.ai Google Calendar": Successfully connected to claudeai-proxy server in 1632ms
+2026-03-03T19:09:53.165Z [DEBUG] MCP server "claude.ai Google Calendar": Connection established with capabilities: {"hasTools":true,"hasPrompts":true,"hasResources":false,"hasResourceSubscribe":false,"serverVersion":{"name":"mcp-server-gcal","version":"0.1.0"}}
+2026-03-03T19:09:53.165Z [DEBUG] [MCP] Server "claude.ai Google Calendar" connected with subscribe=false
+2026-03-03T19:09:53.515Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:53.740Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:54.094Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:54.207Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:54.347Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:54.458Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:54.657Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:55.005Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:55.186Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:55.386Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:55.539Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:55.616Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:55.743Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:55.799Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:55.944Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:56.019Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:56.668Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:57.494Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:57.916Z [ERROR] Error: Error: 1P event logging: 41 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:09:57.917Z [ERROR] Error: Error: {"message":"Failed to export 41 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 41 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:09:57.917Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 41 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 41 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:09:58.165Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:58.433Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:58.617Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:58.978Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:59.126Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:59.388Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:59.603Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:59.748Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:59.865Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:09:59.970Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:00.119Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:00.266Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:01.075Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:01.164Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:01.412Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:01.609Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:01.700Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:01.808Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:01.884Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:02.124Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:02.200Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:02.398Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:02.722Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:02.952Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:03.021Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:03.681Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:03.787Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:03.956Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:04.058Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:04.184Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:04.307Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:04.395Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:04.563Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:04.895Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:05.192Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:05.381Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:05.480Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:05.970Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:06.181Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:06.398Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:06.627Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:06.943Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:07.043Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:07.196Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.105Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-03-03T19:10:08.105Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-03-03T19:10:08.107Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-03-03T19:10:08.107Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-03-03T19:10:08.109Z [DEBUG] Sending 3 skills via attachment (initial, 3 total sent)
+2026-03-03T19:10:08.119Z [WARN] [3P telemetry] Event dropped (no event logger initialized): user_prompt
+2026-03-03T19:10:08.125Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-03-03T19:10:08.125Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:10:08.125Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-03-03T19:10:08.130Z [DEBUG] FileHistory: Added snapshot for 3a419de6-c4b0-4990-a8d5-12dd7e5539cf, tracking 0 files
+2026-03-03T19:10:08.133Z [DEBUG] [useDeferredValue] Messages deferred by 2 (0→2)
+2026-03-03T19:10:08.164Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.166Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.253Z [DEBUG] Total plugin output styles loaded: 0
+2026-03-03T19:10:08.329Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.390Z [DEBUG] autocompact: tokens=207 threshold=167000 effectiveWindow=180000
+2026-03-03T19:10:08.406Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:10:08.406Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:10:08.406Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:10:08.424Z [DEBUG] [useDeferredValue] Messages deferred by 2 (0→2)
+2026-03-03T19:10:08.425Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.464Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.780Z [DEBUG] Tool search disabled via experiment (tengu_tst_kx7): below threshold, deferred tools present [source: query]
+2026-03-03T19:10:08.798Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.a43; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:10:08.800Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.800Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:10:08.800Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:10:08.802Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.803Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:10:08.803Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:08.807Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:09.149Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:09.300Z [DEBUG] SSH config check: code=255 configured=false
+2026-03-03T19:10:09.575Z [DEBUG] git pull: cwd=C:\Users\97252\.claude\plugins\marketplaces\claude-plugins-official ref=default
+2026-03-03T19:10:10.129Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:10.531Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:10:10.535Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:10.774Z [DEBUG] Successfully refreshed marketplace: claude-plugins-official
+2026-03-03T19:10:10.774Z [DEBUG] Plugin autoupdate: checking installed plugins
+2026-03-03T19:10:11.004Z [DEBUG] [useDeferredValue] Messages deferred by 1 (2→3)
+2026-03-03T19:10:11.018Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.029Z [DEBUG] [useDeferredValue] Messages deferred by 1 (2→3)
+2026-03-03T19:10:11.030Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.041Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.096Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.496Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.502Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.516Z [DEBUG] executePreToolHooks called for tool: Read
+2026-03-03T19:10:11.517Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-03-03T19:10:11.517Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:10:11.517Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:10:11.532Z [DEBUG] [useDeferredValue] Messages deferred by 1 (3→4)
+2026-03-03T19:10:11.540Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.562Z [DEBUG] Read tool error (25ms): File does not exist. Note: your current working directory is C:\WINDOWS\system32.
+2026-03-03T19:10:11.563Z [ERROR] Error: Error: File does not exist. Note: your current working directory is C:\WINDOWS\system32.
+    at call (B:/~BUN/root/claude.exe:1795:6360)
+    at async sJE (B:/~BUN/root/claude.exe:3521:15122)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:10:11.564Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Read
+2026-03-03T19:10:11.564Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:10:11.564Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:10:11.566Z [DEBUG] [useDeferredValue] Messages deferred by 1 (3→4)
+2026-03-03T19:10:11.568Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.582Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.599Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-03-03T19:10:11.599Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-03-03T19:10:11.600Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-03-03T19:10:11.600Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-03-03T19:10:11.601Z [DEBUG] autocompact: tokens=35161 threshold=167000 effectiveWindow=180000
+2026-03-03T19:10:11.602Z [DEBUG] Tool search disabled via experiment (tengu_tst_kx7): below threshold, deferred tools present [source: query]
+2026-03-03T19:10:11.607Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.a43; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:10:11.608Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.608Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:10:11.608Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:10:11.608Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.608Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:10:11.608Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.614Z [DEBUG] [useDeferredValue] Messages deferred by 1 (4→5)
+2026-03-03T19:10:11.624Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:10:11.645Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:24.933Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:25.766Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:49:25.783Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:25.909Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.170Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.185Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.277Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.286Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.295Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.313Z [DEBUG] Glob tool validation error: Directory does not exist: C:\Users\97252\.claude\projects\C--WINDOWS-system32\memory. Note: your current working directory is C:\WINDOWS\system32.
+2026-03-03T19:49:26.336Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-03-03T19:49:26.336Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-03-03T19:49:26.336Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-03-03T19:49:26.336Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-03-03T19:49:26.353Z [DEBUG] autocompact: tokens=35314 threshold=167000 effectiveWindow=180000
+2026-03-03T19:49:26.358Z [DEBUG] Tool search disabled via experiment (tengu_tst_kx7): below threshold, deferred tools present [source: query]
+2026-03-03T19:49:26.377Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.a43; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:49:26.379Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.380Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:49:26.380Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:49:26.380Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.380Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:49:26.381Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.395Z [DEBUG] [useDeferredValue] Messages deferred by 2 (5→7)
+2026-03-03T19:49:26.407Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.458Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:26.857Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:27.785Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:49:27.788Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:27.825Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:28.801Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:29.776Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:30.740Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:31.041Z [ERROR] Error: Error: 1P event logging: 46 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:49:31.042Z [ERROR] Error: Error: {"message":"Failed to export 46 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 46 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:49:31.042Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 46 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 46 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:49:31.535Z [DEBUG] [useDeferredValue] Messages deferred by 1 (7→8)
+2026-03-03T19:49:31.536Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:31.564Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:31.572Z [DEBUG] High write ratio: blit=0, write=1664 (100.0% writes), screen=40x120
+2026-03-03T19:49:31.585Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-03-03T19:49:31.585Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:49:31.585Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-03-03T19:49:31.599Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1348.1772567371599
+2026-03-03T19:49:31.599Z [DEBUG] Preserving file permissions: 100666
+2026-03-03T19:49:31.601Z [DEBUG] Temp file written successfully, size: 4966 bytes
+2026-03-03T19:49:31.601Z [DEBUG] Applied original permissions to temp file
+2026-03-03T19:49:31.601Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1348.1772567371599 to C:\Users\97252\.claude.json
+2026-03-03T19:49:31.673Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-03T19:49:31.676Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1348.1772567371676
+2026-03-03T19:49:31.676Z [DEBUG] Preserving file permissions: 100666
+2026-03-03T19:49:31.679Z [DEBUG] Temp file written successfully, size: 4966 bytes
+2026-03-03T19:49:31.679Z [DEBUG] Applied original permissions to temp file
+2026-03-03T19:49:31.679Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1348.1772567371676 to C:\Users\97252\.claude.json
+2026-03-03T19:49:31.680Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-03T19:49:31.683Z [DEBUG] [useDeferredValue] Messages deferred by 1 (8→9)
+2026-03-03T19:49:31.692Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:31.698Z [DEBUG] High write ratio: blit=0, write=1634 (100.0% writes), screen=40x120
+2026-03-03T19:49:31.702Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:41.661Z [ERROR] Error: Error: 1P event logging: 4 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:49:41.662Z [ERROR] Error: Error: {"message":"Failed to export 4 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 4 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:49:41.662Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 4 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 4 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:49:53.896Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:53.940Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:53.996Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:54.203Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:54.411Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:54.553Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:54.626Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:54.752Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:54.945Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:55.241Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:55.284Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:55.369Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:55.576Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:55.714Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:55.797Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:55.959Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:56.568Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:56.708Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:56.810Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:57.002Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:57.899Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:58.259Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:58.465Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:58.609Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:58.763Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:59.231Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:59.723Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:49:59.834Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:00.111Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:00.329Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:00.455Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:00.587Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:00.885Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:01.321Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:01.587Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:01.693Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:01.768Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:01.918Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:02.025Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:02.289Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:02.522Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:03.517Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:04.053Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:07.744Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:09.263Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:12.714Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:14.214Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:14.791Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:14.952Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:15.094Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:15.325Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:15.392Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:15.568Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:15.794Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:15.876Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:15.945Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:16.161Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:16.228Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:16.428Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:16.529Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:16.778Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:16.862Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:17.011Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:17.184Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:17.338Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:17.415Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:17.572Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:17.670Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:17.912Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:18.268Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:18.425Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:18.699Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:18.913Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:18.988Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:19.115Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:19.212Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:19.345Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:20.844Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:26.273Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:26.710Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:27.008Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:27.984Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:28.122Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:28.265Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:29.254Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:29.776Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:35.132Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:36.236Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:37.158Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:37.203Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:37.320Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:37.460Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:37.530Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:38.057Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:38.242Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:38.421Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:38.634Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:38.861Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:38.949Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:39.035Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:39.228Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:39.459Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:40.404Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:41.081Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:41.245Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:41.448Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:41.502Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:41.598Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:41.813Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:41.976Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:42.237Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:42.456Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:42.707Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:42.927Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:43.245Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:43.524Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:43.696Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:43.998Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:44.061Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:44.292Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:44.538Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:44.749Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:44.972Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:45.302Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:45.508Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:46.223Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:46.428Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:46.603Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:46.720Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:46.778Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:46.868Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:46.987Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:47.153Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:47.214Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:48.198Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:48.734Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:49.485Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:49.548Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:49.956Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:50.471Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:50.582Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:50.682Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:50.887Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:50.975Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:51.101Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:51.216Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:51.305Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:51.423Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:51.512Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:52.276Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:52.446Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:52.518Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:52.758Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:52.810Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:53.069Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:53.217Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:53.351Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:53.601Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:53.829Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:54.009Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:54.136Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:54.243Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:54.383Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:54.482Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:54.583Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:54.728Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:54.840Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:55.842Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:56.126Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:56.714Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:57.155Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:57.777Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:57.922Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:58.047Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:59.069Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:50:59.545Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:01.421Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:01.650Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:02.045Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:02.240Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:02.481Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:02.731Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:02.894Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:03.055Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:03.153Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:03.296Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:04.302Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:04.813Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:05.131Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-03-03T19:51:05.131Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-03-03T19:51:05.132Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-03-03T19:51:05.132Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-03-03T19:51:05.139Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-03-03T19:51:05.139Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:05.139Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-03-03T19:51:05.139Z [DEBUG] FileHistory: Making snapshot for message 0e8bb3dd-3850-4d85-88cd-7276ff8ed708
+2026-03-03T19:51:05.140Z [DEBUG] FileHistory: Added snapshot for 0e8bb3dd-3850-4d85-88cd-7276ff8ed708, tracking 0 files
+2026-03-03T19:51:05.145Z [DEBUG] [useDeferredValue] Messages deferred by 1 (9→10)
+2026-03-03T19:51:05.189Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:05.195Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:05.213Z [DEBUG] High write ratio: blit=0, write=1723 (100.0% writes), screen=43x120
+2026-03-03T19:51:05.235Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:05.245Z [DEBUG] autocompact: tokens=35550 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:05.248Z [DEBUG] Tool search disabled via experiment (tengu_tst_kx7): below threshold, deferred tools present [source: query]
+2026-03-03T19:51:05.263Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.a43; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:05.263Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:05.264Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:05.264Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:05.265Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:05.265Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:05.265Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:05.274Z [DEBUG] [useDeferredValue] Messages deferred by 1 (9→10)
+2026-03-03T19:51:05.275Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:05.305Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:06.215Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:06.691Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:06.699Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:07.181Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:07.863Z [DEBUG] [useDeferredValue] Messages deferred by 1 (10→11)
+2026-03-03T19:51:07.865Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:07.869Z [DEBUG] [useDeferredValue] Messages deferred by 1 (10→11)
+2026-03-03T19:51:07.870Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:07.888Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:08.145Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:08.290Z [DEBUG] [useDeferredValue] Messages deferred by 1 (11→12)
+2026-03-03T19:51:08.342Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:08.368Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:08.697Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:09.111Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:09.201Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:10.080Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.044Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.114Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.119Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.130Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.134Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.138Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.144Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.162Z [DEBUG] executePreToolHooks called for tool: Agent
+2026-03-03T19:51:11.163Z [DEBUG] Getting matching hook commands for PreToolUse with query: Agent
+2026-03-03T19:51:11.163Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:11.163Z [DEBUG] Matched 0 unique hooks for query "Agent" (0 before deduplication)
+2026-03-03T19:51:11.212Z [DEBUG] Writing to temp file: C:\Users\97252\.claude.json.tmp.1348.1772567471212
+2026-03-03T19:51:11.212Z [DEBUG] Preserving file permissions: 100666
+2026-03-03T19:51:11.216Z [DEBUG] Temp file written successfully, size: 5009 bytes
+2026-03-03T19:51:11.216Z [DEBUG] Applied original permissions to temp file
+2026-03-03T19:51:11.216Z [DEBUG] Renaming C:\Users\97252\.claude.json.tmp.1348.1772567471212 to C:\Users\97252\.claude.json
+2026-03-03T19:51:11.217Z [DEBUG] File C:\Users\97252\.claude.json written atomically
+2026-03-03T19:51:11.220Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-03-03T19:51:11.220Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:11.220Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-03-03T19:51:11.227Z [DEBUG] autocompact: tokens=95 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:11.228Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:11.230Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:11.230Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.230Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:11.230Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:11.230Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:11.230Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.230Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.240Z [DEBUG] [useDeferredValue] Messages deferred by 2 (12→14)
+2026-03-03T19:51:11.248Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:11.254Z [DEBUG] High write ratio: blit=0, write=2044 (100.0% writes), screen=48x120
+2026-03-03T19:51:11.260Z [ERROR] Error: ENOENT: no such file or directory, unlink 'C:\Users\97252\AppData\Local\Temp\claude\C--WINDOWS-system32\tasks\aa24401dacb1e398c.output'
+2026-03-03T19:51:11.297Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:12.012Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:12.280Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:13.017Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:51:13.019Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:51:13.019Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:13.019Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:13.129Z [DEBUG] [useDeferredValue] Messages deferred by 1 (14→15)
+2026-03-03T19:51:13.130Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:13.134Z [DEBUG] [useDeferredValue] Messages deferred by 1 (14→15)
+2026-03-03T19:51:13.135Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:13.168Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:13.173Z [DEBUG] High write ratio: blit=1680, write=1720 (50.6% writes), screen=52x120
+2026-03-03T19:51:13.178Z [DEBUG] tree-sitter: loaded from embedded
+2026-03-03T19:51:13.198Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//c/Users/97252/.claude/projects/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-03-03T19:51:13.201Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:51:13.202Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:51:13.202Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:13.202Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:13.230Z [DEBUG] High write ratio: blit=1680, write=1768 (51.3% writes), screen=57x120
+2026-03-03T19:51:15.226Z [ERROR] Error: Error: 1P event logging: 34 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:15.227Z [ERROR] Error: Error: {"message":"Failed to export 34 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 34 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:15.228Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 34 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 34 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:51:18.466Z [DEBUG] Creating shell snapshot for bash (C:\Program Files\Git\bin\bash.exe)
+2026-03-03T19:51:18.467Z [DEBUG] Looking for shell config file: C:\Users\97252\.bashrc
+2026-03-03T19:51:18.468Z [DEBUG] Shell config file not found: C:\Users\97252\.bashrc, creating snapshot with Claude Code defaults only
+2026-03-03T19:51:18.468Z [DEBUG] Snapshots directory: C:\Users\97252\.claude\shell-snapshots
+2026-03-03T19:51:18.493Z [DEBUG] High write ratio: blit=1680, write=1708 (50.4% writes), screen=52x120
+2026-03-03T19:51:18.504Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:18.507Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:51:18.599Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:18.602Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:18.662Z [DEBUG] Creating snapshot at: C:\Users\97252\.claude\shell-snapshots\snapshot-bash-1772567478468-jaw4y9.sh
+2026-03-03T19:51:18.662Z [DEBUG] Execution timeout: 10000ms
+2026-03-03T19:51:18.964Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:51:18.969Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:51:18.976Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:19.460Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:20.082Z [DEBUG] Shell snapshot created successfully (309 bytes)
+2026-03-03T19:51:20.084Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:51:20.084Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:51:20.299Z [DEBUG] Bash tool error (1844ms): Shell command failed
+2026-03-03T19:51:20.300Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Bash
+2026-03-03T19:51:20.300Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:20.300Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:20.304Z [DEBUG] autocompact: tokens=26080 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:20.304Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:20.309Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:20.309Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:20.309Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:20.309Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:20.309Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:20.310Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:20.310Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:20.312Z [DEBUG] [useDeferredValue] Messages deferred by 1 (15→16)
+2026-03-03T19:51:20.320Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:20.326Z [DEBUG] High write ratio: blit=1680, write=1735 (50.8% writes), screen=53x120
+2026-03-03T19:51:20.335Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:20.361Z [DEBUG] High write ratio: blit=1680, write=1735 (50.8% writes), screen=54x120
+2026-03-03T19:51:20.424Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:21.191Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:21.393Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:21.843Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:51:21.844Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:51:21.844Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:21.844Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:21.860Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//c/Users/97252/.claude/projects/C--WINDOWS-system32//**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-03-03T19:51:21.861Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:51:21.862Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:51:21.862Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:21.862Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:21.864Z [DEBUG] [useDeferredValue] Messages deferred by 1 (16→17)
+2026-03-03T19:51:21.879Z [DEBUG] High write ratio: blit=1680, write=1850 (52.4% writes), screen=59x120
+2026-03-03T19:51:21.886Z [DEBUG] [useDeferredValue] Messages deferred by 1 (16→17)
+2026-03-03T19:51:21.903Z [DEBUG] High write ratio: blit=1680, write=1853 (52.4% writes), screen=59x120
+2026-03-03T19:51:25.559Z [DEBUG] High write ratio: blit=1680, write=1739 (50.9% writes), screen=54x120
+2026-03-03T19:51:25.564Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:25.565Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:51:25.565Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:51:25.565Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:51:25.566Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:25.589Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:25.952Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-03-03T19:51:25.952Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:25.952Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:25.956Z [DEBUG] autocompact: tokens=26396 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:25.956Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:25.959Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:25.959Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:25.960Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:25.960Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:25.960Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:25.960Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:25.960Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:25.964Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:51:25.966Z [DEBUG] [useDeferredValue] Messages deferred by 1 (17→18)
+2026-03-03T19:51:25.967Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:25.994Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:26.000Z [DEBUG] High write ratio: blit=1680, write=1686 (50.1% writes), screen=55x120
+2026-03-03T19:51:26.006Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:51:26.009Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:26.540Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:26.784Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:27.506Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:27.909Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-03-03T19:51:27.910Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-03-03T19:51:27.910Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:27.910Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-03-03T19:51:27.936Z [DEBUG] [useDeferredValue] Messages deferred by 1 (18→19)
+2026-03-03T19:51:27.939Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:27.955Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:27.962Z [DEBUG] High write ratio: blit=1680, write=1749 (51.0% writes), screen=55x120
+2026-03-03T19:51:28.472Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:28.521Z [ERROR] Error: Error: 1P event logging: 62 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:28.521Z [ERROR] Error: Error: {"message":"Failed to export 62 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 62 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:28.521Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 62 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 62 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:51:29.261Z [DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+2026-03-03T19:51:29.261Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:29.261Z [DEBUG] Matched 1 unique hooks for query "Grep" (1 before deduplication)
+2026-03-03T19:51:29.268Z [DEBUG] autocompact: tokens=26848 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:29.268Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:29.273Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:29.273Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:29.273Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:29.273Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:29.273Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:29.273Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:29.273Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:29.276Z [DEBUG] [useDeferredValue] Messages deferred by 1 (19→20)
+2026-03-03T19:51:29.277Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:29.290Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:29.440Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:30.107Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:30.404Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:30.856Z [DEBUG] executePreToolHooks called for tool: Read
+2026-03-03T19:51:30.857Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-03-03T19:51:30.857Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:30.857Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:51:30.863Z [DEBUG] [useDeferredValue] Messages deferred by 1 (20→21)
+2026-03-03T19:51:30.865Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:30.870Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:30.870Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:30.870Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:30.884Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:30.890Z [DEBUG] High write ratio: blit=1680, write=1732 (50.8% writes), screen=55x120
+2026-03-03T19:51:31.174Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-03-03T19:51:31.174Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:31.174Z [DEBUG] Matched 1 unique hooks for query "Read" (1 before deduplication)
+2026-03-03T19:51:31.176Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.182Z [DEBUG] [useDeferredValue] Messages deferred by 1 (21→22)
+2026-03-03T19:51:31.183Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.194Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.273Z [DEBUG] executePreToolHooks called for tool: Read
+2026-03-03T19:51:31.274Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-03-03T19:51:31.274Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:31.274Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:51:31.278Z [DEBUG] [useDeferredValue] Messages deferred by 1 (22→23)
+2026-03-03T19:51:31.279Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.290Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-03-03T19:51:31.290Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:31.290Z [DEBUG] Matched 1 unique hooks for query "Read" (1 before deduplication)
+2026-03-03T19:51:31.295Z [DEBUG] [useDeferredValue] Messages deferred by 1 (22→23)
+2026-03-03T19:51:31.296Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.313Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.317Z [DEBUG] High write ratio: blit=1680, write=1749 (51.0% writes), screen=55x120
+2026-03-03T19:51:31.372Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.413Z [DEBUG] [useDeferredValue] Messages deferred by 1 (23→24)
+2026-03-03T19:51:31.414Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.427Z [DEBUG] executePreToolHooks called for tool: Read
+2026-03-03T19:51:31.428Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-03-03T19:51:31.428Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:31.428Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:51:31.432Z [DEBUG] Read tool error (1ms): File content (266KB) exceeds maximum allowed size (256KB). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+2026-03-03T19:51:31.432Z [ERROR] FileTooLargeError: FileTooLargeError: File content (266KB) exceeds maximum allowed size (256KB). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+    at ReD (B:/~BUN/root/claude.exe:1672:542)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:31.433Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Read
+2026-03-03T19:51:31.433Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:31.433Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:51:31.434Z [DEBUG] [useDeferredValue] Messages deferred by 2 (23→25)
+2026-03-03T19:51:31.436Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.448Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.473Z [DEBUG] High write ratio: blit=1680, write=1749 (51.0% writes), screen=55x120
+2026-03-03T19:51:31.710Z [DEBUG] autocompact: tokens=34891 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:31.710Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:31.712Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:31.713Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.713Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:31.713Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:31.713Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:31.713Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.713Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.718Z [DEBUG] [useDeferredValue] Messages deferred by 3 (25→28)
+2026-03-03T19:51:31.720Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:31.733Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:32.338Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:33.321Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:33.536Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:34.288Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:34.783Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-03-03T19:51:34.784Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-03-03T19:51:34.784Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:34.784Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-03-03T19:51:34.800Z [DEBUG] [useDeferredValue] Messages deferred by 1 (28→29)
+2026-03-03T19:51:34.802Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:34.818Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:34.824Z [DEBUG] High write ratio: blit=1680, write=1747 (51.0% writes), screen=55x120
+2026-03-03T19:51:35.253Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:35.269Z [DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+2026-03-03T19:51:35.269Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:35.269Z [DEBUG] Matched 1 unique hooks for query "Grep" (1 before deduplication)
+2026-03-03T19:51:35.272Z [DEBUG] [useDeferredValue] Messages deferred by 1 (29→30)
+2026-03-03T19:51:35.273Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:35.282Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:36.223Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:36.292Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-03-03T19:51:36.293Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-03-03T19:51:36.293Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:36.293Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-03-03T19:51:36.315Z [DEBUG] [useDeferredValue] Messages deferred by 1 (30→31)
+2026-03-03T19:51:36.318Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:36.335Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:36.343Z [DEBUG] High write ratio: blit=1680, write=1743 (50.9% writes), screen=55x120
+2026-03-03T19:51:36.814Z [DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+2026-03-03T19:51:36.814Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:36.814Z [DEBUG] Matched 1 unique hooks for query "Grep" (1 before deduplication)
+2026-03-03T19:51:36.817Z [DEBUG] autocompact: tokens=42880 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:36.818Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:36.822Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:36.822Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:36.823Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:36.823Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:36.823Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:36.823Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:36.823Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:36.826Z [DEBUG] [useDeferredValue] Messages deferred by 1 (31→32)
+2026-03-03T19:51:36.827Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:36.839Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:37.186Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:37.854Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:37.931Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:38.154Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:38.976Z [DEBUG] executePreToolHooks called for tool: Read
+2026-03-03T19:51:38.977Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-03-03T19:51:38.977Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:38.977Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:51:38.985Z [DEBUG] [useDeferredValue] Messages deferred by 1 (32→33)
+2026-03-03T19:51:38.986Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:38.990Z [DEBUG] [useDeferredValue] Messages deferred by 1 (32→33)
+2026-03-03T19:51:38.991Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:38.999Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:38.999Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:38.999Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:39.005Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:39.010Z [DEBUG] High write ratio: blit=1680, write=1760 (51.2% writes), screen=55x120
+2026-03-03T19:51:39.120Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:39.356Z [ERROR] Error: Error: 1P event logging: 83 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:39.356Z [ERROR] Error: Error: {"message":"Failed to export 83 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 83 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:39.356Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 83 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 83 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:51:39.362Z [DEBUG] Read tool error (380ms): File content (115884 tokens) exceeds maximum allowed tokens (25000). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+2026-03-03T19:51:39.362Z [ERROR] MaxFileReadTokenExceededError: MaxFileReadTokenExceededError: File content (115884 tokens) exceeds maximum allowed tokens (25000). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+    at X$f (B:/~BUN/root/claude.exe:1786:7815)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:39.363Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Read
+2026-03-03T19:51:39.363Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:39.363Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:51:39.365Z [DEBUG] autocompact: tokens=44619 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:39.365Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:39.369Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:39.369Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:39.369Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:39.369Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:39.369Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:39.370Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:39.370Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:39.373Z [DEBUG] [useDeferredValue] Messages deferred by 1 (33→34)
+2026-03-03T19:51:39.374Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:39.383Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:40.102Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:40.306Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:41.081Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:41.729Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:51:41.732Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:51:41.732Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:41.733Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:41.770Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//c/Users/97252/.claude/projects/C--WINDOWS-system32/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-03-03T19:51:41.771Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:51:41.772Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:51:41.772Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:41.772Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:41.776Z [DEBUG] [useDeferredValue] Messages deferred by 1 (34→35)
+2026-03-03T19:51:41.804Z [DEBUG] High write ratio: blit=1680, write=1849 (52.4% writes), screen=62x120
+2026-03-03T19:51:41.819Z [DEBUG] [useDeferredValue] Messages deferred by 1 (34→35)
+2026-03-03T19:51:41.855Z [DEBUG] High write ratio: blit=1680, write=1962 (53.9% writes), screen=62x120
+2026-03-03T19:51:44.995Z [DEBUG] High write ratio: blit=1680, write=1767 (51.3% writes), screen=55x120
+2026-03-03T19:51:45.007Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.010Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:51:45.011Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:51:45.011Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:51:45.013Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.041Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.439Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-03-03T19:51:45.439Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:45.439Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:45.441Z [DEBUG] autocompact: tokens=46167 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:45.441Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:45.443Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:45.443Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.443Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:45.443Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:45.443Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:45.443Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.444Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.446Z [DEBUG] [useDeferredValue] Messages deferred by 1 (35→36)
+2026-03-03T19:51:45.447Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.458Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.486Z [DEBUG] High write ratio: blit=1680, write=1688 (50.1% writes), screen=55x120
+2026-03-03T19:51:45.773Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:51:45.777Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:51:45.779Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:45.971Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:46.326Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:46.938Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:47.918Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:48.555Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:51:48.557Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:51:48.557Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:48.557Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:48.572Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//c/Users/97252/.claude/projects/C--WINDOWS-system32/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-03-03T19:51:48.572Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:51:48.573Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:51:48.573Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:48.573Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:48.575Z [DEBUG] [useDeferredValue] Messages deferred by 1 (36→37)
+2026-03-03T19:51:48.593Z [DEBUG] High write ratio: blit=1680, write=1854 (52.5% writes), screen=62x120
+2026-03-03T19:51:48.600Z [DEBUG] [useDeferredValue] Messages deferred by 1 (36→37)
+2026-03-03T19:51:48.612Z [DEBUG] High write ratio: blit=1680, write=1953 (53.8% writes), screen=62x120
+2026-03-03T19:51:49.452Z [ERROR] Error: Error: 1P event logging: 51 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:49.452Z [ERROR] Error: Error: {"message":"Failed to export 51 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 51 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:51:49.452Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 51 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 51 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:51:50.392Z [DEBUG] High write ratio: blit=1680, write=1787 (51.5% writes), screen=55x120
+2026-03-03T19:51:50.401Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:50.402Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:51:50.402Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:51:50.402Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:51:50.403Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:50.426Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:51.093Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:51:51.100Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:51:51.104Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-03-03T19:51:51.104Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:51.104Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:51.107Z [DEBUG] autocompact: tokens=47760 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:51.107Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:51.111Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:51.111Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:51.112Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:51.112Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:51.112Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:51.113Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:51.113Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:51.118Z [DEBUG] [useDeferredValue] Messages deferred by 1 (37→38)
+2026-03-03T19:51:51.120Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:51.132Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:51.368Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:51.975Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:52.332Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:53.090Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:51:53.093Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:51:53.093Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:53.093Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:53.160Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//c/Users/97252/.claude/projects/C--WINDOWS-system32/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-03-03T19:51:53.160Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:51:53.164Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:51:53.164Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:53.164Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:53.169Z [DEBUG] [useDeferredValue] Messages deferred by 1 (38→39)
+2026-03-03T19:51:53.189Z [DEBUG] High write ratio: blit=1680, write=1855 (52.5% writes), screen=62x120
+2026-03-03T19:51:53.201Z [DEBUG] [useDeferredValue] Messages deferred by 1 (38→39)
+2026-03-03T19:51:53.248Z [DEBUG] High write ratio: blit=1680, write=1944 (53.6% writes), screen=62x120
+2026-03-03T19:51:54.717Z [DEBUG] High write ratio: blit=1680, write=1761 (51.2% writes), screen=55x120
+2026-03-03T19:51:54.723Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:54.724Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:51:54.724Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:51:54.725Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:51:54.728Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:54.751Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.089Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:51:55.092Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:51:55.095Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.137Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-03-03T19:51:55.137Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:51:55.137Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:55.139Z [DEBUG] [useDeferredValue] Messages deferred by 1 (39→40)
+2026-03-03T19:51:55.141Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.144Z [DEBUG] autocompact: tokens=48863 threshold=167000 effectiveWindow=180000
+2026-03-03T19:51:55.144Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:51:55.149Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:51:55.149Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.150Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:51:55.150Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:51:55.150Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:51:55.150Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.150Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.153Z [DEBUG] [useDeferredValue] Messages deferred by 1 (39→40)
+2026-03-03T19:51:55.154Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.165Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.698Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:55.945Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:51:56.667Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:51:57.348Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:51:57.349Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:51:57.349Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:57.349Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:57.369Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//c/Users/97252/.claude/projects/C--WINDOWS-system32/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  },
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Bash",
+        "ruleContent": "grep -o '\\\\\\\\n.*upgrade.*\\\\|\\\\\\\\n.*replace.*\\\\|.*2x.*Kingston.*\\\\|.*2x.*G\\.Skill.*'"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "localSettings"
+  }
+]
+2026-03-03T19:51:57.369Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:51:57.370Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:51:57.370Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:51:57.370Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:51:57.372Z [DEBUG] [useDeferredValue] Messages deferred by 1 (40→41)
+2026-03-03T19:51:57.391Z [DEBUG] High write ratio: blit=1680, write=1930 (53.5% writes), screen=62x120
+2026-03-03T19:51:57.398Z [DEBUG] [useDeferredValue] Messages deferred by 1 (40→41)
+2026-03-03T19:51:57.433Z [DEBUG] High write ratio: blit=1680, write=2037 (54.8% writes), screen=62x120
+2026-03-03T19:52:00.469Z [DEBUG] High write ratio: blit=1680, write=1768 (51.3% writes), screen=55x120
+2026-03-03T19:52:00.475Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:00.475Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:52:00.476Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:52:00.476Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:52:00.497Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:00.501Z [ERROR] Error: Error: 1P event logging: 62 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:52:00.501Z [ERROR] Error: Error: {"message":"Failed to export 62 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 62 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:52:00.501Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 62 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 62 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:52:00.505Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:00.863Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:52:00.867Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:52:00.871Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:00.880Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-03-03T19:52:00.880Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:52:00.880Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:52:00.882Z [DEBUG] autocompact: tokens=49384 threshold=167000 effectiveWindow=180000
+2026-03-03T19:52:00.882Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:52:00.885Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:52:00.885Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:00.885Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:52:00.885Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:52:00.885Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:52:00.885Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:00.886Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:00.889Z [DEBUG] [useDeferredValue] Messages deferred by 1 (41→42)
+2026-03-03T19:52:00.891Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:00.901Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:01.446Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:01.775Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:52:02.415Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:02.969Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:52:02.970Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:52:02.970Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:52:02.970Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:52:02.985Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//c/Users/97252/.claude/projects/C--WINDOWS-system32/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-03-03T19:52:02.986Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:52:02.986Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:52:02.986Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:52:02.986Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:52:02.988Z [DEBUG] [useDeferredValue] Messages deferred by 1 (42→43)
+2026-03-03T19:52:03.003Z [DEBUG] High write ratio: blit=1680, write=1839 (52.3% writes), screen=62x120
+2026-03-03T19:52:03.008Z [DEBUG] [useDeferredValue] Messages deferred by 1 (42→43)
+2026-03-03T19:52:03.022Z [DEBUG] High write ratio: blit=1680, write=1945 (53.7% writes), screen=62x120
+2026-03-03T19:52:05.870Z [DEBUG] High write ratio: blit=1680, write=1783 (51.5% writes), screen=55x120
+2026-03-03T19:52:05.879Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:05.880Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:52:05.881Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:52:05.881Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:52:05.881Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:05.906Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:06.228Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-03-03T19:52:06.229Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:52:06.229Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:52:06.230Z [DEBUG] autocompact: tokens=54240 threshold=167000 effectiveWindow=180000
+2026-03-03T19:52:06.230Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:52:06.233Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:52:06.233Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:06.233Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:52:06.233Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:52:06.233Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:52:06.233Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:06.233Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:06.236Z [DEBUG] [useDeferredValue] Messages deferred by 1 (43→44)
+2026-03-03T19:52:06.237Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:06.249Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:06.272Z [DEBUG] High write ratio: blit=1680, write=1696 (50.2% writes), screen=55x120
+2026-03-03T19:52:06.844Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:06.944Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:52:06.948Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:52:06.951Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:07.207Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:52:07.811Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:08.777Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:09.759Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:10.619Z [ERROR] Error: Error: 1P event logging: 58 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:52:10.620Z [ERROR] Error: Error: {"message":"Failed to export 58 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 58 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:52:10.620Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 58 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 58 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:52:10.735Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:11.695Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:12.658Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:12.812Z [DEBUG] Getting matching hook commands for SubagentStop with query: Explore
+2026-03-03T19:52:12.812Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:52:12.812Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-03-03T19:52:12.831Z [DEBUG] Getting matching hook commands for PostToolUse with query: Agent
+2026-03-03T19:52:12.831Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:52:12.831Z [DEBUG] Matched 0 unique hooks for query "Agent" (0 before deduplication)
+2026-03-03T19:52:12.835Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-03-03T19:52:12.835Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-03-03T19:52:12.835Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-03-03T19:52:12.835Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-03-03T19:52:12.837Z [DEBUG] autocompact: tokens=36256 threshold=167000 effectiveWindow=180000
+2026-03-03T19:52:12.838Z [DEBUG] Tool search disabled via experiment (tengu_tst_kx7): below threshold, deferred tools present [source: query]
+2026-03-03T19:52:12.847Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.a43; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:52:12.847Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:12.848Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:52:12.848Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:52:12.849Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:12.849Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:52:12.849Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:12.852Z [DEBUG] [useDeferredValue] Messages deferred by 1 (44→45)
+2026-03-03T19:52:12.865Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:12.870Z [DEBUG] High write ratio: blit=0, write=2104 (100.0% writes), screen=50x120
+2026-03-03T19:52:12.901Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:13.627Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:13.965Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:52:13.968Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:14.593Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:15.560Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:16.528Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:17.509Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:18.157Z [DEBUG] [useDeferredValue] Messages deferred by 1 (45→46)
+2026-03-03T19:52:18.159Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:18.182Z [DEBUG] Getting matching hook commands for Stop with query: undefined
+2026-03-03T19:52:18.182Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:52:18.182Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-03-03T19:52:18.190Z [DEBUG] [useDeferredValue] Messages deferred by 2 (45→47)
+2026-03-03T19:52:18.221Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:18.230Z [DEBUG] High write ratio: blit=1680, write=2813 (62.6% writes), screen=75x120
+2026-03-03T19:52:18.256Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:22.899Z [ERROR] Error: Error: 1P event logging: 16 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:52:22.899Z [ERROR] Error: Error: {"message":"Failed to export 16 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 16 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:52:22.899Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 16 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 16 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:52:29.443Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:52:29.454Z [DEBUG] High write ratio: blit=1680, write=2813 (62.6% writes), screen=75x120
+2026-03-03T19:54:45.619Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:54:45.739Z [DEBUG] High write ratio: blit=1680, write=2813 (62.6% writes), screen=75x120
+2026-03-03T19:54:57.995Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:54:58.101Z [DEBUG] High write ratio: blit=1680, write=2813 (62.6% writes), screen=75x120
+2026-03-03T19:55:08.465Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:08.693Z [DEBUG] High write ratio: blit=1680, write=2799 (62.5% writes), screen=74x120
+2026-03-03T19:55:08.748Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:09.749Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:10.458Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:10.873Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:11.208Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:11.391Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:11.570Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:11.796Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:11.985Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:12.268Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:12.393Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:13.387Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:13.917Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:15.671Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:16.062Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:16.334Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:16.553Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:17.564Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:18.080Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:19.224Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:19.771Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:20.765Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:21.279Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:29.313Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:30.828Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:32.960Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:33.416Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:33.572Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:34.581Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:35.096Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:35.831Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:36.377Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:36.655Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:37.659Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:38.168Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:38.932Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:40.015Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:40.286Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:40.505Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:40.664Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:40.840Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:40.997Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:42.009Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:42.515Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:43.166Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:43.316Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:44.315Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:44.426Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:44.550Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:44.945Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:45.154Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:46.162Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:46.256Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:47.068Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:47.291Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:47.601Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:47.851Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:48.843Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:49.349Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:52.953Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:54.469Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:55.233Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:56.139Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:57.128Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:57.760Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:57.943Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:58.925Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:59.450Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:55:59.971Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:00.028Z [DEBUG] High write ratio: blit=1680, write=2844 (62.9% writes), screen=74x120
+2026-03-03T19:56:00.557Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:00.575Z [DEBUG] High write ratio: blit=1680, write=2844 (62.9% writes), screen=74x120
+2026-03-03T19:56:01.457Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:01.765Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:01.969Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:02.105Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:02.320Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:02.445Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:03.476Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:03.519Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:03.745Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:04.050Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:04.260Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:04.390Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:04.621Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:05.588Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:05.637Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:05.780Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:06.018Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:06.361Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:06.467Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:07.302Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:07.893Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:08.090Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:09.100Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:09.611Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:16.397Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:16.750Z [DEBUG] LSP Diagnostics: getLSPDiagnosticAttachments called
+2026-03-03T19:56:16.751Z [DEBUG] LSP Diagnostics: Checking registry - 0 pending
+2026-03-03T19:56:16.751Z [DEBUG] Hooks: Found 0 total hooks in registry
+2026-03-03T19:56:16.751Z [DEBUG] Hooks: checkForNewResponses returning 0 responses
+2026-03-03T19:56:16.821Z [DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+2026-03-03T19:56:16.822Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:16.822Z [DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+2026-03-03T19:56:16.822Z [DEBUG] FileHistory: Making snapshot for message 7d15100a-db6d-4b0e-9e5e-392f0039132a
+2026-03-03T19:56:16.825Z [DEBUG] FileHistory: Added snapshot for 7d15100a-db6d-4b0e-9e5e-392f0039132a, tracking 0 files
+2026-03-03T19:56:16.836Z [DEBUG] [useDeferredValue] Messages deferred by 1 (47→48)
+2026-03-03T19:56:16.935Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:16.940Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:16.970Z [DEBUG] High write ratio: blit=1680, write=2828 (62.7% writes), screen=77x120
+2026-03-03T19:56:17.037Z [DEBUG] autocompact: tokens=36803 threshold=167000 effectiveWindow=180000
+2026-03-03T19:56:17.042Z [DEBUG] Tool search disabled via experiment (tengu_tst_kx7): below threshold, deferred tools present [source: query]
+2026-03-03T19:56:17.073Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.a43; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:56:17.074Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:17.077Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:56:17.077Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:56:17.080Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:17.082Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:56:17.084Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:17.097Z [DEBUG] [useDeferredValue] Messages deferred by 1 (47→48)
+2026-03-03T19:56:17.100Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:17.130Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:17.146Z [DEBUG] High write ratio: blit=1680, write=2896 (63.3% writes), screen=79x120
+2026-03-03T19:56:17.972Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:18.804Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:56:18.814Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:18.944Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:19.916Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:20.881Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:21.219Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:21.229Z [DEBUG] High write ratio: blit=1680, write=2906 (63.4% writes), screen=79x120
+2026-03-03T19:56:26.906Z [ERROR] Error: Error: 1P event logging: 12 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:56:26.909Z [ERROR] Error: Error: {"message":"Failed to export 12 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 12 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:56:26.909Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 12 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 12 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:56:36.237Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:36.290Z [DEBUG] High write ratio: blit=1680, write=2906 (63.4% writes), screen=79x120
+2026-03-03T19:56:37.266Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:37.726Z [DEBUG] [useDeferredValue] Messages deferred by 2 (48→50)
+2026-03-03T19:56:38.002Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:38.064Z [DEBUG] High write ratio: blit=1680, write=2906 (63.4% writes), screen=79x120
+2026-03-03T19:56:38.267Z [DEBUG] [useDeferredValue] Messages deferred by 2 (48→50)
+2026-03-03T19:56:38.281Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:38.404Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:38.418Z [DEBUG] High write ratio: blit=1680, write=3007 (64.2% writes), screen=81x120
+2026-03-03T19:56:38.625Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:38.635Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:39.232Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:40.214Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:40.723Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:40.729Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:40.732Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:40.737Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:40.928Z [DEBUG] executePreToolHooks called for tool: Agent
+2026-03-03T19:56:40.959Z [DEBUG] Getting matching hook commands for PreToolUse with query: Agent
+2026-03-03T19:56:40.959Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:40.960Z [DEBUG] Matched 0 unique hooks for query "Agent" (0 before deduplication)
+2026-03-03T19:56:41.100Z [DEBUG] Getting matching hook commands for SubagentStart with query: Explore
+2026-03-03T19:56:41.100Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:41.100Z [DEBUG] Matched 0 unique hooks for query "Explore" (0 before deduplication)
+2026-03-03T19:56:41.157Z [DEBUG] autocompact: tokens=96 threshold=167000 effectiveWindow=180000
+2026-03-03T19:56:41.171Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:56:41.294Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:56:41.302Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:41.310Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:56:41.310Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:56:41.326Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:56:41.337Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:41.341Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:41.439Z [DEBUG] [useDeferredValue] Messages deferred by 2 (50→52)
+2026-03-03T19:56:41.510Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:41.570Z [DEBUG] High write ratio: blit=0, write=3593 (100.0% writes), screen=81x120
+2026-03-03T19:56:41.688Z [DEBUG] [useDeferredValue] Messages deferred by 2 (50→52)
+2026-03-03T19:56:41.693Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:41.704Z [ERROR] Error: ENOENT: no such file or directory, unlink 'C:\Users\97252\AppData\Local\Temp\claude\C--WINDOWS-system32\tasks\a6d204b3811e58ddb.output'
+2026-03-03T19:56:41.812Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:41.833Z [DEBUG] High write ratio: blit=1680, write=3155 (65.3% writes), screen=85x120
+2026-03-03T19:56:42.591Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:42.957Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:56:43.228Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:43.250Z [DEBUG] High write ratio: blit=1680, write=3182 (65.4% writes), screen=86x120
+2026-03-03T19:56:43.514Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:56:43.527Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:56:43.527Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:43.527Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:56:43.699Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:56:43.706Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:56:43.713Z [DEBUG] [useDeferredValue] Messages deferred by 1 (52→53)
+2026-03-03T19:56:43.716Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:43.917Z [DEBUG] [useDeferredValue] Messages deferred by 1 (52→53)
+2026-03-03T19:56:43.919Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:43.971Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:43.985Z [DEBUG] High write ratio: blit=1680, write=3280 (66.1% writes), screen=86x120
+2026-03-03T19:56:44.707Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:44.946Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-03-03T19:56:44.946Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:56:44.947Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:56:44.983Z [DEBUG] autocompact: tokens=26024 threshold=167000 effectiveWindow=180000
+2026-03-03T19:56:44.987Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:56:45.038Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:56:45.040Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:45.043Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:56:45.044Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:56:45.048Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:56:45.050Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:45.053Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:45.084Z [DEBUG] [useDeferredValue] Messages deferred by 1 (53→54)
+2026-03-03T19:56:45.088Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:45.283Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:45.305Z [DEBUG] High write ratio: blit=1680, write=3280 (66.1% writes), screen=87x120
+2026-03-03T19:56:45.724Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:46.035Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:56:46.384Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:56:46.396Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:56:46.396Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:46.396Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:56:46.474Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//c/Users/97252/.claude/projects/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-03-03T19:56:46.479Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:56:46.481Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:56:46.481Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:46.481Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:56:46.509Z [DEBUG] [useDeferredValue] Messages deferred by 1 (54→55)
+2026-03-03T19:56:46.612Z [DEBUG] High write ratio: blit=1680, write=3410 (67.0% writes), screen=93x120
+2026-03-03T19:56:46.654Z [DEBUG] [useDeferredValue] Messages deferred by 1 (54→55)
+2026-03-03T19:56:46.842Z [DEBUG] High write ratio: blit=1680, write=3404 (67.0% writes), screen=93x120
+2026-03-03T19:56:50.203Z [DEBUG] High write ratio: blit=1680, write=3272 (66.1% writes), screen=87x120
+2026-03-03T19:56:50.392Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:50.400Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:56:50.415Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:56:50.418Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:56:50.427Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:51.286Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:51.401Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:51.494Z [ERROR] Error: Error: 1P event logging: 46 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:56:51.498Z [ERROR] Error: Error: {"message":"Failed to export 46 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 46 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:56:51.498Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 46 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 46 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:56:51.786Z [DEBUG] Bash tool error (2226ms): Shell command failed
+2026-03-03T19:56:51.807Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Bash
+2026-03-03T19:56:51.807Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:51.807Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:56:51.869Z [DEBUG] autocompact: tokens=26232 threshold=167000 effectiveWindow=180000
+2026-03-03T19:56:51.879Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:56:51.966Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:56:51.968Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:51.970Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:56:51.970Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:56:51.971Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:56:51.975Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:51.976Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:51.995Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:56:52.003Z [DEBUG] [useDeferredValue] Messages deferred by 1 (55→56)
+2026-03-03T19:56:52.009Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:52.093Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:56:52.105Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:52.149Z [DEBUG] High write ratio: blit=1680, write=3248 (65.9% writes), screen=88x120
+2026-03-03T19:56:52.172Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:52.326Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:52.949Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:56:53.226Z [DEBUG] executePreToolHooks called for tool: Bash
+2026-03-03T19:56:53.228Z [DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+2026-03-03T19:56:53.228Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:53.228Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:56:53.290Z [DEBUG] Permission suggestions for Bash: [
+  {
+    "type": "addRules",
+    "rules": [
+      {
+        "toolName": "Read",
+        "ruleContent": "//mnt/c/Users/97252/.claude/projects/**"
+      }
+    ],
+    "behavior": "allow",
+    "destination": "session"
+  }
+]
+2026-03-03T19:56:53.294Z [DEBUG] executePermissionRequestHooks called for tool: Bash
+2026-03-03T19:56:53.295Z [DEBUG] Getting matching hook commands for PermissionRequest with query: Bash
+2026-03-03T19:56:53.295Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:53.295Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:56:53.317Z [DEBUG] [useDeferredValue] Messages deferred by 1 (56→57)
+2026-03-03T19:56:53.347Z [DEBUG] High write ratio: blit=1680, write=3343 (66.6% writes), screen=94x120
+2026-03-03T19:56:53.364Z [DEBUG] [useDeferredValue] Messages deferred by 1 (56→57)
+2026-03-03T19:56:53.408Z [DEBUG] High write ratio: blit=1680, write=3454 (67.3% writes), screen=94x120
+2026-03-03T19:56:55.194Z [DEBUG] High write ratio: blit=1680, write=3340 (66.5% writes), screen=88x120
+2026-03-03T19:56:55.357Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:55.363Z [DEBUG] AutoUpdaterWrapper: Installation type: native
+2026-03-03T19:56:55.372Z [DEBUG] Session environment not yet supported on Windows
+2026-03-03T19:56:55.375Z [DEBUG] Spawning shell without login (-l flag skipped)
+2026-03-03T19:56:55.382Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:55.727Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:56.275Z [DEBUG] Checking for native installer update to version 2.1.63
+2026-03-03T19:56:56.300Z [DEBUG] Found 2.1.63 at C:\Users\97252\.local\bin\claude.exe, skipping install
+2026-03-03T19:56:56.306Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:56.363Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:57.099Z [DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+2026-03-03T19:56:57.099Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:56:57.106Z [DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+2026-03-03T19:56:57.247Z [DEBUG] autocompact: tokens=26424 threshold=167000 effectiveWindow=180000
+2026-03-03T19:56:57.261Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:56:57.360Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:56:57.365Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:57.374Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:56:57.374Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:56:57.381Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:56:57.416Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:57.434Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:57.531Z [DEBUG] [useDeferredValue] Messages deferred by 1 (57→58)
+2026-03-03T19:56:57.538Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:57.582Z [DEBUG] [useDeferredValue] Messages deferred by 1 (57→58)
+2026-03-03T19:56:57.584Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:57.648Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:57.676Z [DEBUG] High write ratio: blit=1680, write=3232 (65.8% writes), screen=88x120
+2026-03-03T19:56:58.192Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:56:58.544Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:58.763Z [DEBUG] [useDeferredValue] Messages deferred by 1 (58→59)
+2026-03-03T19:56:58.765Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:58.776Z [DEBUG] executePreToolHooks called for tool: Glob
+2026-03-03T19:56:58.782Z [DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+2026-03-03T19:56:58.782Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:56:58.782Z [DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+2026-03-03T19:56:59.070Z [DEBUG] [useDeferredValue] Messages deferred by 1 (58→59)
+2026-03-03T19:56:59.074Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:59.359Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:56:59.396Z [DEBUG] High write ratio: blit=1680, write=3310 (66.3% writes), screen=88x120
+2026-03-03T19:56:59.528Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:00.505Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:01.522Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:02.075Z [ERROR] Error: Error: 1P event logging: 56 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at async doExport (B:/~BUN/root/claude.exe:6275:1310)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:02.088Z [ERROR] Error: Error: {"message":"Failed to export 56 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 56 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:02.088Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 56 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 56 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:57:02.448Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:03.454Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:03.500Z [DEBUG] High write ratio: blit=1680, write=3310 (66.3% writes), screen=88x120
+2026-03-03T19:57:07.745Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:10.782Z [DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+2026-03-03T19:57:10.784Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:57:10.831Z [DEBUG] Matched 1 unique hooks for query "Glob" (1 before deduplication)
+2026-03-03T19:57:11.288Z [DEBUG] autocompact: tokens=26728 threshold=167000 effectiveWindow=180000
+2026-03-03T19:57:11.310Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:57:11.444Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:57:11.451Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:11.461Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:57:11.461Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:57:11.465Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:57:11.477Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:11.493Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:11.629Z [DEBUG] [useDeferredValue] Messages deferred by 1 (59→60)
+2026-03-03T19:57:11.756Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:12.319Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:12.374Z [DEBUG] High write ratio: blit=1680, write=3199 (65.6% writes), screen=88x120
+2026-03-03T19:57:12.460Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:57:13.555Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-03-03T19:57:13.558Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-03-03T19:57:13.558Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:57:13.558Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-03-03T19:57:13.663Z [DEBUG] [useDeferredValue] Messages deferred by 1 (60→61)
+2026-03-03T19:57:13.667Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:13.764Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:13.787Z [DEBUG] High write ratio: blit=1680, write=3314 (66.4% writes), screen=88x120
+2026-03-03T19:57:19.434Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:19.518Z [DEBUG] High write ratio: blit=1680, write=3314 (66.4% writes), screen=88x120
+2026-03-03T19:57:20.540Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:21.282Z [ERROR] Error: Error: 1P event logging: 22 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:21.294Z [ERROR] Error: Error: {"message":"Failed to export 22 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 22 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:21.295Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 22 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 22 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:57:21.515Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:22.451Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:23.476Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:24.813Z [DEBUG] Slow render: 596.7ms, screen: 88x120, damage: 120x88 at (0,0), changes: 32
+2026-03-03T19:57:25.246Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:26.145Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:26.896Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:27.869Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:28.837Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:29.417Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:29.490Z [DEBUG] High write ratio: blit=1680, write=3316 (66.4% writes), screen=88x120
+2026-03-03T19:57:38.995Z [DEBUG] rg error (signal=SIGTERM, code=null, stderr: ), 0 results
+2026-03-03T19:57:39.006Z [ERROR] Error: Error: Command failed: C:\Users\97252\.local\bin\claude.exe --ripgrep --hidden --glob !.git --glob !.svn --glob !.hg --glob !.bzr --max-columns 500 -l (?i)(cpu|motherboard|ram|memory|processor|laptop|model|gpu|core|ghz|ddr|dimm|intel|amd|nvidia|part.?number) --type jsonl C:\Users\97252\.claude\projects\C--WINDOWS-system32\
+    at genericNodeError (node:child_process:1010:22)
+    at exitHandler (node:child_process:103:28)
+    at emit (node:events:98:22)
+    at #maybeClose (node:child_process:778:16)
+    at #handleOnExit (node:child_process:532:72)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:39.048Z [DEBUG] Grep tool error (25446ms): Ripgrep search timed out after 20 seconds. The search may have matched files but did not complete in time. Try searching a more specific path or pattern.
+2026-03-03T19:57:39.051Z [ERROR] RipgrepTimeoutError: RipgrepTimeoutError: Ripgrep search timed out after 20 seconds. The search may have matched files but did not complete in time. Try searching a more specific path or pattern.
+    at f (B:/~BUN/root/claude.exe:116:189)
+    at <anonymous> (B:/~BUN/root/claude.exe:116:403)
+    at exitHandler (node:child_process:109:27)
+    at emit (node:events:98:22)
+    at #maybeClose (node:child_process:778:16)
+    at #handleOnExit (node:child_process:532:72)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:39.128Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Grep
+2026-03-03T19:57:39.129Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:57:39.131Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-03-03T19:57:39.294Z [DEBUG] autocompact: tokens=27276 threshold=167000 effectiveWindow=180000
+2026-03-03T19:57:39.306Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:57:39.414Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:57:39.419Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:39.426Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:57:39.426Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:57:39.427Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:57:39.436Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:39.441Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:39.537Z [DEBUG] [useDeferredValue] Messages deferred by 1 (61→62)
+2026-03-03T19:57:39.604Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:39.941Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:40.062Z [DEBUG] High write ratio: blit=1680, write=3239 (65.8% writes), screen=88x120
+2026-03-03T19:57:41.966Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:57:42.532Z [DEBUG] executePreToolHooks called for tool: Read
+2026-03-03T19:57:42.555Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-03-03T19:57:42.555Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:57:42.556Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:57:42.744Z [DEBUG] [useDeferredValue] Messages deferred by 1 (62→63)
+2026-03-03T19:57:42.790Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:42.981Z [DEBUG] Getting matching hook commands for PostToolUse with query: Read
+2026-03-03T19:57:42.981Z [DEBUG] Found 5 hook matchers in settings
+2026-03-03T19:57:42.986Z [DEBUG] Matched 1 unique hooks for query "Read" (1 before deduplication)
+2026-03-03T19:57:43.031Z [DEBUG] executePreToolHooks called for tool: Read
+2026-03-03T19:57:43.033Z [DEBUG] Getting matching hook commands for PreToolUse with query: Read
+2026-03-03T19:57:43.033Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:57:43.033Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:57:43.050Z [DEBUG] [useDeferredValue] Messages deferred by 3 (62→65)
+2026-03-03T19:57:43.054Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:43.116Z [DEBUG] Read tool error (70ms): File content (266KB) exceeds maximum allowed size (256KB). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+2026-03-03T19:57:43.122Z [ERROR] FileTooLargeError: FileTooLargeError: File content (266KB) exceeds maximum allowed size (256KB). Please use offset and limit parameters to read specific portions of the file, or use the GrepTool to search for specific content.
+    at ReD (B:/~BUN/root/claude.exe:1672:542)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:43.131Z [DEBUG] Getting matching hook commands for PostToolUseFailure with query: Read
+2026-03-03T19:57:43.131Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:57:43.131Z [DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+2026-03-03T19:57:43.148Z [DEBUG] [useDeferredValue] Messages deferred by 6 (62→68)
+2026-03-03T19:57:43.152Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:43.242Z [DEBUG] autocompact: tokens=28286 threshold=167000 effectiveWindow=180000
+2026-03-03T19:57:43.247Z [DEBUG] Tool search disabled for model 'claude-haiku-4-5-20251001': model does not support tool_reference blocks. This feature is only available on Claude Sonnet 4+, Opus 4+, and newer models.
+2026-03-03T19:57:43.311Z [DEBUG] attribution header x-anthropic-billing-header: cc_version=2.1.63.464; cc_entrypoint=cli; cch=00000;
+2026-03-03T19:57:43.314Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:43.318Z [DEBUG] [API:request] Creating client, ANTHROPIC_CUSTOM_HEADERS present: false, has Authorization header: false
+2026-03-03T19:57:43.318Z [DEBUG] [API:auth] OAuth token check starting
+2026-03-03T19:57:43.320Z [DEBUG] [API:auth] OAuth token check complete
+2026-03-03T19:57:43.327Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:43.330Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:43.361Z [DEBUG] [useDeferredValue] Messages deferred by 8 (62→70)
+2026-03-03T19:57:43.364Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:43.394Z [DEBUG] [useDeferredValue] Messages deferred by 8 (62→70)
+2026-03-03T19:57:43.404Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:43.461Z [DEBUG] High write ratio: blit=1680, write=3239 (65.8% writes), screen=88x120
+2026-03-03T19:57:43.563Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:43.581Z [DEBUG] High write ratio: blit=1680, write=3211 (65.7% writes), screen=88x120
+2026-03-03T19:57:44.279Z [DEBUG] Stream started - received first chunk
+2026-03-03T19:57:44.445Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:45.415Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:45.669Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-03-03T19:57:45.673Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-03-03T19:57:45.673Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:57:45.673Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-03-03T19:57:45.813Z [DEBUG] [useDeferredValue] Messages deferred by 1 (70→71)
+2026-03-03T19:57:45.817Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:45.906Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:45.921Z [DEBUG] High write ratio: blit=1680, write=3314 (66.4% writes), screen=88x120
+2026-03-03T19:57:46.397Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:46.513Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-03-03T19:57:46.515Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-03-03T19:57:46.515Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:57:46.515Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-03-03T19:57:47.187Z [DEBUG] [useDeferredValue] Messages deferred by 1 (71→72)
+2026-03-03T19:57:47.190Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:47.250Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:47.271Z [DEBUG] High write ratio: blit=1680, write=3331 (66.5% writes), screen=88x120
+2026-03-03T19:57:47.286Z [DEBUG] executePreToolHooks called for tool: Grep
+2026-03-03T19:57:47.288Z [DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+2026-03-03T19:57:47.288Z [DEBUG] Found 0 hook matchers in settings
+2026-03-03T19:57:47.288Z [DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+2026-03-03T19:57:47.427Z [DEBUG] [useDeferredValue] Messages deferred by 1 (72→73)
+2026-03-03T19:57:47.430Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:47.437Z [DEBUG] [useDeferredValue] Messages deferred by 1 (72→73)
+2026-03-03T19:57:47.439Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:47.490Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:47.519Z [DEBUG] High write ratio: blit=1680, write=3434 (67.1% writes), screen=88x120
+2026-03-03T19:57:48.946Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:50.313Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:50.353Z [ERROR] Error: Error: 1P event logging: 60 events failed to export (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)
+    at queueFailedEvents (B:/~BUN/root/claude.exe:6275:2403)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:50.357Z [ERROR] Error: Error: {"message":"Failed to export 60 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 60 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+    at error (B:/~BUN/root/claude.exe:2421:25029)
+    at <anonymous> (B:/~BUN/root/claude.exe:118:92465)
+    at kM0 (B:/~BUN/root/claude.exe:118:93009)
+    at <anonymous> (B:/~BUN/root/claude.exe:119:17366)
+    at processTicksAndRejections (native:7:39)
+2026-03-03T19:57:50.357Z [ERROR] [3P telemetry] OTEL diag error: {"message":"Failed to export 60 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)","originalLine":"6275","originalColumn":"1462","line":"6275","column":"1462","sourceURL":"B:/~BUN/root/claude.exe","stack":"Error: Failed to export 60 events (status=429, code=ERR_BAD_REQUEST, Request failed with status code 429)\n    at doExport (B:/~BUN/root/claude.exe:6275:1462)\n    at processTicksAndRejections (native:7:39)","name":"Error"}
+2026-03-03T19:57:51.355Z [DEBUG] Fast mode unavailable: Fast mode requires extra usage billing · /extra-usage to enable
+2026-03-03T19:57:51.449Z [DEBUG] High write ratio: blit=1680, write=3434 (67.1% writes), screen=88x120

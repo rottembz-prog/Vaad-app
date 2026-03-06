@@ -1,0 +1,9 @@
+# Check all startup registry locations
+Write-Host "=== HKCU Run ===" -ForegroundColor Cyan
+Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue
+
+Write-Host "`n=== HKLM Run ===" -ForegroundColor Cyan
+Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue
+
+Write-Host "`n=== HKLM Run (32bit) ===" -ForegroundColor Cyan
+Get-ItemProperty "HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Run" -ErrorAction SilentlyContinue

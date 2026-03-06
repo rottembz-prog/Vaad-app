@@ -1,0 +1,1165 @@
+     1→<!DOCTYPE html>
+     2→<html lang="he" dir="rtl">
+     3→<head>
+     4→  <meta charset="UTF-8">
+     5→  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+     6→  <meta name="theme-color" content="#7c3aed">
+     7→  <meta name="apple-mobile-web-app-capable" content="yes">
+     8→  <title>מנהל תקציבים — ועד הורים</title>
+     9→  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    10→  <style>
+    11→    *, *::before, *::after { box-sizing: border-box; }
+    12→    html, body { margin: 0; padding: 0; min-height: 100%; }
+    13→    body { font-family: 'Heebo', sans-serif; direction: rtl; background: #f8fafc; -webkit-font-smoothing: antialiased; }
+    14→    #root { min-height: 100vh; }
+    15→    input, select, button, textarea { font-family: 'Heebo', sans-serif; }
+    16→    input:focus, select:focus, textarea:focus { outline: 2px solid #7c3aed; outline-offset: 0; }
+    17→    button:active { opacity: 0.85; }
+    18→    ::-webkit-scrollbar { display: none; }
+    19→    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    20→  </style>
+    21→  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    22→  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    23→  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    24→</head>
+    25→<body>
+    26→  <div id="root"><div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Heebo,sans-serif;color:#94a3b8;font-size:14px">טוען...</div></div>
+    27→  <script type="text/babel">
+    28→    const { useState, useCallback, useMemo, useEffect } = React;
+    29→
+    30→    // ─────────────────────────────────────────
+    31→    // DEFAULT DATA
+    32→    // ─────────────────────────────────────────
+    33→    const DEMO_STUDENTS = [
+    34→      { id: 1,  name: "עלמה וולף",        paid: true,  amount: 500, note: "" },
+    35→      { id: 2,  name: "הילה נדם",          paid: true,  amount: 500, note: "" },
+    36→      { id: 3,  name: "עתי מסיקה",         paid: true,  amount: 500, note: "לקזז 24₪" },
+    37→      { id: 4,  name: "עדן מונוביץ",       paid: true,  amount: 500, note: "" },
+    38→      { id: 5,  name: "אמילי אברמוביץ",    paid: true,  amount: 500, note: "" },
+    39→      { id: 6,  name: "טליה אברמוב",       paid: false, amount: 450, note: "שילמה חלקית" },
+    40→      { id: 7,  name: "רום מומלדזה",       paid: true,  amount: 500, note: "" },
+    41→      { id: 8,  name: "דומיניק ימלין",     paid: true,  amount: 500, note: "" },
+    42→      { id: 9,  name: "אגם ויזנסקי",       paid: true,  amount: 500, note: "" },
+    43→      { id: 10, name: "עמית גילאור",       paid: true,  amount: 500, note: "" },
+    44→      { id: 11, name: "אלי גרשון",         paid: true,  amount: 500, note: "" },
+    45→      { id: 12, name: "אילן בינדשטיין",    paid: true,  amount: 500, note: "" },
+    46→      { id: 13, name: "עדי חרמוני יצחק",   paid: true,  amount: 500, note: "" },
+    47→      { id: 14, name: "תום שגיא",          paid: true,  amount: 500, note: "" },
+    48→      { id: 15, name: "נעמי פרי",          paid: true,  amount: 500, note: "" },
+    49→      { id: 16, name: "אריאל עוז",         paid: false, amount: 0,   note: "ליטל תעביר חודש הבא" },
+    50→      { id: 17, name: "מקס דוברי",         paid: true,  amount: 500, note: "" },
+    51→      { id: 18, name: "ארבל שלזינגר",      paid: true,  amount: 500, note: "" },
+    52→      { id: 19, name: "רועי חג׳ג׳",        paid: true,  amount: 500, note: "" },
+    53→      { id: 20, name: "יואב בזיני",        paid: true,  amount: 500, note: "" },
+    54→      { id: 21, name: "סאבה נעמי מלס",     paid: false, amount: 0,   note: "" },
+    55→      { id: 22, name: "רונה לי כהן",       paid: true,  amount: 500, note: "" },
+    56→      { id: 23, name: "הראל בנימיני",      paid: false, amount: 0,   note: "" },
+    57→      { id: 24, name: "אור קלה",           paid: true,  amount: 500, note: "מזומן אצל איילה" },
+    58→      { id: 25, name: "יואב עייש",         paid: true,  amount: 500, note: "" },
+    59→      { id: 26, name: "אמה זלבסקי",        paid: false, amount: 250, note: "שילמה חלקית" },
+    60→      { id: 27, name: "אידו פופובסקי",     paid: true,  amount: 500, note: "" },
+    61→    ];
+    62→
+    63→    const DEMO_EVENTS = [
+    64→      { id: 1,  name: "מתנות ראש השנה לאנני",   date: "ספטמבר 2024", budget: 250,  spent: 230, category: "מתנות",  done: true,  notes: "מארזי ראש השנה לאנני ול-2 סייעות", paidBy: "איילה" },
+    65→      { id: 2,  name: "פעילות תפוח בדבש",        date: "01.10.24",    budget: 100,  spent: 24,  category: "פעילות", done: true,  notes: "תפוחים, דבש ומיץ",               paidBy: "הדס" },
+    66→      { id: 3,  name: "חנוכה - סופגניות",         date: "דצמבר 2024",  budget: 150,  spent: 108, category: "חג",     done: true,  notes: "",                               paidBy: "" },
+    67→      { id: 4,  name: "תעודות",                   date: "07.02.25",    budget: 55,   spent: 0,   category: "מתנות",  done: false, notes: "סוכריות רגל",                    paidBy: "" },
+    68→      { id: 5,  name: "ט״ו בשבט",                 date: "13.02.25",    budget: 150,  spent: 0,   category: "פעילות", done: false, notes: "עציץ לכל ילד",                   paidBy: "" },
+    69→      { id: 6,  name: "יום המשפחה",               date: "28.02.25",    budget: 300,  spent: 0,   category: "פעילות", done: false, notes: "הכנת מתנות להורים",              paidBy: "" },
+    70→      { id: 7,  name: "פורים",                    date: "מרץ 2025",    budget: 100,  spent: 0,   category: "חג",     done: false, notes: "משלוח מנות לאנני",               paidBy: "" },
+    71→      { id: 8,  name: "סדר פסח כיתתי",            date: "28.03.25",    budget: 300,  spent: 0,   category: "פעילות", done: false, notes: "",                               paidBy: "" },
+    72→      { id: 9,  name: "מתנת פסח לאנני",           date: "28.03.25",    budget: 150,  spent: 0,   category: "מתנות",  done: false, notes: "מתנות לחג לאנני ו-2 סייעות",    paidBy: "" },
+    73→      { id: 10, name: "יום העצמאות - פלאפל",      date: "מאי 2025",    budget: 450,  spent: 0,   category: "חג",     done: false, notes: "",                               paidBy: "" },
+    74→      { id: 11, name: "הפעלת ל״ג בעומר",          date: "מאי 2025",    budget: 500,  spent: 0,   category: "פעילות", done: false, notes: "על האש אצל מסיקה",               paidBy: "" },
+    75→      { id: 12, name: "ארוע בנות מצווה",           date: "סוף יוני",    budget: 1700, spent: 0,   category: "ארוע",   done: false, notes: "",                               paidBy: "" },
+    76→      { id: 13, name: "מתנות סוף שנה לילדים",     date: "סוף יוני",    budget: 600,  spent: 0,   category: "מתנות",  done: false, notes: "פיצה שכבתית + הפעלת ג׳ודו",     paidBy: "" },
+    77→      { id: 14, name: "שונות",                    date: "כל השנה",     budget: 250,  spent: 190, category: "שונות",  done: false, notes: "גלידה לאנני",                    paidBy: "" },
+    78→      { id: 15, name: "מתנת סוף שנה לאנני",       date: "סוף יוני",    budget: 400,  spent: 0,   category: "מתנות",  done: false, notes: "ספרים לסייעות + מארז מתוק",     paidBy: "" },
+    79→    ];
+    80→
+    81→    const DEMO_CASH = [
+    82→      { id: 1, date: "01.09.24",  desc: "יתרה משנה שעברה",                  amount: 2020.5, type: "income",  paidBy: "" },
+    83→      { id: 2, date: "01.09.24",  desc: "השלמה יתרה — תשלום נוסף",          amount: 230,    type: "income",  paidBy: "" },
+    84→      { id: 3, date: "15.09.24",  desc: "מארזי ראש השנה — שולם ע״י איילה",  amount: -230,   type: "expense", paidBy: "איילה" },
+    85→      { id: 4, date: "01.10.24",  desc: "פעילות תפוח בדבש — שולם ע״י הדס", amount: -24,    type: "expense", paidBy: "הדס" },
+    86→      { id: 5, date: "15.12.24",  desc: "חנוכה — סופגניות",                  amount: -108,   type: "expense", paidBy: "" },
+    87→      { id: 6, date: "כל השנה",  desc: "גלידה לאנני — שונות",               amount: -190,   type: "expense", paidBy: "" },
+    88→    ];
+    89→
+    90→    const DEMO_GIFTS = [
+    91→      { id: 1, icon: "🎁", name: "מארזי ממתקים",       forWhom: "אנני וסייעות", priceRange: "100–200₪",    tag: "חג",         notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    92→      { id: 2, icon: "🌸", name: "פרחים + שוקולד",     forWhom: "מורה",         priceRange: "80–120₪",     tag: "יום המורה",  notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    93→      { id: 3, icon: "📚", name: "ספר + כרטיס מתנה",   forWhom: "אנני",         priceRange: "150–200₪",    tag: "סוף שנה",    notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    94→      { id: 4, icon: "🌿", name: "עציץ + שתיל",         forWhom: "כיתה",         priceRange: "10₪ לילד",    tag: "ט״ו בשבט",   notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    95→      { id: 5, icon: "🍪", name: "משלוח מנות כיתתי",   forWhom: "כולם",         priceRange: "15–20₪ לילד", tag: "פורים",      notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    96→      { id: 6, icon: "🥋", name: "הפעלת ג׳ודו שכבתית", forWhom: "שכבה",         priceRange: "50₪ לילד",    tag: "סוף שנה",    notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    97→      { id: 7, icon: "🍕", name: "פיצה שכבתית",        forWhom: "שכבה",         priceRange: "30–40₪ לילד", tag: "סוף שנה",    notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    98→      { id: 8, icon: "🎨", name: "הפעלת אמנות",        forWhom: "כיתה",         priceRange: "40₪ לילד",    tag: "יום המשפחה", notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null },
+    99→    ];
+   100→
+   101→    // ─────────────────────────────────────────
+   102→    // CONSTANTS & DESIGN TOKENS
+   103→    // ─────────────────────────────────────────
+   104→    const CAT_COLORS = {
+   105→      "מתנות": { bg: "#fdf2f8", text: "#be185d", dot: "#ec4899" },
+   106→      "פעילות": { bg: "#eff6ff", text: "#1d4ed8", dot: "#3b82f6" },
+   107→      "חג":     { bg: "#f0fdf4", text: "#166534", dot: "#22c55e" },
+   108→      "ארוע":   { bg: "#faf5ff", text: "#7e22ce", dot: "#a855f7" },
+   109→      "שונות":  { bg: "#fff7ed", text: "#c2410c", dot: "#f97316" },
+   110→    };
+   111→
+   112→    const BUDGET_COLORS = {
+   113→      purple: { from: "#7c3aed", to: "#db2777", label: "סגול-ורוד" },
+   114→      blue:   { from: "#1d4ed8", to: "#0891b2", label: "כחול" },
+   115→      green:  { from: "#059669", to: "#0d9488", label: "ירוק" },
+   116→      orange: { from: "#ea580c", to: "#dc2626", label: "כתום" },
+   117→      teal:   { from: "#0f766e", to: "#1d4ed8", label: "טורקיז" },
+   118→    };
+   119→
+   120→    const CAT_LIST = Object.keys(CAT_COLORS);
+   121→    const EMOJIS   = ["🎁","🌸","📚","🌿","🍪","🥋","🍕","🎨","🎉","⭐","🍰","🎪","🧸","🏆","🌈","🎭","🎵","🌺"];
+   122→
+   123→    const S = {  // shared styles
+   124→      input: {
+   125→        width: "100%", padding: "10px 12px", borderRadius: 10,
+   126→        border: "1.5px solid #e2e8f0", fontSize: 13, fontFamily: "inherit",
+   127→        marginBottom: 8, boxSizing: "border-box", direction: "rtl",
+   128→        outline: "none", color: "#0f172a", background: "white",
+   129→      },
+   130→      btn: (bg, color = "white") => ({
+   131→        flex: 1, padding: "11px 0", borderRadius: 12, border: "none",
+   132→        background: bg, color, fontWeight: 700, fontSize: 14,
+   133→        cursor: "pointer", fontFamily: "inherit",
+   134→      }),
+   135→      smallBtn: (border, color) => ({
+   136→        background: "none", border: `1.5px solid ${border}`, borderRadius: 8,
+   137→        padding: "5px 10px", fontSize: 12, cursor: "pointer",
+   138→        fontFamily: "inherit", color, whiteSpace: "nowrap",
+   139→      }),
+   140→    };
+   141→
+   142→    const BUDGET_TABS = [
+   143→      { id: "budget",  label: "תקציב",  icon: "📊" },
+   144→      { id: "collect", label: "גבייה",  icon: "💰" },
+   145→      { id: "gifts",   label: "רעיונות", icon: "🎁" },
+   146→      { id: "cash",    label: "מזומן",  icon: "💵" },
+   147→    ];
+   148→
+   149→    // ─────────────────────────────────────────
+   150→    // SHARED UI COMPONENTS
+   151→    // ─────────────────────────────────────────
+   152→    function Card({ children, style = {} }) {
+   153→      return (
+   154→        <div style={{
+   155→          background: "white", borderRadius: 16, padding: 16,
+   156→          boxShadow: "0 2px 16px rgba(0,0,0,0.07)", marginBottom: 10, ...style,
+   157→        }}>{children}</div>
+   158→      );
+   159→    }
+   160→
+   161→    function Badge({ text, cat }) {
+   162→      const c = CAT_COLORS[cat] || CAT_COLORS["שונות"];
+   163→      return (
+   164→        <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 20, background: c.bg, color: c.text, whiteSpace: "nowrap" }}>
+   165→          {text}
+   166→        </span>
+   167→      );
+   168→    }
+   169→
+   170→    function ProgressBar({ pct, color = "#7c3aed", style = {} }) {
+   171→      return (
+   172→        <div style={{ background: "#f1f5f9", borderRadius: 100, height: 7, overflow: "hidden", ...style }}>
+   173→          <div style={{ height: "100%", borderRadius: 100, background: color, width: `${Math.min(Math.max(pct, 0), 100)}%`, transition: "width 0.4s ease" }} />
+   174→        </div>
+   175→      );
+   176→    }
+   177→
+   178→    function BottomNav({ tabs, activeTab, setActiveTab }) {
+   179→      return (
+   180→        <div style={{
+   181→          position: "fixed", bottom: 0, right: 0, left: 0, maxWidth: 480, margin: "0 auto",
+   182→          background: "white", borderTop: "1px solid #f1f5f9",
+   183→          display: "flex", padding: "6px 0 10px",
+   184→          boxShadow: "0 -8px 30px rgba(0,0,0,0.1)", zIndex: 100,
+   185→        }}>
+   186→          {tabs.map(t => (
+   187→            <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
+   188→              flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
+   189→              gap: 2, background: "none", border: "none", cursor: "pointer", padding: "4px 0",
+   190→            }}>
+   191→              <span style={{ fontSize: 19 }}>{t.icon}</span>
+   192→              <span style={{ fontSize: 10, fontWeight: activeTab === t.id ? 800 : 400, fontFamily: "inherit", color: activeTab === t.id ? "#7c3aed" : "#94a3b8" }}>{t.label}</span>
+   193→              {activeTab === t.id && <div style={{ width: 18, height: 3, borderRadius: 100, background: "linear-gradient(90deg,#7c3aed,#db2777)" }} />}
+   194→            </button>
+   195→          ))}
+   196→        </div>
+   197→      );
+   198→    }
+   199→
+   200→    // Reusable inline edit row label
+   201→    function FieldLabel({ children }) {
+   202→      return <div style={{ fontSize: 11, fontWeight: 600, color: "#64748b", marginBottom: 3, marginTop: 4 }}>{children}</div>;
+   203→    }
+   204→
+   205→    // ─────────────────────────────────────────
+   206→    // HOME SCREEN — Budget Manager
+   207→    // ─────────────────────────────────────────
+   208→    const EMPTY_BUDGET_FORM = { name: "", className: "", year: "", colorKey: "purple", feePerStudent: "500" };
+   209→
+   210→    function BudgetListCard({ budget, onSelect, onEdit, onDelete }) {
+   211→      const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.purple;
+   212→      const paidCount  = budget.students.filter(s => s.paid).length;
+   213→      const total      = budget.students.length;
+   214→      const budgetSum  = budget.events.reduce((s, e) => s + e.budget, 0);
+   215→      const collected  = budget.students.reduce((s, st) => s + (st.amount || 0), 0);
+   216→
+   217→      return (
+   218→        <div style={{ background: "white", borderRadius: 20, overflow: "hidden", marginBottom: 14, boxShadow: "0 4px 20px rgba(0,0,0,0.09)" }}>
+   219→          {/* Colored header */}
+   220→          <div style={{ background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`, padding: "14px 16px 12px" }}>
+   221→            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+   222→              <div>
+   223→                <div style={{ color: "white", fontWeight: 900, fontSize: 18, marginBottom: 2 }}>{budget.name}</div>
+   224→                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
+   225→              </div>
+   226→              <div style={{ display: "flex", gap: 6 }}>
+   227→                <button onClick={onEdit} style={{ background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "5px 9px", color: "white", cursor: "pointer", fontSize: 14, lineHeight: 1 }} title="ערכי">✏️</button>
+   228→                <button onClick={onDelete} style={{ background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "5px 9px", color: "white", cursor: "pointer", fontSize: 14, lineHeight: 1 }} title="מחקי">✕</button>
+   229→              </div>
+   230→            </div>
+   231→          </div>
+   232→          {/* Stats */}
+   233→          <div style={{ padding: "12px 16px 14px" }}>
+   234→            {total > 0 && (
+   235→              <>
+   236→                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#64748b", marginBottom: 5 }}>
+   237→                  <span>גבייה</span>
+   238→                  <span style={{ fontWeight: 700, color: "#0f172a" }}>{paidCount}/{total} שילמו</span>
+   239→                </div>
+   240→                <ProgressBar pct={total > 0 ? (paidCount / total) * 100 : 0} color={clr.from} style={{ marginBottom: 10 }} />
+   241→              </>
+   242→            )}
+   243→            <div style={{ display: "flex", gap: 16, fontSize: 12, color: "#64748b" }}>
+   244→              <span>📊 ₪{budgetSum.toLocaleString()} תקציב</span>
+   245→              <span>💰 ₪{collected.toLocaleString()} נגבה</span>
+   246→              {budget.feePerStudent && <span>👤 ₪{budget.feePerStudent}/ילד</span>}
+   247→            </div>
+   248→            <button onClick={onSelect} style={{
+   249→              marginTop: 12, width: "100%", padding: "11px 0", borderRadius: 12, border: "none",
+   250→              background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`,
+   251→              color: "white", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "inherit",
+   252→            }}>כנסי לתקציב ←</button>
+   253→          </div>
+   254→        </div>
+   255→      );
+   256→    }
+   257→
+   258→    function BudgetForm({ initial = EMPTY_BUDGET_FORM, onSave, onCancel, title }) {
+   259→      const [form, setForm] = useState({ ...initial });
+   260→      const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+   261→
+   262→      return (
+   263→        <Card style={{ border: "2px solid #ede9fe" }}>
+   264→          <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 12 }}>{title}</div>
+   265→
+   266→          <FieldLabel>שם הועד / הקבוצה</FieldLabel>
+   267→          <input placeholder="ועד הורים / ועדת ספורט / ..." value={form.name}
+   268→            onChange={e => set("name", e.target.value)} style={S.input} autoFocus />
+   269→
+   270→          <FieldLabel>כיתה / קבוצה</FieldLabel>
+   271→          <input placeholder='כיתה ו׳ / מחלקת א׳ / ...' value={form.className}
+   272→            onChange={e => set("className", e.target.value)} style={S.input} />
+   273→
+   274→          <FieldLabel>שנת לימודים</FieldLabel>
+   275→          <input placeholder="תשפ״ה / 2025-2026" value={form.year}
+   276→            onChange={e => set("year", e.target.value)} style={S.input} />
+   277→
+   278→          <FieldLabel>תשלום פר ילד (₪)</FieldLabel>
+   279→          <input type="number" placeholder="500" value={form.feePerStudent}
+   280→            onChange={e => set("feePerStudent", e.target.value)} style={S.input} />
+   281→
+   282→          <FieldLabel>צבע נושא</FieldLabel>
+   283→          <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
+   284→            {Object.entries(BUDGET_COLORS).map(([key, clr]) => (
+   285→              <button key={key} onClick={() => set("colorKey", key)} style={{
+   286→                width: 36, height: 36, borderRadius: "50%", border: form.colorKey === key ? "3px solid #0f172a" : "3px solid transparent",
+   287→                background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`,
+   288→                cursor: "pointer", outline: "none",
+   289→              }} title={clr.label} />
+   290→            ))}
+   291→          </div>
+   292→
+   293→          <div style={{ display: "flex", gap: 8 }}>
+   294→            <button onClick={() => onSave(form)} style={S.btn("#7c3aed")} disabled={!form.name.trim()}>שמור</button>
+   295→            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+   296→          </div>
+   297→        </Card>
+   298→      );
+   299→    }
+   300→
+   301→    function HomeScreen({ budgets, setBudgets, onSelect }) {
+   302→      const [mode, setMode]         = useState("list"); // list | add | edit
+   303→      const [editingId, setEditingId] = useState(null);
+   304→
+   305→      const addBudget = (form) => {
+   306→        const b = {
+   307→          id: Date.now(),
+   308→          name: form.name.trim(),
+   309→          className: form.className.trim(),
+   310→          year: form.year.trim(),
+   311→          colorKey: form.colorKey,
+   312→          feePerStudent: Number(form.feePerStudent) || 500,
+   313→          expectedStudents: 0,
+   314→          students: [], events: [], cashLog: [], gifts: [],
+   315→        };
+   316→        setBudgets(prev => [...prev, b]);
+   317→        setMode("list");
+   318→      };
+   319→
+   320→      const saveBudget = (form) => {
+   321→        setBudgets(prev => prev.map(b => b.id === editingId
+   322→          ? { ...b, name: form.name.trim(), className: form.className.trim(), year: form.year.trim(), colorKey: form.colorKey, feePerStudent: Number(form.feePerStudent) || b.feePerStudent }
+   323→          : b
+   324→        ));
+   325→        setMode("list"); setEditingId(null);
+   326→      };
+   327→
+   328→      const deleteBudget = (id) => {
+   329→        if (window.confirm("למחוק תקציב זה? הנתונים יאבדו לצמיתות.")) {
+   330→          setBudgets(prev => prev.filter(b => b.id !== id));
+   331→        }
+   332→      };
+   333→
+   334→      const editingBudget = budgets.find(b => b.id === editingId);
+   335→
+   336→      return (
+   337→        <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+   338→          {/* Header */}
+   339→          <div style={{
+   340→            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+   341→            padding: "24px 20px 28px",
+   342→          }}>
+   343→            <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 6 }}>מנהל תקציבים</div>
+   344→            <div style={{ color: "white", fontWeight: 900, fontSize: 24 }}>ועד הורים 🏫</div>
+   345→            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, marginTop: 4 }}>בחרי תקציב לניהול</div>
+   346→          </div>
+   347→
+   348→          <div style={{ padding: "20px 14px 30px" }}>
+   349→            {mode === "add" && (
+   350→              <BudgetForm title="➕ תקציב חדש" onSave={addBudget} onCancel={() => setMode("list")} />
+   351→            )}
+   352→            {mode === "edit" && editingBudget && (
+   353→              <BudgetForm
+   354→                title="✏️ עריכת תקציב"
+   355→                initial={{ ...editingBudget, feePerStudent: String(editingBudget.feePerStudent) }}
+   356→                onSave={saveBudget}
+   357→                onCancel={() => { setMode("list"); setEditingId(null); }}
+   358→              />
+   359→            )}
+   360→
+   361→            {budgets.length === 0 && mode === "list" && (
+   362→              <div style={{ textAlign: "center", color: "#94a3b8", padding: "40px 0" }}>
+   363→                <div style={{ fontSize: 40, marginBottom: 12 }}>📋</div>
+   364→                <div style={{ fontSize: 15, fontWeight: 600 }}>אין תקציבים עדיין</div>
+   365→                <div style={{ fontSize: 13, marginTop: 4 }}>לחצי על הכפתור למטה כדי להוסיף</div>
+   366→              </div>
+   367→            )}
+   368→
+   369→            {mode === "list" && budgets.map(b => (
+   370→              <BudgetListCard
+   371→                key={b.id}
+   372→                budget={b}
+   373→                onSelect={() => onSelect(b.id)}
+   374→                onEdit={() => { setEditingId(b.id); setMode("edit"); }}
+   375→                onDelete={() => deleteBudget(b.id)}
+   376→              />
+   377→            ))}
+   378→
+   379→            {mode === "list" && (
+   380→              <button onClick={() => setMode("add")} style={{
+   381→                width: "100%", padding: 16, borderRadius: 16, border: "2px dashed #cbd5e1",
+   382→                background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+   383→                cursor: "pointer", fontFamily: "inherit",
+   384→              }}>+ הוסיפי תקציב חדש</button>
+   385→            )}
+   386→          </div>
+   387→        </div>
+   388→      );
+   389→    }
+   390→
+   391→    // ─────────────────────────────────────────
+   392→    // BUDGET TAB — Events with edit
+   393→    // ─────────────────────────────────────────
+   394→    const EMPTY_EVENT = { name: "", date: "", budget: "", spent: "", category: "פעילות", notes: "", paidBy: "", done: false, type: "expense" };
+   395→
+   396→    function BudgetTab({ events, setEvents, collectionBudget = 0 }) {
+   397→      const [showAdd, setShowAdd] = useState(false);
+   398→      const [filter, setFilter]  = useState("הכל");
+   399→      const [addForm, setAddForm] = useState(EMPTY_EVENT);
+   400→      const [editId, setEditId]  = useState(null);
+   401→      const [editForm, setEditForm] = useState({});
+   402→
+   403→      const totalExpBudget = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
+   404→      const totalIncBudget = collectionBudget + events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
+   405→      const totalSpent     = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.spent, 0);
+   406→      const cats           = ["הכל", ...CAT_LIST];
+   407→      const filtered       = filter === "הכל" ? events : events.filter(e => e.category === filter);
+   408→
+   409→      const addEvent = () => {
+   410→        if (!addForm.name.trim()) return;
+   411→        setEvents([...events, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
+   412→        setAddForm(EMPTY_EVENT); setShowAdd(false);
+   413→      };
+   414→
+   415→      const startEdit  = (ev) => { setEditId(ev.id); setEditForm({ ...ev, budget: String(ev.budget), spent: String(ev.spent), type: ev.type || "expense" }); };
+   416→      const cancelEdit = () => setEditId(null);
+   417→      const saveEdit   = () => {
+   418→        setEvents(events.map(e => e.id === editId ? { ...editForm, id: editId, budget: Number(editForm.budget) || 0, spent: Number(editForm.spent) || 0 } : e));
+   419→        setEditId(null);
+   420→      };
+   421→      const removeEvent = (id) => { if (window.confirm("למחוק ארוע זה?")) setEvents(events.filter(e => e.id !== id)); };
+   422→      const toggleDone  = (id) => setEvents(events.map(e => e.id === id ? { ...e, done: !e.done } : e));
+   423→
+   424→      const EventForm = ({ data, onChange, onSave, onCancel, title }) => (
+   425→        <Card style={{ border: "2px solid #ede9fe" }}>
+   426→          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+   427→          <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
+   428→            {["expense", "income"].map(t => (
+   429→              <button key={t} onClick={() => onChange({ ...data, type: t })} style={{
+   430→                flex: 1, padding: "10px 0", borderRadius: 10, border: "none",
+   431→                cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13,
+   432→                background: data.type === t ? (t === "expense" ? "#fee2e2" : "#dcfce7") : "#f1f5f9",
+   433→                color:      data.type === t ? (t === "expense" ? "#ef4444" : "#059669") : "#94a3b8",
+   434→              }}>{t === "expense" ? "📤 הוצאה" : "📥 הכנסה"}</button>
+   435→            ))}
+   436→          </div>
+   437→          <FieldLabel>שם הארוע *</FieldLabel>
+   438→          <input value={data.name} onChange={e => onChange({ ...data, name: e.target.value })} placeholder="שם הארוע" style={S.input} autoFocus />
+   439→          <FieldLabel>תאריך</FieldLabel>
+   440→          <input value={data.date} onChange={e => onChange({ ...data, date: e.target.value })} placeholder="תאריך" style={S.input} />
+   441→          <div style={{ display: "flex", gap: 8 }}>
+   442→            <div style={{ flex: 1 }}>
+   443→              <FieldLabel>תקציב ₪</FieldLabel>
+   444→              <input type="number" value={data.budget} onChange={e => onChange({ ...data, budget: e.target.value })} placeholder="0" style={S.input} />
+   445→            </div>
+   446→            <div style={{ flex: 1 }}>
+   447→              <FieldLabel>{(data.type || "expense") === "income" ? "התקבל ₪" : "שולם ₪"}</FieldLabel>
+   448→              <input type="number" value={data.spent} onChange={e => onChange({ ...data, spent: e.target.value })} placeholder="0" style={S.input} />
+   449→            </div>
+   450→          </div>
+   451→          <FieldLabel>קטגוריה</FieldLabel>
+   452→          <select value={data.category} onChange={e => onChange({ ...data, category: e.target.value })} style={S.input}>
+   453→            {CAT_LIST.map(c => <option key={c}>{c}</option>)}
+   454→          </select>
+   455→          <FieldLabel>הערות</FieldLabel>
+   456→          <input value={data.notes} onChange={e => onChange({ ...data, notes: e.target.value })} placeholder="הערות" style={S.input} />
+   457→          <FieldLabel>{(data.type || "expense") === "income" ? "נגבה ע״י" : "שולם ע״י"}</FieldLabel>
+   458→          <input value={data.paidBy || ""} onChange={e => onChange({ ...data, paidBy: e.target.value })} placeholder={(data.type || "expense") === "income" ? "מי גבה" : "שולם ע״י"} style={S.input} />
+   459→          <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, cursor: "pointer", fontSize: 13 }}>
+   460→            <input type="checkbox" checked={!!data.done} onChange={e => onChange({ ...data, done: e.target.checked })} style={{ width: 16, height: 16 }} />
+   461→            הושלם ✅
+   462→          </label>
+   463→          <div style={{ display: "flex", gap: 8 }}>
+   464→            <button onClick={onSave} style={S.btn("#7c3aed")} disabled={!data.name.trim()}>שמור</button>
+   465→            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+   466→          </div>
+   467→        </Card>
+   468→      );
+   469→
+   470→      return (
+   471→        <div>
+   472→          {/* Summary */}
+   473→          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
+   474→            {[
+   475→              { l: "תקציב הוצאות", v: `₪${totalExpBudget.toLocaleString()}`, c: "#ef4444", icon: "📤" },
+   476→              { l: "תקציב הכנסות", v: `₪${totalIncBudget.toLocaleString()}`, c: "#059669", icon: "📥" },
+   477→              { l: "שולם בפועל",   v: `₪${totalSpent.toLocaleString()}`,     c: "#db2777", icon: "💸" },
+   478→              { l: "יתרה תקציבית", v: `₪${(totalIncBudget - totalExpBudget).toLocaleString()}`, c: totalIncBudget >= totalExpBudget ? "#7c3aed" : "#ef4444", icon: "💰" },
+   479→            ].map(x => (
+   480→              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
+   481→                <div style={{ fontSize: 18 }}>{x.icon}</div>
+   482→                <div style={{ fontWeight: 900, fontSize: 15, color: x.c }}>{x.v}</div>
+   483→                <div style={{ fontSize: 10, color: "#94a3b8" }}>{x.l}</div>
+   484→              </div>
+   485→            ))}
+   486→          </div>
+   487→
+   488→          {/* Filters */}
+   489→          <div style={{ display: "flex", gap: 6, overflowX: "auto", marginBottom: 14, paddingBottom: 2 }}>
+   490→            {cats.map(c => (
+   491→              <button key={c} onClick={() => setFilter(c)} style={{
+   492→                padding: "6px 12px", borderRadius: 20, border: "none", cursor: "pointer",
+   493→                fontFamily: "inherit", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap",
+   494→                background: filter === c ? "#7c3aed" : "#f1f5f9",
+   495→                color:      filter === c ? "white"   : "#64748b",
+   496→              }}>{c}</button>
+   497→            ))}
+   498→          </div>
+   499→
+   500→          {/* Event list */}
+   501→          {filtered.map(ev => {
+   502→            const isIncome = (ev.type || "expense") === "income";
+   503→            return editId === ev.id ? (
+   504→              <EventForm key={ev.id} title="✏️ עריכת ארוע" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+   505→            ) : (
+   506→              <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "#22c55e" : "#7c3aed"}` }}>
+   507→                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+   508→                  <div style={{ flex: 1, minWidth: 0 }}>
+   509→                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
+   510→                      <button onClick={() => toggleDone(ev.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1 }}>
+   511→                        {ev.done ? "✅" : "⬜"}
+   512→                      </button>
+   513→                      <span style={{ fontWeight: 700, fontSize: 14, color: "#0f172a" }}>{ev.name}</span>
+   514→                      <span style={{ fontSize: 10, fontWeight: 700, padding: "1px 6px", borderRadius: 8, background: isIncome ? "#dcfce7" : "#fee2e2", color: isIncome ? "#059669" : "#ef4444" }}>
+   515→                        {isIncome ? "📥 הכנסה" : "📤 הוצאה"}
+   516→                      </span>
+   517→                    </div>
+   518→                    <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
+   519→                      <Badge text={ev.category} cat={ev.category} />
+   520→                      <span style={{ fontSize: 11, color: "#94a3b8" }}>{ev.date}</span>
+   521→                      {ev.paidBy && <span style={{ fontSize: 11, color: "#94a3b8" }}>• {ev.paidBy}</span>}
+   522→                    </div>
+   523→                    {ev.notes && <div style={{ fontSize: 11, color: "#64748b" }}>📝 {ev.notes}</div>}
+   524→                  </div>
+   525→                  <div style={{ textAlign: "left", flexShrink: 0, marginRight: 8 }}>
+   526→                    <div style={{ fontWeight: 900, fontSize: 16, color: "#0f172a" }}>₪{ev.budget.toLocaleString()}</div>
+   527→                    <div style={{ fontSize: 10, color: "#94a3b8" }}>תקציב</div>
+   528→                    {ev.spent > 0 && <div style={{ fontSize: 12, fontWeight: 700, color: isIncome ? "#059669" : "#db2777", marginTop: 2 }}>₪{ev.spent.toLocaleString()} {isIncome ? "התקבל" : "שולם"}</div>}
+   529→                  </div>
+   530→                </div>
+   531→                {ev.spent > 0 && ev.budget > 0 && (
+   532→                  <ProgressBar
+   533→                    pct={(ev.spent / ev.budget) * 100}
+   534→                    color={isIncome ? "#22c55e" : ((ev.spent / ev.budget) > 1 ? "#ef4444" : (ev.spent / ev.budget) > 0.8 ? "#f59e0b" : "#7c3aed")}
+   535→                    style={{ marginTop: 8, marginBottom: 4 }}
+   536→                  />
+   537→                )}
+   538→                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+   539→                  <button onClick={() => startEdit(ev)} style={S.smallBtn("#e2e8f0", "#64748b")}>✏️ ערכי</button>
+   540→                  <button onClick={() => removeEvent(ev.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+   541→                </div>
+   542→              </Card>
+   543→            );
+   544→          })}
+   545→
+   546→          {/* Add form */}
+   547→          {showAdd ? (
+   548→            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onCancel={() => setShowAdd(false)} />
+   549→          ) : (
+   550→            <button onClick={() => setShowAdd(true)} style={{
+   551→              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
+   552→              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+   553→              cursor: "pointer", fontFamily: "inherit",
+   554→            }}>+ הוסיפי ארוע</button>
+   555→          )}
+   556→        </div>
+   557→      );
+   558→    }
+   559→
+   560→    // ─────────────────────────────────────────
+   561→    // COLLECT TAB — Students with edit
+   562→    // ─────────────────────────────────────────
+   563→    function CollectTab({ students, setStudents, feePerStudent = 500, setFeePerStudent, expectedStudents = 0, setExpectedStudents }) {
+   564→      const [search,   setSearch]   = useState("");
+   565→      const [showAdd,  setShowAdd]  = useState(false);
+   566→      const [newName,  setNewName]  = useState("");
+   567→      const [editId,   setEditId]   = useState(null);
+   568→      const [editForm, setEditForm] = useState({});
+   569→
+   570→      const paidCount      = students.filter(s => s.paid).length;
+   571→      const totalCollected = students.reduce((s, st) => s + (st.amount || 0), 0);
+   572→      const collectionBudgetTotal = expectedStudents * feePerStudent;
+   573→      const filtered       = search ? students.filter(s => s.name.includes(search)) : students;
+   574→
+   575→      const toggle = (id) => setStudents(students.map(s =>
+   576→        s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? feePerStudent : s.amount } : s
+   577→      ));
+   578→
+   579→      const addStudent = () => {
+   580→        if (!newName.trim()) return;
+   581→        setStudents([...students, { id: Date.now(), name: newName.trim(), paid: false, amount: 0, note: "" }]);
+   582→        setNewName(""); setShowAdd(false);
+   583→      };
+   584→
+   585→      const startEdit = (s) => { setEditId(s.id); setEditForm({ ...s, amount: String(s.amount) }); };
+   586→      const cancelEdit = () => setEditId(null);
+   587→      const saveEdit = () => {
+   588→        setStudents(students.map(s => s.id === editId
+   589→          ? { ...editForm, id: editId, amount: Number(editForm.amount) || 0, paid: !!editForm.paid }
+   590→          : s
+   591→        ));
+   592→        setEditId(null);
+   593→      };
+   594→      const removeStudent = (id) => { if (window.confirm("למחוק תלמיד זה?")) setStudents(students.filter(s => s.id !== id)); };
+   595→
+   596→      return (
+   597→        <div>
+   598→          {/* Collection budget settings */}
+   599→          <Card style={{ marginBottom: 12 }}>
+   600→            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+   601→              <div>
+   602→                <FieldLabel>מספר תלמידים</FieldLabel>
+   603→                <input type="number" value={expectedStudents} onChange={e => setExpectedStudents && setExpectedStudents(Number(e.target.value) || 0)} style={{ ...S.input, marginBottom: 0 }} />
+   604→              </div>
+   605→              <div>
+   606→                <FieldLabel>סכום לגבייה ₪</FieldLabel>
+   607→                <input type="number" value={feePerStudent} onChange={e => setFeePerStudent && setFeePerStudent(Number(e.target.value) || 0)} style={{ ...S.input, marginBottom: 0 }} />
+   608→              </div>
+   609→            </div>
+   610→            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, padding: "8px 12px", background: "#f0fdf4", borderRadius: 10 }}>
+   611→              <span style={{ fontSize: 13, fontWeight: 700, color: "#166534" }}>תקציב גבייה</span>
+   612→              <span style={{ fontSize: 17, fontWeight: 900, color: "#059669" }}>₪{collectionBudgetTotal.toLocaleString()}</span>
+   613→            </div>
+   614→          </Card>
+   615→
+   616→          {/* Stats */}
+   617→          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 16 }}>
+   618→            {[
+   619→              { l: "שילמו",    v: paidCount,                            c: "#059669", icon: "✅" },
+   620→              { l: "לא שילמו", v: students.length - paidCount,          c: "#ef4444", icon: "❌" },
+   621→              { l: "נגבה",     v: `₪${totalCollected.toLocaleString()}`, c: "#7c3aed", icon: "💰" },
+   622→            ].map(x => (
+   623→              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
+   624→                <div style={{ fontSize: 18 }}>{x.icon}</div>
+   625→                <div style={{ fontWeight: 900, fontSize: 18, color: x.c }}>{x.v}</div>
+   626→                <div style={{ fontSize: 10, color: "#94a3b8" }}>{x.l}</div>
+   627→              </div>
+   628→            ))}
+   629→          </div>
+   630→
+   631→          <input placeholder="🔍 חפשי תלמיד..." value={search}
+   632→            onChange={e => setSearch(e.target.value)} style={{ ...S.input, marginBottom: 10 }} />
+   633→
+   634→          {students.length > 0 && (
+   635→            <>
+   636→              <ProgressBar pct={(paidCount / students.length) * 100} color="linear-gradient(90deg,#059669,#7c3aed)" />
+   637→              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#94a3b8", marginBottom: 14, marginTop: 4 }}>
+   638→                <span>0%</span>
+   639→                <span style={{ fontWeight: 600 }}>{Math.round((paidCount / students.length) * 100)}% שולם</span>
+   640→                <span>100%</span>
+   641→              </div>
+   642→            </>
+   643→          )}
+   644→
+   645→          {filtered.map(s => (
+   646→            editId === s.id ? (
+   647→              <Card key={s.id} style={{ border: "2px solid #ede9fe" }}>
+   648→                <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>✏️ עריכת תלמיד</div>
+   649→                <FieldLabel>שם</FieldLabel>
+   650→                <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} style={S.input} autoFocus />
+   651→                <FieldLabel>סכום ששולם ₪</FieldLabel>
+   652→                <input type="number" value={editForm.amount} onChange={e => setEditForm({ ...editForm, amount: e.target.value })} style={S.input} />
+   653→                <FieldLabel>הערה</FieldLabel>
+   654→                <input value={editForm.note || ""} onChange={e => setEditForm({ ...editForm, note: e.target.value })} placeholder="הערה..." style={S.input} />
+   655→                <FieldLabel>שולם / נגבה ע״י (אופציונלי)</FieldLabel>
+   656→                <input value={editForm.paidBy || ""} onChange={e => setEditForm({ ...editForm, paidBy: e.target.value })} placeholder="שם" style={S.input} />
+   657→                <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, cursor: "pointer", fontSize: 13 }}>
+   658→                  <input type="checkbox" checked={!!editForm.paid} onChange={e => setEditForm({ ...editForm, paid: e.target.checked })} style={{ width: 16, height: 16 }} />
+   659→                  שולם ✅
+   660→                </label>
+   661→                <div style={{ display: "flex", gap: 8 }}>
+   662→                  <button onClick={saveEdit} style={S.btn("#7c3aed")}>שמור</button>
+   663→                  <button onClick={cancelEdit} style={S.btn("#94a3b8")}>ביטול</button>
+   664→                </div>
+   665→              </Card>
+   666→            ) : (
+   667→              <div key={s.id} style={{
+   668→                background: "white", borderRadius: 14, padding: "12px 14px", marginBottom: 8,
+   669→                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+   670→                borderRight: `4px solid ${s.paid ? "#059669" : "#e2e8f0"}`,
+   671→              }}>
+   672→                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+   673→                  <div style={{ flex: 1 }}>
+   674→                    <div style={{ fontWeight: 700, fontSize: 14, color: "#0f172a" }}>
+   675→                      {students.indexOf(s) + 1}. {s.name}
+   676→                    </div>
+   677→                    {s.note    && <div style={{ fontSize: 11, color: "#f59e0b", marginTop: 2 }}>📝 {s.note}</div>}
+   678→                    {s.paidBy  && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {s.paidBy}</div>}
+   679→                  </div>
+   680→                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+   681→                    {s.paid && <span style={{ fontSize: 12, fontWeight: 700, color: "#059669" }}>₪{s.amount}</span>}
+   682→                    <button onClick={() => toggle(s.id)} style={{
+   683→                      width: 36, height: 36, borderRadius: "50%", border: "none", cursor: "pointer",
+   684→                      background: s.paid ? "#dcfce7" : "#fee2e2", fontSize: 18,
+   685→                    }}>{s.paid ? "✅" : "❌"}</button>
+   686→                  </div>
+   687→                </div>
+   688→                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+   689→                  <button onClick={() => startEdit(s)} style={S.smallBtn("#e2e8f0", "#64748b")}>✏️ ערכי</button>
+   690→                  <button onClick={() => removeStudent(s.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+   691→                </div>
+   692→              </div>
+   693→            )
+   694→          ))}
+   695→
+   696→          {showAdd ? (
+   697→            <Card>
+   698→              <FieldLabel>שם התלמיד/ה *</FieldLabel>
+   699→              <input value={newName} onChange={e => setNewName(e.target.value)}
+   700→                placeholder="שם התלמיד/ה" style={S.input} autoFocus
+   701→                onKeyDown={e => e.key === "Enter" && addStudent()} />
+   702→              <div style={{ display: "flex", gap: 8 }}>
+   703→                <button onClick={addStudent} style={S.btn("#7c3aed")}>הוסיפי</button>
+   704→                <button onClick={() => setShowAdd(false)} style={S.btn("#94a3b8")}>ביטול</button>
+   705→              </div>
+   706→            </Card>
+   707→          ) : (
+   708→            <button onClick={() => setShowAdd(true)} style={{
+   709→              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
+   710→              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+   711→              cursor: "pointer", fontFamily: "inherit", marginTop: 4,
+   712→            }}>+ הוסיפי תלמיד/ה</button>
+   713→          )}
+   714→
+   715→          {/* WhatsApp reminder */}
+   716→          {students.filter(s => !s.paid).length > 0 && (
+   717→            <Card style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", marginTop: 12 }}>
+   718→              <div style={{ fontWeight: 700, fontSize: 13, color: "#166534", marginBottom: 6 }}>📱 תזכורת לוואצאפ</div>
+   719→              <div style={{ fontSize: 12, color: "#166534", lineHeight: 1.7, userSelect: "all" }}>
+   720→                שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪{feePerStudent}).<br />
+   721→                טרם שולם: {students.filter(s => !s.paid).map(s => s.name).join(", ")}.<br />
+   722→                ניתן להעביר בפייבוקס / העברה בנקאית. תודה! 🙏
+   723→              </div>
+   724→            </Card>
+   725→          )}
+   726→        </div>
+   727→      );
+   728→    }
+   729→
+   730→    // ─────────────────────────────────────────
+   731→    // GIFTS TAB — Global ideas directory (cross-budget)
+   732→    // ─────────────────────────────────────────
+   733→    const EMPTY_GIFT = { icon: "🎁", name: "", forWhom: "", priceRange: "", tag: "", notes: "", vendorName: "", vendorPhone: "", vendorLink: "", photo: null };
+   734→
+   735→    function GiftsTab({ gifts, setGifts }) {
+   736→      const [search,   setSearch]   = useState("");
+   737→      const [showAdd,  setShowAdd]  = useState(false);
+   738→      const [addForm,  setAddForm]  = useState(EMPTY_GIFT);
+   739→      const [editId,   setEditId]   = useState(null);
+   740→      const [editForm, setEditForm] = useState({});
+   741→
+   742→      const filtered = search
+   743→        ? gifts.filter(g => g.name.includes(search) || g.tag.includes(search) || g.forWhom.includes(search) || (g.vendorName || "").includes(search))
+   744→        : gifts;
+   745→
+   746→      const addGift    = () => { if (!addForm.name.trim()) return; setGifts([...gifts, { ...addForm, id: Date.now() }]); setAddForm(EMPTY_GIFT); setShowAdd(false); };
+   747→      const startEdit  = (g) => { setEditId(g.id); setEditForm({ ...g }); };
+   748→      const cancelEdit = () => setEditId(null);
+   749→      const saveEdit   = () => { setGifts(gifts.map(g => g.id === editId ? { ...editForm, id: editId } : g)); setEditId(null); };
+   750→      const removeGift = (id) => { if (window.confirm("למחוק רעיון זה?")) setGifts(gifts.filter(g => g.id !== id)); };
+   751→
+   752→      const handlePhotoUpload = (e, data, onChange) => {
+   753→        const file = e.target.files[0];
+   754→        if (!file) return;
+   755→        const reader = new FileReader();
+   756→        reader.onload = ev => onChange({ ...data, photo: ev.target.result });
+   757→        reader.readAsDataURL(file);
+   758→      };
+   759→
+   760→      const GiftForm = ({ data, onChange, onSave, onCancel, title }) => (
+   761→        <Card style={{ border: "2px solid #ede9fe" }}>
+   762→          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+   763→          <FieldLabel>אמוג׳י</FieldLabel>
+   764→          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
+   765→            {EMOJIS.map(e => (
+   766→              <button key={e} onClick={() => onChange({ ...data, icon: e })} style={{
+   767→                fontSize: 20, background: data.icon === e ? "#ede9fe" : "#f8fafc",
+   768→                border: data.icon === e ? "2px solid #7c3aed" : "2px solid transparent",
+   769→                borderRadius: 8, padding: 4, cursor: "pointer",
+   770→              }}>{e}</button>
+   771→            ))}
+   772→          </div>
+   773→          <FieldLabel>שם הרעיון *</FieldLabel>
+   774→          <input value={data.name} onChange={e => onChange({ ...data, name: e.target.value })} placeholder="שם הרעיון" style={S.input} autoFocus />
+   775→          <FieldLabel>עבור מי</FieldLabel>
+   776→          <input value={data.forWhom} onChange={e => onChange({ ...data, forWhom: e.target.value })} placeholder="אנני, כיתה, הורים..." style={S.input} />
+   777→          <FieldLabel>טווח מחיר</FieldLabel>
+   778→          <input value={data.priceRange} onChange={e => onChange({ ...data, priceRange: e.target.value })} placeholder="50–100₪" style={S.input} />
+   779→          <FieldLabel>תג / אירוע</FieldLabel>
+   780→          <input value={data.tag} onChange={e => onChange({ ...data, tag: e.target.value })} placeholder="סוף שנה, פורים..." style={S.input} />
+   781→          <FieldLabel>שם ספק</FieldLabel>
+   782→          <input value={data.vendorName || ""} onChange={e => onChange({ ...data, vendorName: e.target.value })} placeholder="שם הספק / חנות" style={S.input} />
+   783→          <FieldLabel>טלפון ספק</FieldLabel>
+   784→          <input value={data.vendorPhone || ""} onChange={e => onChange({ ...data, vendorPhone: e.target.value })} placeholder="050-0000000" style={S.input} />
+   785→          <FieldLabel>קישור לספק</FieldLabel>
+   786→          <input value={data.vendorLink || ""} onChange={e => onChange({ ...data, vendorLink: e.target.value })} placeholder="https://..." style={S.input} />
+   787→          <FieldLabel>הערות</FieldLabel>
+   788→          <input value={data.notes} onChange={e => onChange({ ...data, notes: e.target.value })} placeholder="הערות" style={S.input} />
+   789→          <FieldLabel>תמונה</FieldLabel>
+   790→          {data.photo && <img src={data.photo} alt="" style={{ width: "100%", borderRadius: 8, marginBottom: 8, maxHeight: 150, objectFit: "cover" }} />}
+   791→          <input type="file" accept="image/*" onChange={e => handlePhotoUpload(e, data, onChange)}
+   792→            style={{ ...S.input, padding: "6px 12px", cursor: "pointer" }} />
+   793→          <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+   794→            <button onClick={onSave} style={S.btn("#7c3aed")} disabled={!data.name.trim()}>שמור</button>
+   795→            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+   796→          </div>
+   797→        </Card>
+   798→      );
+   799→
+   800→      return (
+   801→        <div>
+   802→          <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 10, textAlign: "center" }}>
+   803→            ספרייה משותפת לכל התקציבים • {gifts.length} רעיונות
+   804→          </div>
+   805→          <input placeholder="🔍 חפשי רעיון, ספק, תג..." value={search}
+   806→            onChange={e => setSearch(e.target.value)} style={{ ...S.input, marginBottom: 12 }} />
+   807→
+   808→          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+   809→            {filtered.map(gift => (
+   810→              editId === gift.id ? null : (
+   811→                <div key={gift.id} style={{ background: "white", borderRadius: 16, padding: 14, boxShadow: "0 2px 14px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" }}>
+   812→                  {gift.photo
+   813→                    ? <img src={gift.photo} alt="" style={{ width: "100%", borderRadius: 10, marginBottom: 8, height: 90, objectFit: "cover" }} />
+   814→                    : <div style={{ fontSize: 30, marginBottom: 6 }}>{gift.icon}</div>
+   815→                  }
+   816→                  <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a", marginBottom: 4 }}>{gift.name}</div>
+   817→                  {gift.forWhom    && <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 2 }}>עבור: {gift.forWhom}</div>}
+   818→                  {gift.vendorName && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 2 }}>🏪 {gift.vendorName}</div>}
+   819→                  {gift.vendorPhone && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 2 }}>📞 {gift.vendorPhone}</div>}
+   820→                  {gift.notes      && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>{gift.notes}</div>}
+   821→                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 6, marginBottom: 8 }}>
+   822→                    {gift.tag        && <span style={{ fontSize: 10, fontWeight: 700, background: "#f0fdf4", color: "#059669", borderRadius: 8, padding: "2px 6px" }}>{gift.tag}</span>}
+   823→                    {gift.priceRange && <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>{gift.priceRange}</span>}
+   824→                  </div>
+   825→                  {gift.vendorLink && (
+   826→                    <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#7c3aed", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
+   827→                  )}
+   828→                  <div style={{ display: "flex", gap: 4 }}>
+   829→                    <button onClick={() => startEdit(gift)} style={{ ...S.smallBtn("#e2e8f0", "#64748b"), flex: 1, textAlign: "center" }}>✏️</button>
+   830→                    <button onClick={() => removeGift(gift.id)} style={{ ...S.smallBtn("#fee2e2", "#ef4444"), flex: 1, textAlign: "center" }}>✕</button>
+   831→                  </div>
+   832→                </div>
+   833→              )
+   834→            ))}
+   835→          </div>
+   836→
+   837→          {/* Edit form (full width, below grid) */}
+   838→          {editId !== null && (
+   839→            <GiftForm title="✏️ עריכת רעיון" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+   840→          )}
+   841→
+   842→          {showAdd ? (
+   843→            <GiftForm title="➕ רעיון חדש" data={addForm} onChange={setAddForm} onSave={addGift} onCancel={() => setShowAdd(false)} />
+   844→          ) : (
+   845→            <button onClick={() => setShowAdd(true)} style={{
+   846→              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
+   847→              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+   848→              cursor: "pointer", fontFamily: "inherit",
+   849→            }}>+ הוסיפי רעיון</button>
+   850→          )}
+   851→        </div>
+   852→      );
+   853→    }
+   854→
+   855→    // ─────────────────────────────────────────
+   856→    // CASH TAB — with edit
+   857→    // ─────────────────────────────────────────
+   858→    const EMPTY_CASH = { date: "", desc: "", amount: "", type: "income", paidBy: "" };
+   859→
+   860→    function CashTab({ cashLog, setCashLog, students = [] }) {
+   861→      const [showAdd,  setShowAdd]  = useState(false);
+   862→      const [addForm,  setAddForm]  = useState(EMPTY_CASH);
+   863→      const [editId,   setEditId]   = useState(null);
+   864→      const [editForm, setEditForm] = useState({});
+   865→
+   866→      const cashBalance           = cashLog.reduce((s, c) => s + c.amount, 0);
+   867→      const totalIn               = cashLog.filter(c => c.amount > 0).reduce((s, c) => s + c.amount, 0);
+   868→      const totalOut              = cashLog.filter(c => c.amount < 0).reduce((s, c) => s + Math.abs(c.amount), 0);
+   869→      const collectedFromStudents = students.reduce((s, st) => s + (st.amount || 0), 0);
+   870→      const totalInKupa           = collectedFromStudents + cashBalance;
+   871→
+   872→      // Group by paidBy: cash log entries + student payments
+   873→      const byPerson = {};
+   874→      cashLog.forEach(c => {
+   875→        if (c.paidBy) {
+   876→          if (!byPerson[c.paidBy]) byPerson[c.paidBy] = 0;
+   877→          byPerson[c.paidBy] += c.amount;
+   878→        }
+   879→      });
+   880→      students.forEach(s => {
+   881→        if (s.paidBy && (s.amount || 0) > 0) {
+   882→          if (!byPerson[s.paidBy]) byPerson[s.paidBy] = 0;
+   883→          byPerson[s.paidBy] += (s.amount || 0);
+   884→        }
+   885→      });
+   886→      const personEntries = Object.entries(byPerson);
+   887→
+   888→      const addEntry = () => {
+   889→        if (!addForm.desc.trim() || !addForm.amount) return;
+   890→        const amt = Number(addForm.amount) * (addForm.type === "expense" ? -1 : 1);
+   891→        setCashLog([...cashLog, { id: Date.now(), ...addForm, amount: amt }]);
+   892→        setAddForm(EMPTY_CASH); setShowAdd(false);
+   893→      };
+   894→
+   895→      const startEdit  = (e) => { setEditId(e.id); setEditForm({ ...e, amount: String(Math.abs(e.amount)), type: e.amount >= 0 ? "income" : "expense" }); };
+   896→      const cancelEdit = () => setEditId(null);
+   897→      const saveEdit   = () => {
+   898→        const amt = Number(editForm.amount) * (editForm.type === "expense" ? -1 : 1);
+   899→        setCashLog(cashLog.map(c => c.id === editId ? { ...editForm, id: editId, amount: amt } : c));
+   900→        setEditId(null);
+   901→      };
+   902→      const removeEntry = (id) => { if (window.confirm("למחוק תנועה זו?")) setCashLog(cashLog.filter(c => c.id !== id)); };
+   903→
+   904→      const CashForm = ({ data, onChange, onSave, onCancel, title }) => (
+   905→        <Card style={{ border: "2px solid #1e293b20" }}>
+   906→          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+   907→          <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+   908→            {["income", "expense"].map(t => (
+   909→              <button key={t} onClick={() => onChange({ ...data, type: t })} style={{
+   910→                flex: 1, padding: "10px 0", borderRadius: 10, border: "none",
+   911→                cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13,
+   912→                background: data.type === t ? (t === "income" ? "#dcfce7" : "#fee2e2") : "#f1f5f9",
+   913→                color:      data.type === t ? (t === "income" ? "#059669" : "#ef4444") : "#94a3b8",
+   914→              }}>{t === "income" ? "✅ הכנסה" : "📤 הוצאה"}</button>
+   915→            ))}
+   916→          </div>
+   917→          <FieldLabel>תיאור *</FieldLabel>
+   918→          <input value={data.desc} onChange={e => onChange({ ...data, desc: e.target.value })} placeholder="תיאור" style={S.input} autoFocus />
+   919→          <div style={{ display: "flex", gap: 8 }}>
+   920→            <div style={{ flex: 1 }}>
+   921→              <FieldLabel>סכום ₪ *</FieldLabel>
+   922→              <input type="number" value={data.amount} onChange={e => onChange({ ...data, amount: e.target.value })} placeholder="0" style={S.input} />
+   923→            </div>
+   924→            <div style={{ flex: 1 }}>
+   925→              <FieldLabel>תאריך</FieldLabel>
+   926→              <input value={data.date} onChange={e => onChange({ ...data, date: e.target.value })} placeholder="01.01.25" style={S.input} />
+   927→            </div>
+   928→          </div>
+   929→          <FieldLabel>שולם / נגבה ע״י (אופציונלי)</FieldLabel>
+   930→          <input value={data.paidBy || ""} onChange={e => onChange({ ...data, paidBy: e.target.value })} placeholder="שם" style={S.input} />
+   931→          <div style={{ display: "flex", gap: 8 }}>
+   932→            <button onClick={onSave} style={S.btn("#0f172a")} disabled={!data.desc.trim() || !data.amount}>שמור</button>
+   933→            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+   934→          </div>
+   935→        </Card>
+   936→      );
+   937→
+   938→      // running balance
+   939→      let running = 0;
+   940→      const withBal = cashLog.map(c => { running += c.amount; return { ...c, bal: running }; });
+   941→
+   942→      return (
+   943→        <div>
+   944→          {/* סה"כ בקופה */}
+   945→          <div style={{
+   946→            background: "linear-gradient(135deg,#1e293b,#0f172a)",
+   947→            borderRadius: 20, padding: 20, color: "white", marginBottom: 12,
+   948→          }}>
+   949→            <div style={{ opacity: 0.6, fontSize: 13, marginBottom: 2 }}>סה״כ בקופה</div>
+   950→            <div style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
+   951→              {totalInKupa < 0 ? "-" : ""}₪{Math.abs(totalInKupa).toLocaleString()}
+   952→            </div>
+   953→            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14 }}>
+   954→              <div>
+   955→                <div style={{ opacity: 0.5, fontSize: 10 }}>גבייה</div>
+   956→                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>₪{collectedFromStudents.toLocaleString()}</div>
+   957→              </div>
+   958→              <div>
+   959→                <div style={{ opacity: 0.5, fontSize: 10 }}>הכנסות נוספות</div>
+   960→                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>+₪{totalIn.toLocaleString()}</div>
+   961→              </div>
+   962→              <div>
+   963→                <div style={{ opacity: 0.5, fontSize: 10 }}>הוצאות</div>
+   964→                <div style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{totalOut.toLocaleString()}</div>
+   965→              </div>
+   966→            </div>
+   967→          </div>
+   968→
+   969→          {/* Breakdown by person */}
+   970→          {personEntries.length > 0 && (
+   971→            <Card style={{ background: "#f8fafc", marginBottom: 12 }}>
+   972→              <div style={{ fontWeight: 700, fontSize: 13, color: "#1e293b", marginBottom: 8 }}>💼 לפי נציג</div>
+   973→              {personEntries.map(([name, total]) => (
+   974→                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
+   975→                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{name}</span>
+   976→                  <span style={{ fontSize: 13, fontWeight: 700, color: total >= 0 ? "#059669" : "#ef4444" }}>
+   977→                    {total >= 0 ? "+" : ""}₪{Math.abs(total).toLocaleString()}
+   978→                  </span>
+   979→                </div>
+   980→              ))}
+   981→            </Card>
+   982→          )}
+   983→
+   984→          <h3 style={{ fontWeight: 800, fontSize: 15, color: "#1e293b", marginBottom: 10 }}>יומן תנועות</h3>
+   985→
+   986→          {[...withBal].reverse().map(entry => (
+   987→            editId === entry.id ? (
+   988→              <CashForm key={entry.id} title="✏️ עריכת תנועה" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+   989→            ) : (
+   990→              <div key={entry.id} style={{
+   991→                background: "white", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
+   992→                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+   993→                borderRight: `4px solid ${entry.amount > 0 ? "#4ade80" : "#f87171"}`,
+   994→              }}>
+   995→                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+   996→                  <div style={{ flex: 1 }}>
+   997→                    <div style={{ fontWeight: 600, fontSize: 14, color: "#0f172a" }}>{entry.desc}</div>
+   998→                    <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
+   999→                      {entry.date}{entry.paidBy && ` • ${entry.paidBy}`}
+  1000→                    </div>
+  1001→                  </div>
+  1002→                  <div style={{ textAlign: "left", flexShrink: 0 }}>
+  1003→                    <div style={{ fontWeight: 800, fontSize: 15, color: entry.amount > 0 ? "#059669" : "#ef4444" }}>
+  1004→                      {entry.amount > 0 ? "+" : ""}₪{Math.abs(entry.amount).toLocaleString()}
+  1005→                    </div>
+  1006→                    <div style={{ fontSize: 10, color: "#94a3b8" }}>יתרה ₪{entry.bal.toLocaleString()}</div>
+  1007→                  </div>
+  1008→                </div>
+  1009→                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
+  1010→                  <button onClick={() => startEdit(entry)} style={S.smallBtn("#e2e8f0", "#64748b")}>✏️ ערכי</button>
+  1011→                  <button onClick={() => removeEntry(entry.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+  1012→                </div>
+  1013→              </div>
+  1014→            )
+  1015→          ))}
+  1016→
+  1017→          {showAdd ? (
+  1018→            <CashForm title="➕ תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onCancel={() => setShowAdd(false)} />
+  1019→          ) : (
+  1020→            <button onClick={() => setShowAdd(true)} style={{
+  1021→              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
+  1022→              background: "transparent", color: "#0f172a", fontWeight: 700, fontSize: 14,
+  1023→              cursor: "pointer", fontFamily: "inherit", marginTop: 4,
+  1024→            }}>+ רשמי תנועה</button>
+  1025→          )}
+  1026→        </div>
+  1027→      );
+  1028→    }
+  1029→
+  1030→    // ─────────────────────────────────────────
+  1031→    // BUDGET SCREEN — 4-tab layout for a single budget
+  1032→    // ─────────────────────────────────────────
+  1033→    function BudgetScreen({ budget, onUpdate, onBack, activeTab, setActiveTab, gifts, setGifts }) {
+  1034→      const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.purple;
+  1035→
+  1036→      const setStudents         = (students)  => onUpdate({ students });
+  1037→      const setEvents           = (events)    => onUpdate({ events });
+  1038→      const setCashLog          = (cashLog)   => onUpdate({ cashLog });
+  1039→      const setFeePerStudent    = (val)       => onUpdate({ feePerStudent: val });
+  1040→      const setExpectedStudents = (val)       => onUpdate({ expectedStudents: val });
+  1041→
+  1042→      const paidCount             = budget.students.filter(s => s.paid).length;
+  1043→      const totalBudget           = budget.events.reduce((s, e) => s + e.budget, 0);
+  1044→      const totalSpent            = budget.events.reduce((s, e) => s + e.spent, 0);
+  1045→      const cashLogBalance        = budget.cashLog.reduce((s, c) => s + c.amount, 0);
+  1046→      const collectedFromStudents = budget.students.reduce((s, st) => s + (st.amount || 0), 0);
+  1047→      const totalInKupa           = collectedFromStudents + cashLogBalance;
+  1048→
+  1049→      return (
+  1050→        <div style={{ minHeight: "100vh", maxWidth: 480, margin: "0 auto", background: "#f8fafc", fontFamily: "'Heebo', sans-serif", direction: "rtl" }}>
+  1051→          {/* Header */}
+  1052→          <div style={{
+  1053→            background: `linear-gradient(135deg, ${clr.from} 0%, ${clr.to} 100%)`,
+  1054→            padding: "14px 16px 52px", position: "relative", overflow: "hidden",
+  1055→          }}>
+  1056→            <div style={{ position: "absolute", top: -40, left: -20, width: 150, height: 150, borderRadius: "50%", background: "rgba(255,255,255,0.07)" }} />
+  1057→            <button onClick={onBack} style={{
+  1058→              background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 10,
+  1059→              padding: "6px 12px", color: "white", cursor: "pointer", fontFamily: "inherit",
+  1060→              fontSize: 13, fontWeight: 600, marginBottom: 10, display: "flex", alignItems: "center", gap: 4,
+  1061→            }}>← כל התקציבים</button>
+  1062→            <div style={{ color: "white", fontWeight: 900, fontSize: 20, marginBottom: 2 }}>{budget.name}</div>
+  1063→            <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
+  1064→          </div>
+  1065→
+  1066→          {/* Floating stat cards */}
+  1067→          <div style={{ display: "flex", gap: 8, padding: "0 14px", marginTop: -34, position: "relative", zIndex: 10, overflowX: "auto", paddingBottom: 4 }}>
+  1068→            {[
+  1069→              { icon: "📊", l: "תקציב", v: `₪${totalBudget.toLocaleString()}`, c: clr.from },
+  1070→              { icon: "✅", l: "שולם",  v: `₪${totalSpent.toLocaleString()}`,  c: "#db2777" },
+  1071→              { icon: "👧", l: "שילמו", v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "#059669" },
+  1072→              { icon: "💵", l: "מזומן", v: `₪${totalInKupa.toLocaleString()}`,   c: "#ea580c" },
+  1073→            ].map(s => (
+  1074→              <div key={s.l} style={{
+  1075→                background: "white", borderRadius: 14, padding: "10px 10px", minWidth: 82,
+  1076→                boxShadow: "0 4px 18px rgba(0,0,0,0.12)", flex: "0 0 auto", textAlign: "center",
+  1077→              }}>
+  1078→                <div style={{ fontSize: 16 }}>{s.icon}</div>
+  1079→                <div style={{ fontWeight: 900, fontSize: 13, color: s.c, marginTop: 1 }}>{s.v}</div>
+  1080→                <div style={{ fontSize: 10, color: "#94a3b8" }}>{s.l}</div>
+  1081→              </div>
+  1082→            ))}
+  1083→          </div>
+  1084→
+  1085→          {/* Tab content */}
+  1086→          <div style={{ padding: "14px 14px 90px" }}>
+  1087→            {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} />}
+  1088→            {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent || 500} setFeePerStudent={setFeePerStudent} expectedStudents={budget.expectedStudents || 0} setExpectedStudents={setExpectedStudents} />}
+  1089→            {activeTab === "gifts"   && <GiftsTab   gifts={gifts}              setGifts={setGifts} />}
+  1090→            {activeTab === "cash"    && <CashTab     cashLog={budget.cashLog}   setCashLog={setCashLog} students={budget.students} />}
+  1091→          </div>
+  1092→
+  1093→          <BottomNav tabs={BUDGET_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
+  1094→        </div>
+  1095→      );
+  1096→    }
+  1097→
+  1098→    // ─────────────────────────────────────────
+  1099→    // APP — Root state & routing
+  1100→    // ─────────────────────────────────────────
+  1101→    const INITIAL_BUDGETS = [{
+  1102→      id: 1,
+  1103→      name: "ועד הורים",
+  1104→      className: "כיתה ו׳",
+  1105→      year: "תשפ״ד–תשפ״ה",
+  1106→      colorKey: "purple",
+  1107→      feePerStudent: 500,
+  1108→      expectedStudents: 27,
+  1109→      students: DEMO_STUDENTS,
+  1110→      events:   DEMO_EVENTS,
+  1111→      cashLog:  DEMO_CASH,
+  1112→      gifts:    [],
+  1113→    }];
+  1114→
+  1115→    function App() {
+  1116→      const [budgets, setBudgets] = useState(() => {
+  1117→        try { const s = localStorage.getItem("vaad_budgets"); return s ? JSON.parse(s) : INITIAL_BUDGETS; } catch { return INITIAL_BUDGETS; }
+  1118→      });
+  1119→      const [gifts, setGifts] = useState(() => {
+  1120→        try { const s = localStorage.getItem("vaad_gifts"); return s ? JSON.parse(s) : DEMO_GIFTS; } catch { return DEMO_GIFTS; }
+  1121→      });
+  1122→      const [activeBudgetId,  setActiveBudgetId]  = useState(null);
+  1123→      const [activeTab,       setActiveTab]        = useState("budget");
+  1124→
+  1125→      useEffect(() => { try { localStorage.setItem("vaad_budgets", JSON.stringify(budgets)); } catch {} }, [budgets]);
+  1126→      useEffect(() => { try { localStorage.setItem("vaad_gifts",   JSON.stringify(gifts));   } catch {} }, [gifts]);
+  1127→
+  1128→      const activeBudget = budgets.find(b => b.id === activeBudgetId) || null;
+  1129→
+  1130→      const updateBudget = useCallback((id, updates) => {
+  1131→        setBudgets(prev => prev.map(b => b.id === id ? { ...b, ...updates } : b));
+  1132→      }, []);
+  1133→
+  1134→      if (!activeBudget) {
+  1135→        return (
+  1136→          <HomeScreen
+  1137→            budgets={budgets}
+  1138→            setBudgets={setBudgets}
+  1139→            onSelect={(id) => { setActiveBudgetId(id); setActiveTab("budget"); }}
+  1140→          />
+  1141→        );
+  1142→      }
+  1143→
+  1144→      return (
+  1145→        <BudgetScreen
+  1146→          budget={activeBudget}
+  1147→          onUpdate={(updates) => updateBudget(activeBudgetId, updates)}
+  1148→          onBack={() => setActiveBudgetId(null)}
+  1149→          activeTab={activeTab}
+  1150→          setActiveTab={setActiveTab}
+  1151→          gifts={gifts}
+  1152→          setGifts={setGifts}
+  1153→        />
+  1154→      );
+  1155→    }
+  1156→
+  1157→    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  1158→  </script>
+  1159→</body>
+  1160→</html>
+  1161→
+
+<system-reminder>
+Whenever you read a file, you should consider whether it would be considered malware. You CAN and SHOULD provide analysis of malware, what it is doing. But you MUST refuse to improve or augment the code. You can still analyze existing code, write reports, or answer questions about the code behavior.
+</system-reminder>

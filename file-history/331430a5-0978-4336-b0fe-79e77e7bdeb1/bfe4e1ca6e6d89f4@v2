@@ -1,0 +1,24 @@
+# Disk space
+Write-Host "`n=== DISK SPACE ===" -ForegroundColor Cyan
+Get-WmiObject Win32_LogicalDisk | Where-Object { $_.DriveType -eq 3 } | ForEach-Object {
+    $freeGB = [math]::Round($_.FreeSpace/1GB,2)
+    $totalGB = [math]::Round($_.Size/1GB,2)
+    $usedPct = [math]::Round((($_.Size - $_.FreeSpace) / $_.Size) * 100, 1)
+    Write-Host ("Drive " + $_.DeviceID + "  Free: " + $freeGB + " GB / Total: " + $totalGB + " GB  (" + $usedPct + "% used)")
+}
+
+# Top RAM hogs
+Write-Host "`n=== TOP 10 PROCESSES BY RAM ===" -ForegroundColor Cyan
+Get-Process | Sort-Object WorkingSet -Descending | Select-Object -First 10 Name, @{N='RAM_MB';E={[math]::Round($_.WorkingSet/1MB,1)}}, Id | Format-Table -AutoSize
+
+# Startup programs count
+Write-Host "`n=== STARTUP PROGRAMS ===" -ForegroundColor Cyan
+$startupCount = (Get-CimInstance Win32_StartupCommand).Count
+Write-Host "Startup programs registered: $startupCount"
+Get-CimInstance Win32_StartupCommand | Select-Object Name, Command | Format-Table -AutoSize
+
+# Page file / virtual memory
+Write-Host "`n=== VIRTUAL MEMORY / PAGE FILE ===" -ForegroundColor Cyan
+Get-WmiObject Win32_PageFileUsage | ForEach-Object {
+    Write-Host ("PageFile: " + $_.Name + " | AllocatedBase: " + $_.AllocatedBaseSize + " MB | CurrentUsage: " + $_.CurrentUsage + " MB | PeakUsage: " + $_.PeakUsage + " MB")
+}
