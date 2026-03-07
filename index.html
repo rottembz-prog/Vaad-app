@@ -70,6 +70,10 @@
       return iso;
     }
 
+    function fmt(n) {
+      return '₪' + (Number(n) || 0).toLocaleString('he-IL');
+    }
+
     function generateReport(budget) {
       const events   = budget.events   || [];
       const students = budget.students || [];
@@ -263,8 +267,8 @@ ${eventRows}</table>
     const BUDGET_TABS = [
       { id: "budget",  label: "תקציב",  icon: "chart" },
       { id: "collect", label: "גבייה",  icon: "users" },
-      { id: "gifts",   label: "רעיונות", icon: "bulb" },
       { id: "cash",    label: "מזומן",  icon: "wallet" },
+      { id: "gifts",   label: "רעיונות", icon: "bulb" },
     ];
 
     // ─────────────────────────────────────────
@@ -430,12 +434,12 @@ ${eventRows}</table>
       };
       const removeMember = (i) => set("members", (form.members || []).filter((_, j) => j !== i));
 
-      const addGroup = () => {
+      const saveGroup = () => {
         if (!newGName.trim()) return;
-        set("whatsappGroups", [...(form.whatsappGroups || []), { name: newGName.trim(), link: newGLink.trim() }]);
+        set("whatsappGroups", [{ name: newGName.trim(), link: newGLink.trim() }]);
         setNewGName(""); setNewGLink("");
       };
-      const removeGroup = (i) => set("whatsappGroups", (form.whatsappGroups || []).filter((_, j) => j !== i));
+      const removeGroup = () => set("whatsappGroups", []);
 
       return (
         <Card style={{ border: "2px solid #ede9fe" }}>
@@ -482,21 +486,22 @@ ${eventRows}</table>
             <button onClick={addMember} style={{ ...S.btn("#7c3aed"), flex: "none", padding: "10px 14px" }}>+ הוסף</button>
           </div>
 
-          <FieldLabel>קבוצות וואצאפ</FieldLabel>
-          {(form.whatsappGroups || []).map((g, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f0fdf4", borderRadius: 8, padding: "6px 10px" }}>
-              <span style={{ flex: 1, fontSize: 13 }}>💬 {g.name}</span>
-              {g.link && <a href={g.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#7c3aed" }}>🔗</a>}
-              <button onClick={() => removeGroup(i)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 14, padding: 0 }}>✕</button>
+          <FieldLabel>קבוצת וואצאפ</FieldLabel>
+          {(form.whatsappGroups || []).length > 0 ? (
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12, background: "#f0fdf4", borderRadius: 8, padding: "8px 10px" }}>
+              <span style={{ flex: 1, fontSize: 13 }}>💬 {form.whatsappGroups[0].name}</span>
+              {form.whatsappGroups[0].link && <a href={form.whatsappGroups[0].link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#7c3aed" }}>🔗</a>}
+              <button onClick={removeGroup} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 14, padding: 0 }}>✕</button>
             </div>
-          ))}
-          <div style={{ marginBottom: 6 }}>
-            <input value={newGName} onChange={e => setNewGName(e.target.value)}
-              placeholder="שם הקבוצה" style={{ ...S.input, marginBottom: 6 }} />
-            <input value={newGLink} onChange={e => setNewGLink(e.target.value)}
-              placeholder="קישור לקבוצה (https://chat.whatsapp.com/...)" style={{ ...S.input, marginBottom: 6 }} />
-            <button onClick={addGroup} style={{ ...S.btn("#059669"), width: "100%" }}>+ הוסף קבוצה</button>
-          </div>
+          ) : (
+            <div style={{ marginBottom: 12 }}>
+              <input value={newGName} onChange={e => setNewGName(e.target.value)}
+                placeholder="שם הקבוצה" style={{ ...S.input, marginBottom: 6 }} />
+              <input value={newGLink} onChange={e => setNewGLink(e.target.value)}
+                placeholder="קישור לקבוצה (https://chat.whatsapp.com/...)" style={{ ...S.input, marginBottom: 6 }} />
+              {newGName.trim() && <button onClick={saveGroup} style={{ ...S.btn("#059669"), width: "100%" }}>שמור קבוצה</button>}
+            </div>
+          )}
 
           <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
             <button onClick={() => onSave(form)} style={S.btn("#7c3aed")} disabled={!form.name.trim()}>שמור</button>
@@ -634,9 +639,45 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     // BUDGET TAB — Events with edit
     // ─────────────────────────────────────────
-    const EMPTY_EVENT = { name: "", date: "", budget: "", spent: "", category: "פעילות", notes: "", paidBy: "", done: false, type: "expense" };
+    const EMPTY_EVENT = { name: "", date: "", budget: "", spent: "", category: "פעילות", notes: "", paidBy: "", paidBySplit: [], done: false, type: "expense" };
 
-    function EventForm({ data, onChange, onSave, onCancel, title }) {
+    function PaidBySplit({ total, splits, onChange }) {
+      const totalNum = Number(String(total).replace(/[^\d.]/g, '')) || 0;
+      const splitTotal = splits.reduce((s, x) => s + (Number(x.amount) || 0), 0);
+      const isValid = splits.length <= 1 || Math.abs(splitTotal - totalNum) < 0.01;
+      const update = (i, field, val) => onChange(splits.map((s, j) => j === i ? { ...s, [field]: val } : s));
+      const remove = (i) => onChange(splits.filter((_, j) => j !== i));
+      const addSplit = () => {
+        const remaining = totalNum - splitTotal;
+        onChange([...splits, { name: "", amount: splits.length === 0 ? (totalNum || "") : (remaining > 0 ? remaining : "") }]);
+      };
+      return (
+        <div style={{ marginBottom: 8 }}>
+          <FieldLabel>שולם / נגבה ע״י (אופציונלי)</FieldLabel>
+          {splits.map((sp, i) => (
+            <div key={i} style={{ display: "flex", gap: 6, marginBottom: 6, alignItems: "center" }}>
+              <input value={sp.name} onChange={e => update(i, "name", e.target.value)} placeholder="שם"
+                style={{ ...S.input, marginBottom: 0, flex: 2 }} />
+              <input type="text" inputMode="numeric" value={sp.amount}
+                onChange={e => update(i, "amount", e.target.value.replace(/[^\d.]/g, ''))}
+                onPaste={e => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); update(i, "amount", t.replace(/[^\d.]/g, '')); }}
+                placeholder="סכום" style={{ ...S.input, marginBottom: 0, flex: 1 }} />
+              <button onClick={() => remove(i)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 16, padding: "0 4px", flexShrink: 0 }}>✕</button>
+            </div>
+          ))}
+          {!isValid && splits.length > 1 && (
+            <div style={{ color: "#ef4444", fontSize: 11, marginBottom: 6 }}>
+              סה״כ שולם ({fmt(splitTotal)}) ≠ סכום ({fmt(totalNum)})
+            </div>
+          )}
+          <button onClick={addSplit} style={{ ...S.smallBtn("#e2e8f0", "#64748b"), marginBottom: 6 }}>+ הוסף שולם נוסף</button>
+        </div>
+      );
+    }
+
+    function EventForm({ data, onChange, onSave, onSaveAndNew, onCancel, title }) {
+      const setAmt = (field, val) => onChange({ ...data, [field]: val.replace(/[^\d.]/g, '') });
+      const pasteAmt = (field, e) => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); onChange({ ...data, [field]: t.replace(/[^\d.]/g, '') }); };
       return (
         <Card style={{ border: "2px solid #ede9fe" }}>
           <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
@@ -670,54 +711,72 @@ ${eventRows}</table>
           <div style={{ display: "flex", gap: 8 }}>
             <div style={{ flex: 1 }}>
               <FieldLabel>תקציב ₪</FieldLabel>
-              <input type="text" inputMode="numeric" value={data.budget} onChange={e => onChange({ ...data, budget: e.target.value })} placeholder="0" style={S.input} />
+              <input type="text" inputMode="numeric" value={data.budget}
+                onChange={e => setAmt("budget", e.target.value)} onPaste={e => pasteAmt("budget", e)}
+                placeholder="0" style={S.input} />
             </div>
             <div style={{ flex: 1 }}>
               <FieldLabel>{(data.type || "expense") === "income" ? "התקבל ₪" : "שולם ₪"}</FieldLabel>
-              <input type="text" inputMode="numeric" value={data.spent} onChange={e => onChange({ ...data, spent: e.target.value })} placeholder="0" style={S.input} />
+              <input type="text" inputMode="numeric" value={data.spent}
+                onChange={e => setAmt("spent", e.target.value)} onPaste={e => pasteAmt("spent", e)}
+                placeholder="0" style={S.input} />
             </div>
           </div>
           <FieldLabel>הערות</FieldLabel>
           <input value={data.notes} onChange={e => onChange({ ...data, notes: e.target.value })} placeholder="הערות" style={S.input} />
-          <FieldLabel>שולם / נגבה ע״י (אופציונלי)</FieldLabel>
-          <input value={data.paidBy || ""} onChange={e => onChange({ ...data, paidBy: e.target.value })} placeholder="שם" style={S.input} />
+          <PaidBySplit
+            total={data.spent}
+            splits={data.paidBySplit || []}
+            onChange={splits => onChange({ ...data, paidBySplit: splits })}
+          />
           <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, cursor: "pointer", fontSize: 13 }}>
             <input type="checkbox" checked={!!data.done} onChange={e => onChange({ ...data, done: e.target.checked })} style={{ width: 16, height: 16 }} />
             הושלם ✅
           </label>
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={onSave} style={S.btn("#7c3aed")} disabled={!data.name.trim()}>שמור</button>
+            {onSaveAndNew && <button onClick={onSaveAndNew} style={S.btn("#059669")} disabled={!data.name.trim()}>שמור + חדש</button>}
             <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
           </div>
         </Card>
       );
     }
 
-    function BudgetTab({ events, setEvents, collectionBudget = 0 }) {
+    function BudgetTab({ events, setEvents, collectionBudget = 0, expectedStudents = 0 }) {
       const [showAdd, setShowAdd] = useState(false);
       const [filter, setFilter]  = useState("הכל");
       const [addForm, setAddForm] = useState(EMPTY_EVENT);
       const [editId, setEditId]  = useState(null);
       const [editForm, setEditForm] = useState({});
 
-      const totalExpBudget = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
-      const totalIncBudget = collectionBudget + events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
-      const totalSpent     = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.spent, 0);
-      const cats           = ["הכל", ...CAT_LIST];
-      const filtered       = filter === "הכל" ? events : events.filter(e => e.category === filter);
-      const parseSortDate  = (d) => { if (!d) return Infinity; if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return new Date(d).getTime(); const m = d.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/); if (m) { let y = parseInt(m[3]); if (y < 100) y += 2000; return new Date(y, parseInt(m[2]) - 1, parseInt(m[1])).getTime(); } return Infinity; };
-      const sorted         = [...filtered].sort((a, b) => parseSortDate(a.date) - parseSortDate(b.date));
+      const totalExpBudget   = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
+      const totalIncBudget   = collectionBudget + events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
+      const totalSpent       = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.spent, 0);
+      const budgetPerStudent = expectedStudents > 0 ? Math.round(totalExpBudget / expectedStudents) : null;
+      const balance          = totalIncBudget - totalExpBudget;
+      const cats             = ["הכל", ...CAT_LIST];
+      const filtered         = filter === "הכל" ? events : events.filter(e => e.category === filter);
+      const parseSortDate    = (d) => { if (!d) return Infinity; if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return new Date(d).getTime(); const m = d.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/); if (m) { let y = parseInt(m[3]); if (y < 100) y += 2000; return new Date(y, parseInt(m[2]) - 1, parseInt(m[1])).getTime(); } return Infinity; };
+      const sorted           = [...filtered].sort((a, b) => parseSortDate(a.date) - parseSortDate(b.date));
 
-      const addEvent = () => {
-        if (!addForm.name.trim()) return;
-        setEvents([...events, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
-        setAddForm(EMPTY_EVENT); setShowAdd(false);
+      const buildEvent = (form) => {
+        const splits = (form.paidBySplit || []).map(s => ({ ...s, amount: Number(s.amount) || 0 }));
+        const paidBy = splits.map(s => s.name).filter(Boolean).join(', ');
+        return { id: Date.now(), ...form, budget: Number(form.budget) || 0, spent: Number(form.spent) || 0, paidBy, paidBySplit: splits };
       };
 
-      const startEdit  = (ev) => { setEditId(ev.id); setEditForm({ ...ev, budget: String(ev.budget), spent: String(ev.spent), type: ev.type || "expense" }); };
+      const addEvent       = () => { if (!addForm.name.trim()) return; setEvents([...events, buildEvent(addForm)]); setAddForm(EMPTY_EVENT); setShowAdd(false); };
+      const addEventAndNew = () => { if (!addForm.name.trim()) return; setEvents([...events, buildEvent(addForm)]); setAddForm(EMPTY_EVENT); };
+
+      const startEdit  = (ev) => {
+        const paidBySplit = ev.paidBySplit || (ev.paidBy ? [{ name: ev.paidBy, amount: ev.spent }] : []);
+        setEditId(ev.id); setEditForm({ ...ev, budget: String(ev.budget), spent: String(ev.spent), type: ev.type || "expense", paidBySplit });
+      };
       const cancelEdit = () => setEditId(null);
       const saveEdit   = () => {
-        setEvents(events.map(e => e.id === editId ? { ...editForm, id: editId, budget: Number(editForm.budget) || 0, spent: Number(editForm.spent) || 0 } : e));
+        const splits = (editForm.paidBySplit || []).map(s => ({ ...s, amount: Number(s.amount) || 0 }));
+        const paidBy = splits.map(s => s.name).filter(Boolean).join(', ');
+        setEvents(events.map(e => e.id === editId ? { ...editForm, id: editId, budget: Number(editForm.budget) || 0, spent: Number(editForm.spent) || 0, paidBy, paidBySplit: splits } : e));
         setEditId(null);
       };
       const removeEvent = (id) => { if (window.confirm("למחוק ארוע זה?")) setEvents(events.filter(e => e.id !== id)); };
@@ -725,20 +784,30 @@ ${eventRows}</table>
 
       return (
         <div>
-          {/* Summary */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginBottom: 16 }}>
-            {[
-              { l: "תקציב הוצאות", v: `₪${totalExpBudget.toLocaleString()}`, c: "#ef4444", icon: "expense" },
-              { l: "תקציב הכנסות", v: `₪${totalIncBudget.toLocaleString()}`, c: "#059669", icon: "income" },
-              { l: "שולם בפועל",   v: `₪${totalSpent.toLocaleString()}`,     c: "#db2777", icon: "cash" },
-              { l: "יתרה תקציבית", v: `₪${(totalIncBudget - totalExpBudget).toLocaleString()}`, c: totalIncBudget >= totalExpBudget ? "#7c3aed" : "#ef4444", icon: "chart" },
-            ].map(x => (
-              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
-                <div style={{ display:"flex", justifyContent:"center", marginBottom: 2 }}><Icon n={x.icon} s={18} c={x.c} w={2} /></div>
-                <div style={{ fontWeight: 900, fontSize: 15, color: x.c }}>{x.v}</div>
-                <div style={{ fontSize: 10, color: "#94a3b8" }}>{x.l}</div>
+          {/* Summary — dark card */}
+          <div style={{ background: "linear-gradient(135deg,#1e293b,#0f172a)", borderRadius: 20, padding: 20, color: "white", marginBottom: 16 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+              {[
+                { l: "תקציב הוצאות", v: fmt(totalExpBudget), c: "#f87171" },
+                { l: "תקציב הכנסות", v: fmt(totalIncBudget), c: "#4ade80" },
+                { l: "שולם בפועל",   v: fmt(totalSpent),     c: "#c084fc" },
+                { l: "יתרה תקציבית", v: fmt(balance),        c: balance >= 0 ? "#4ade80" : "#f87171" },
+              ].map(x => (
+                <div key={x.l}>
+                  <div style={{ fontSize: 24, fontWeight: 900, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
+                  <div style={{ fontSize: 11, opacity: 0.55, marginTop: 2 }}>{x.l}</div>
+                </div>
+              ))}
+            </div>
+            {budgetPerStudent !== null && (
+              <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <div style={{ opacity: 0.55, fontSize: 11 }}>תקציב לתלמיד</div>
+                  <div style={{ opacity: 0.4, fontSize: 10 }}>הוצאות ÷ {expectedStudents} תלמידים</div>
+                </div>
+                <div style={{ fontSize: 28, fontWeight: 900, color: "#60a5fa" }}>{fmt(budgetPerStudent)}</div>
               </div>
-            ))}
+            )}
           </div>
 
           {/* Filters */}
@@ -757,7 +826,7 @@ ${eventRows}</table>
           {sorted.map(ev => {
             const isIncome = (ev.type || "expense") === "income";
             return editId === ev.id ? (
-              <EventForm key={ev.id} title="✏️ עריכת ארוע" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+              <EventForm key={ev.id} title="עריכת ארוע" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
             ) : (
               <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "#22c55e" : "#7c3aed"}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -779,9 +848,9 @@ ${eventRows}</table>
                     {ev.notes && <div style={{ fontSize: 11, color: "#64748b" }}>📝 {ev.notes}</div>}
                   </div>
                   <div style={{ textAlign: "left", flexShrink: 0, marginRight: 8 }}>
-                    <div style={{ fontWeight: 900, fontSize: 16, color: "#0f172a" }}>₪{ev.budget.toLocaleString()}</div>
+                    <div style={{ fontWeight: 900, fontSize: 18, color: "#0f172a" }}>{fmt(ev.budget)}</div>
                     <div style={{ fontSize: 10, color: "#94a3b8" }}>תקציב</div>
-                    {ev.spent > 0 && <div style={{ fontSize: 12, fontWeight: 700, color: isIncome ? "#059669" : "#db2777", marginTop: 2 }}>₪{ev.spent.toLocaleString()} {isIncome ? "התקבל" : "שולם"}</div>}
+                    {ev.spent > 0 && <div style={{ fontSize: 13, fontWeight: 700, color: isIncome ? "#059669" : "#db2777", marginTop: 2 }}>{fmt(ev.spent)} {isIncome ? "התקבל" : "שולם"}</div>}
                   </div>
                 </div>
                 {ev.spent > 0 && ev.budget > 0 && (
@@ -801,7 +870,7 @@ ${eventRows}</table>
 
           {/* Add form */}
           {showAdd ? (
-            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onCancel={() => setShowAdd(false)} />
+            <EventForm title="ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onSaveAndNew={addEventAndNew} onCancel={() => { setShowAdd(false); setAddForm(EMPTY_EVENT); }} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
@@ -816,7 +885,7 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     // COLLECT TAB — Students with edit
     // ─────────────────────────────────────────
-    const EMPTY_STUDENT_FORM = { name: "", paid: false, amount: "", note: "", paidBy: "", partial: false };
+    const EMPTY_STUDENT_FORM = { name: "", paid: false, amount: "", note: "", paidBy: "", paidBySplit: [], partial: false };
 
     function CollectTab({ students, setStudents, feePerStudent = 500, setFeePerStudent, expectedStudents = 0, setExpectedStudents, payboxLink = "", setPayboxLink, classWhatsappLink = "", setClassWhatsappLink }) {
       const [search,        setSearch]        = useState("");
@@ -835,17 +904,25 @@ ${eventRows}</table>
         s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? feePerStudent : s.amount } : s
       ));
 
-      const addStudent = () => {
-        if (!addForm.name.trim()) return;
-        setStudents([...students, { id: Date.now(), name: addForm.name.trim(), paid: !!addForm.paid, amount: Number(addForm.amount) || 0, note: addForm.note || "", paidBy: addForm.paidBy || "", partial: !!addForm.partial }]);
-        setAddForm(EMPTY_STUDENT_FORM); setShowAdd(false);
+      const buildStudent = (form) => {
+        const splits = (form.paidBySplit || []).map(s => ({ ...s, amount: Number(s.amount) || 0 }));
+        const paidBy = splits.map(s => s.name).filter(Boolean).join(', ');
+        return { id: Date.now(), name: form.name.trim(), paid: !!form.paid, amount: Number(form.amount) || 0, note: form.note || "", paidBy, paidBySplit: splits, partial: !!form.partial };
       };
 
-      const startEdit = (s) => { setEditId(s.id); setEditForm({ ...s, amount: String(s.amount) }); };
+      const addStudent       = () => { if (!addForm.name.trim()) return; setStudents([...students, buildStudent(addForm)]); setAddForm(EMPTY_STUDENT_FORM); setShowAdd(false); };
+      const addStudentAndNew = () => { if (!addForm.name.trim()) return; setStudents([...students, buildStudent(addForm)]); setAddForm(EMPTY_STUDENT_FORM); };
+
+      const startEdit = (s) => {
+        const paidBySplit = s.paidBySplit || (s.paidBy ? [{ name: s.paidBy, amount: s.amount }] : []);
+        setEditId(s.id); setEditForm({ ...s, amount: String(s.amount), paidBySplit });
+      };
       const cancelEdit = () => setEditId(null);
       const saveEdit = () => {
+        const splits = (editForm.paidBySplit || []).map(s => ({ ...s, amount: Number(s.amount) || 0 }));
+        const paidBy = splits.map(s => s.name).filter(Boolean).join(', ');
         setStudents(students.map(s => s.id === editId
-          ? { ...editForm, id: editId, amount: Number(editForm.amount) || 0, paid: !!editForm.paid, partial: !!editForm.partial }
+          ? { ...editForm, id: editId, amount: Number(editForm.amount) || 0, paid: !!editForm.paid, partial: !!editForm.partial, paidBy, paidBySplit: splits }
           : s
         ));
         setEditId(null);
@@ -889,23 +966,23 @@ ${eventRows}</table>
                 <input type="text" inputMode="numeric" value={feePerStudent} onChange={e => setFeePerStudent && setFeePerStudent(Number(e.target.value) || 0)} style={{ ...S.input, marginBottom: 0 }} />
               </div>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, padding: "8px 12px", background: "#f0fdf4", borderRadius: 10 }}>
-              <span style={{ fontSize: 13, fontWeight: 700, color: "#166534" }}>תקציב גבייה</span>
-              <span style={{ fontSize: 17, fontWeight: 900, color: "#059669" }}>₪{collectionBudgetTotal.toLocaleString()}</span>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, padding: "10px 14px", background: "#f0fdf4", borderRadius: 10 }}>
+              <span style={{ fontSize: 14, fontWeight: 700, color: "#166534" }}>תקציב גבייה</span>
+              <span style={{ fontSize: 24, fontWeight: 900, color: "#059669" }}>{fmt(collectionBudgetTotal)}</span>
             </div>
           </Card>
 
           {/* Stats */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 16 }}>
             {[
-              { l: "שילמו",    v: paidCount,                            c: "#059669", icon: "check" },
-              { l: "לא שילמו", v: students.length - paidCount,          c: "#ef4444", icon: "x" },
-              { l: "נגבה",     v: `₪${totalCollected.toLocaleString()}`, c: "#7c3aed", icon: "wallet" },
+              { l: "שילמו",    v: paidCount,                  c: "#059669", icon: "check" },
+              { l: "לא שילמו", v: students.length - paidCount, c: "#ef4444", icon: "x" },
+              { l: "נגבה",     v: fmt(totalCollected),         c: "#7c3aed", icon: "wallet" },
             ].map(x => (
-              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
-                <div style={{ display:"flex", justifyContent:"center", marginBottom: 2 }}><Icon n={x.icon} s={18} c={x.c} w={2.2} /></div>
-                <div style={{ fontWeight: 900, fontSize: 18, color: x.c }}>{x.v}</div>
-                <div style={{ fontSize: 10, color: "#94a3b8" }}>{x.l}</div>
+              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "14px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
+                <div style={{ display:"flex", justifyContent:"center", marginBottom: 4 }}><Icon n={x.icon} s={20} c={x.c} w={2.2} /></div>
+                <div style={{ fontWeight: 900, fontSize: 24, color: x.c }}>{x.v}</div>
+                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{x.l}</div>
               </div>
             ))}
           </div>
@@ -927,15 +1004,21 @@ ${eventRows}</table>
           {filtered.map(s => (
             editId === s.id ? (
               <Card key={s.id} style={{ border: "2px solid #ede9fe" }}>
-                <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>✏️ עריכת תלמיד</div>
+                <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>עריכת תלמיד</div>
                 <FieldLabel>שם</FieldLabel>
                 <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} style={S.input} autoFocus />
                 <FieldLabel>סכום ששולם ₪</FieldLabel>
-                <input type="text" inputMode="numeric" value={editForm.amount} onChange={e => setEditForm({ ...editForm, amount: e.target.value })} style={S.input} />
+                <input type="text" inputMode="numeric" value={editForm.amount}
+                  onChange={e => setEditForm({ ...editForm, amount: e.target.value.replace(/[^\d.]/g, '') })}
+                  onPaste={e => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); setEditForm({ ...editForm, amount: t.replace(/[^\d.]/g, '') }); }}
+                  style={S.input} />
                 <FieldLabel>הערה</FieldLabel>
                 <input value={editForm.note || ""} onChange={e => setEditForm({ ...editForm, note: e.target.value })} placeholder="הערה..." style={S.input} />
-                <FieldLabel>שולם / נגבה ע״י (אופציונלי)</FieldLabel>
-                <input value={editForm.paidBy || ""} onChange={e => setEditForm({ ...editForm, paidBy: e.target.value })} placeholder="שם" style={S.input} />
+                <PaidBySplit
+                  total={editForm.amount}
+                  splits={editForm.paidBySplit || []}
+                  onChange={splits => setEditForm({ ...editForm, paidBySplit: splits })}
+                />
                 <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, cursor: "pointer", fontSize: 13 }}>
                   <input type="checkbox" checked={!!editForm.paid} onChange={e => setEditForm({ ...editForm, paid: e.target.checked })} style={{ width: 16, height: 16 }} />
                   שולם ✅
@@ -966,7 +1049,7 @@ ${eventRows}</table>
                     {s.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {s.paidBy}</div>}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                    {(s.paid || s.amount > 0) && <span style={{ fontSize: 12, fontWeight: 700, color: s.paid ? "#059669" : "#f97316" }}>₪{s.amount}</span>}
+                    {(s.paid || s.amount > 0) && <span style={{ fontSize: 14, fontWeight: 700, color: s.paid ? "#059669" : "#f97316" }}>{fmt(s.amount)}</span>}
                     <button onClick={() => toggle(s.id)} style={{
                       width: 36, height: 36, borderRadius: "50%", border: "none", cursor: "pointer",
                       background: s.paid ? "#dcfce7" : s.partial ? "#fed7aa" : "#fee2e2", fontSize: 18,
@@ -983,19 +1066,23 @@ ${eventRows}</table>
 
           {showAdd ? (
             <Card style={{ border: "2px solid #ede9fe" }}>
-              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>➕ תלמיד/ה חדש/ה</div>
+              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>תלמיד/ה חדש/ה</div>
               <FieldLabel>שם התלמיד/ה *</FieldLabel>
               <input value={addForm.name} onChange={e => setAddForm({ ...addForm, name: e.target.value })}
                 placeholder="שם התלמיד/ה" style={S.input} autoFocus />
               <FieldLabel>סכום ששולם ₪</FieldLabel>
-              <input type="text" inputMode="numeric" value={addForm.amount} onChange={e => setAddForm({ ...addForm, amount: e.target.value })}
+              <input type="text" inputMode="numeric" value={addForm.amount}
+                onChange={e => setAddForm({ ...addForm, amount: e.target.value.replace(/[^\d.]/g, '') })}
+                onPaste={e => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); setAddForm({ ...addForm, amount: t.replace(/[^\d.]/g, '') }); }}
                 placeholder="0" style={S.input} />
               <FieldLabel>הערה</FieldLabel>
               <input value={addForm.note} onChange={e => setAddForm({ ...addForm, note: e.target.value })}
                 placeholder="הערה..." style={S.input} />
-              <FieldLabel>שולם / נגבה ע״י (אופציונלי)</FieldLabel>
-              <input value={addForm.paidBy} onChange={e => setAddForm({ ...addForm, paidBy: e.target.value })}
-                placeholder="שם" style={S.input} />
+              <PaidBySplit
+                total={addForm.amount}
+                splits={addForm.paidBySplit || []}
+                onChange={splits => setAddForm({ ...addForm, paidBySplit: splits })}
+              />
               <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, cursor: "pointer", fontSize: 13 }}>
                 <input type="checkbox" checked={!!addForm.paid} onChange={e => setAddForm({ ...addForm, paid: e.target.checked })} style={{ width: 16, height: 16 }} />
                 שולם ✅
@@ -1006,6 +1093,7 @@ ${eventRows}</table>
               </label>
               <div style={{ display: "flex", gap: 8 }}>
                 <button onClick={addStudent} style={S.btn("#7c3aed")} disabled={!addForm.name.trim()}>הוסיפי</button>
+                <button onClick={addStudentAndNew} style={S.btn("#059669")} disabled={!addForm.name.trim()}>שמור + חדש</button>
                 <button onClick={() => { setShowAdd(false); setAddForm(EMPTY_STUDENT_FORM); }} style={S.btn("#94a3b8")}>ביטול</button>
               </div>
             </Card>
@@ -1208,9 +1296,10 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     // CASH TAB — with edit
     // ─────────────────────────────────────────
-    const EMPTY_CASH = { date: "", desc: "", amount: "", type: "income", paidBy: "" };
+    const EMPTY_CASH = { date: "", desc: "", amount: "", type: "income", paidBy: "", paidBySplit: [] };
 
-    function CashForm({ data, onChange, onSave, onCancel, title }) {
+    function CashForm({ data, onChange, onSave, onSaveAndNew, onCancel, title }) {
+      const pasteAmt = (e) => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); onChange({ ...data, amount: t.replace(/[^\d.]/g, '') }); };
       return (
         <Card style={{ border: "2px solid #1e293b20" }}>
           <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
@@ -1229,17 +1318,23 @@ ${eventRows}</table>
           <div style={{ display: "flex", gap: 8 }}>
             <div style={{ flex: 1 }}>
               <FieldLabel>סכום ₪ *</FieldLabel>
-              <input type="number" value={data.amount} onChange={e => onChange({ ...data, amount: e.target.value })} placeholder="0" style={S.input} />
+              <input type="text" inputMode="numeric" value={data.amount}
+                onChange={e => onChange({ ...data, amount: e.target.value.replace(/[^\d.]/g, '') })}
+                onPaste={pasteAmt} placeholder="0" style={S.input} />
             </div>
             <div style={{ flex: 1 }}>
               <FieldLabel>תאריך</FieldLabel>
               <input value={data.date} onChange={e => onChange({ ...data, date: e.target.value })} placeholder="01.01.25" style={S.input} />
             </div>
           </div>
-          <FieldLabel>שולם / נגבה ע״י (אופציונלי)</FieldLabel>
-          <input value={data.paidBy || ""} onChange={e => onChange({ ...data, paidBy: e.target.value })} placeholder="שם" style={S.input} />
+          <PaidBySplit
+            total={data.amount}
+            splits={data.paidBySplit || []}
+            onChange={splits => onChange({ ...data, paidBySplit: splits })}
+          />
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={onSave} style={S.btn("#0f172a")} disabled={!data.desc.trim() || !data.amount}>שמור</button>
+            {onSaveAndNew && <button onClick={onSaveAndNew} style={S.btn("#059669")} disabled={!data.desc.trim() || !data.amount}>שמור + חדש</button>}
             <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
           </div>
         </Card>
@@ -1294,18 +1389,28 @@ ${eventRows}</table>
       });
       const kupaEntries = Object.entries(byKupa);
 
-      const addEntry = () => {
-        if (!addForm.desc.trim() || !addForm.amount) return;
-        const amt = Number(addForm.amount) * (addForm.type === "expense" ? -1 : 1);
-        setCashLog([...cashLog, { id: Date.now(), ...addForm, amount: amt }]);
-        setAddForm(EMPTY_CASH); setShowAdd(false);
+      const buildEntry = (form) => {
+        const amt = Number(form.amount) * (form.type === "expense" ? -1 : 1);
+        const splits = (form.paidBySplit || []).map(s => ({ ...s, amount: Number(s.amount) || 0 }));
+        const paidBy = splits.map(s => s.name).filter(Boolean).join(', ');
+        return { id: Date.now(), ...form, amount: amt, paidBy, paidBySplit: splits };
       };
 
-      const startEdit  = (e) => { setEditId(e.id); setEditForm({ ...e, amount: String(Math.abs(e.amount)), type: e.amount >= 0 ? "income" : "expense" }); };
+      const addEntry       = () => { if (!addForm.desc.trim() || !addForm.amount) return; setCashLog([...cashLog, buildEntry(addForm)]); setAddForm(EMPTY_CASH); setShowAdd(false); };
+      const addEntryAndNew = () => { if (!addForm.desc.trim() || !addForm.amount) return; setCashLog([...cashLog, buildEntry(addForm)]); setAddForm(EMPTY_CASH); };
+
+      const startEdit  = (e) => {
+        const paidBySplit = e.paidBySplit
+          ? e.paidBySplit.map(s => ({ ...s, amount: Math.abs(s.amount) }))
+          : (e.paidBy ? [{ name: e.paidBy, amount: Math.abs(e.amount) }] : []);
+        setEditId(e.id); setEditForm({ ...e, amount: String(Math.abs(e.amount)), type: e.amount >= 0 ? "income" : "expense", paidBySplit });
+      };
       const cancelEdit = () => setEditId(null);
       const saveEdit   = () => {
         const amt = Number(editForm.amount) * (editForm.type === "expense" ? -1 : 1);
-        setCashLog(cashLog.map(c => c.id === editId ? { ...editForm, id: editId, amount: amt } : c));
+        const splits = (editForm.paidBySplit || []).map(s => ({ ...s, amount: Number(s.amount) || 0 }));
+        const paidBy = splits.map(s => s.name).filter(Boolean).join(', ');
+        setCashLog(cashLog.map(c => c.id === editId ? { ...editForm, id: editId, amount: amt, paidBy, paidBySplit: splits } : c));
         setEditId(null);
       };
       const removeEntry = (id) => { if (window.confirm("למחוק תנועה זו?")) setCashLog(cashLog.filter(c => c.id !== id)); };
@@ -1431,7 +1536,7 @@ ${eventRows}</table>
 
           {[...withBal].reverse().map(entry => (
             editId === entry.id ? (
-              <CashForm key={entry.id} title="✏️ עריכת תנועה" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+              <CashForm key={entry.id} title="עריכת תנועה" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
             ) : (
               <div key={entry.id} style={{
                 background: "white", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
@@ -1462,7 +1567,7 @@ ${eventRows}</table>
           ))}
 
           {showAdd ? (
-            <CashForm title="➕ תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onCancel={() => setShowAdd(false)} />
+            <CashForm title="תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onSaveAndNew={addEntryAndNew} onCancel={() => { setShowAdd(false); setAddForm(EMPTY_CASH); }} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
@@ -1535,7 +1640,7 @@ ${eventRows}</table>
 
           {/* Tab content */}
           <div style={{ padding: "14px 14px 90px" }}>
-            {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} />}
+            {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} expectedStudents={budget.expectedStudents || 0} />}
             {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent || 500} setFeePerStudent={setFeePerStudent} expectedStudents={budget.expectedStudents || 0} setExpectedStudents={setExpectedStudents} payboxLink={budget.payboxLink || ""} setPayboxLink={setPayboxLink} classWhatsappLink={budget.classWhatsappLink || ""} setClassWhatsappLink={setClassWhatsappLink} />}
             {activeTab === "gifts"   && <GiftsTab   gifts={gifts} setGifts={setGifts} onAddEvent={(ev) => setEvents([...budget.events, { id: Date.now(), ...ev }])} />}
             {activeTab === "cash"    && <CashTab     cashLog={budget.cashLog}   setCashLog={setCashLog} students={budget.students} events={budget.events} />}
