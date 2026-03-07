@@ -1374,8 +1374,16 @@ ${eventRows}</table>
       });
       // Manual cash log (positive and negative)
       cashLog.forEach(c => {
-        if (c.paidBy) { if (!byKupa[c.paidBy]) byKupa[c.paidBy] = 0; byKupa[c.paidBy] += c.amount; }
-        else kupaTotal += c.amount;
+        if (c.paidBySplit && c.paidBySplit.length > 0) {
+          const sign = c.amount >= 0 ? 1 : -1;
+          c.paidBySplit.forEach(s => {
+            if (s.name) { if (!byKupa[s.name]) byKupa[s.name] = 0; byKupa[s.name] += sign * (s.amount || 0); }
+          });
+        } else if (c.paidBy) {
+          if (!byKupa[c.paidBy]) byKupa[c.paidBy] = 0; byKupa[c.paidBy] += c.amount;
+        } else {
+          kupaTotal += c.amount;
+        }
       });
       // Budget expenses (always negative)
       budgetExpenses.forEach(e => {
