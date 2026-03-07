@@ -91,7 +91,7 @@
       const maxCatVal = Math.max(...Object.values(catMap), 1);
 
       const catRows = Object.entries(catMap).map(([cat, val]) => `
-        <tr><td>${cat}</td><td>₪${val.toLocaleString()}</td>
+        <tr><td>${cat}</td><td>₪${val.toLocaleString('he-IL')}</td>
         <td><div style="background:#e2e8f0;border-radius:4px;height:10px;width:160px">
         <div style="background:#7c3aed;height:10px;border-radius:4px;width:${Math.round((val/maxCatVal)*100)}%"></div>
         </div></td></tr>`).join('');
@@ -99,7 +99,7 @@
       const eventRows = events.map(e => `
         <tr><td>${e.name}</td><td>${formatDate(e.date)}</td><td>${e.category}</td>
         <td>${(e.type||'expense')==='income' ? 'הכנסה' : 'הוצאה'}</td>
-        <td>₪${e.budget.toLocaleString()}</td><td>₪${e.spent.toLocaleString()}</td>
+        <td>₪${e.budget.toLocaleString('he-IL')}</td><td>₪${e.spent.toLocaleString('he-IL')}</td>
         <td>${e.done ? '✅' : '⬜'}</td></tr>`).join('');
 
       const membersHtml = (budget.members||[]).length > 0
@@ -129,17 +129,17 @@ td{padding:6px 8px;border:1px solid #e2e8f0;font-size:12px}tr:nth-child(even){ba
 ${membersHtml}${groupsHtml}
 <h2>📊 סיכום כספי</h2>
 <div class="grid">
-  <div class="stat"><div class="sv">₪${totalBudgetExp.toLocaleString()}</div><div class="sl">תקציב הוצאות</div></div>
-  <div class="stat"><div class="sv">₪${totalSpent.toLocaleString()}</div><div class="sl">שולם בפועל</div></div>
-  <div class="stat"><div class="sv">₪${totalCollected.toLocaleString()}</div><div class="sl">נגבה</div></div>
+  <div class="stat"><div class="sv">₪${totalBudgetExp.toLocaleString('he-IL')}</div><div class="sl">תקציב הוצאות</div></div>
+  <div class="stat"><div class="sv">₪${totalSpent.toLocaleString('he-IL')}</div><div class="sl">שולם בפועל</div></div>
+  <div class="stat"><div class="sv">₪${totalCollected.toLocaleString('he-IL')}</div><div class="sl">נגבה</div></div>
   <div class="stat"><div class="sv">${paidCount}/${students.length}</div><div class="sl">שילמו</div></div>
 </div>
 <h2>💰 התקדמות גבייה</h2>
 <div class="bar"><div class="bfill bfill-g" style="width:${collPct}%"></div></div>
-<p>${paidCount} מתוך ${students.length} שילמו (${collPct}%) • נגבה ₪${totalCollected.toLocaleString()} מתוך ₪${collectionBudget.toLocaleString()}</p>
+<p>${paidCount} מתוך ${students.length} שילמו (${collPct}%) • נגבה ₪${totalCollected.toLocaleString('he-IL')} מתוך ₪${collectionBudget.toLocaleString('he-IL')}</p>
 <h2>💸 ביצוע תקציב הוצאות</h2>
 <div class="bar"><div class="bfill" style="width:${spentPct}%"></div></div>
-<p>שולם ₪${totalSpent.toLocaleString()} מתוך תקציב ₪${totalBudgetExp.toLocaleString()} (${spentPct}%)</p>
+<p>שולם ₪${totalSpent.toLocaleString('he-IL')} מתוך תקציב ₪${totalBudgetExp.toLocaleString('he-IL')} (${spentPct}%)</p>
 <h2>📈 הוצאות לפי קטגוריה</h2>
 <table><tr><th>קטגוריה</th><th>סכום</th><th>גרף</th></tr>${catRows}</table>
 <h2>📋 כל הארועים</h2>
@@ -406,8 +406,8 @@ ${eventRows}</table>
               </>
             )}
             <div style={{ display: "flex", gap: 14, fontSize: 12, color: "#64748b", alignItems: "center" }}>
-              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="#7c3aed" w={2} /> ₪{budgetSum.toLocaleString()} תקציב</span>
-              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="wallet" s={13} c="#0ea5e9" w={2} /> ₪{collected.toLocaleString()} נגבה</span>
+              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="#7c3aed" w={2} /> ₪{budgetSum.toLocaleString('he-IL')} תקציב</span>
+              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="wallet" s={13} c="#0ea5e9" w={2} /> ₪{collected.toLocaleString('he-IL')} נגבה</span>
               {budget.feePerStudent && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={13} c="#10b981" w={2} /> ₪{budget.feePerStudent}/ילד</span>}
             </div>
             <button onClick={onSelect} style={{
@@ -1376,9 +1376,13 @@ ${eventRows}</table>
       cashLog.forEach(c => {
         if (c.paidBySplit && c.paidBySplit.length > 0) {
           const sign = c.amount >= 0 ? 1 : -1;
+          let splitSum = 0;
           c.paidBySplit.forEach(s => {
             if (s.name) { if (!byKupa[s.name]) byKupa[s.name] = 0; byKupa[s.name] += sign * (s.amount || 0); }
+            splitSum += (s.amount || 0);
           });
+          const remainder = Math.abs(c.amount) - splitSum;
+          if (remainder > 0.001) kupaTotal += sign * remainder;
         } else if (c.paidBy) {
           if (!byKupa[c.paidBy]) byKupa[c.paidBy] = 0; byKupa[c.paidBy] += c.amount;
         } else {
@@ -1436,20 +1440,20 @@ ${eventRows}</table>
           }}>
             <div style={{ opacity: 0.6, fontSize: 13, marginBottom: 2 }}>סה״כ בקופה</div>
             <div style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
-              {totalInKupa < 0 ? "-" : ""}₪{Math.abs(totalInKupa).toLocaleString()}
+              {totalInKupa < 0 ? "-" : ""}₪{Math.abs(totalInKupa).toLocaleString('he-IL')}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14 }}>
               <div>
                 <div style={{ opacity: 0.5, fontSize: 10 }}>גבייה</div>
-                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>₪{collectedFromStudents.toLocaleString()}</div>
+                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>₪{collectedFromStudents.toLocaleString('he-IL')}</div>
               </div>
               <div>
                 <div style={{ opacity: 0.5, fontSize: 10 }}>הכנסות נוספות</div>
-                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>+₪{totalIn.toLocaleString()}</div>
+                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>+₪{totalIn.toLocaleString('he-IL')}</div>
               </div>
               <div>
                 <div style={{ opacity: 0.5, fontSize: 10 }}>הוצאות</div>
-                <div style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{totalOut.toLocaleString()}</div>
+                <div style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{totalOut.toLocaleString('he-IL')}</div>
               </div>
             </div>
           </div>
@@ -1461,18 +1465,18 @@ ${eventRows}</table>
               {kupaEntries.map(([name, total]) => (
                 <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
                   <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>👤 {name}</span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: total >= 0 ? "#059669" : "#ef4444" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString()}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: total >= 0 ? "#059669" : "#ef4444" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString('he-IL')}</span>
                 </div>
               ))}
               {kupaTotal !== 0 && (
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
                   <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>🏦 קופת איסוף</span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: kupaTotal >= 0 ? "#059669" : "#ef4444" }}>{kupaTotal >= 0 ? "+" : ""}₪{kupaTotal.toLocaleString()}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: kupaTotal >= 0 ? "#059669" : "#ef4444" }}>{kupaTotal >= 0 ? "+" : ""}₪{kupaTotal.toLocaleString('he-IL')}</span>
                 </div>
               )}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0 2px" }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: "#64748b" }}>סה״כ</span>
-                <span style={{ fontSize: 13, fontWeight: 900, color: totalInKupa >= 0 ? "#059669" : "#ef4444" }}>{totalInKupa >= 0 ? "+" : ""}₪{totalInKupa.toLocaleString()}</span>
+                <span style={{ fontSize: 13, fontWeight: 900, color: totalInKupa >= 0 ? "#059669" : "#ef4444" }}>{totalInKupa >= 0 ? "+" : ""}₪{totalInKupa.toLocaleString('he-IL')}</span>
               </div>
             </Card>
           )}
@@ -1502,7 +1506,7 @@ ${eventRows}</table>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
                           <span style={{ background: "#dcfce7", color: "#059669", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>📊 תקציב</span>
-                          <div style={{ fontWeight: 800, fontSize: 15, color: "#059669" }}>+₪{entry.amount.toLocaleString()}</div>
+                          <div style={{ fontWeight: 800, fontSize: 15, color: "#059669" }}>+₪{entry.amount.toLocaleString('he-IL')}</div>
                         </div>
                       </div>
                     </div>
@@ -1529,7 +1533,7 @@ ${eventRows}</table>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
                           <span style={{ background: "#ede9fe", color: "#7c3aed", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>📊 תקציב</span>
-                          <div style={{ fontWeight: 800, fontSize: 15, color: "#ef4444" }}>-₪{Math.abs(entry.amount).toLocaleString()}</div>
+                          <div style={{ fontWeight: 800, fontSize: 15, color: "#ef4444" }}>-₪{Math.abs(entry.amount).toLocaleString('he-IL')}</div>
                         </div>
                       </div>
                     </div>
@@ -1561,9 +1565,9 @@ ${eventRows}</table>
                   </div>
                   <div style={{ textAlign: "left", flexShrink: 0 }}>
                     <div style={{ fontWeight: 800, fontSize: 15, color: entry.amount > 0 ? "#059669" : "#ef4444" }}>
-                      {entry.amount > 0 ? "+" : ""}₪{Math.abs(entry.amount).toLocaleString()}
+                      {entry.amount > 0 ? "+" : ""}₪{Math.abs(entry.amount).toLocaleString('he-IL')}
                     </div>
-                    <div style={{ fontSize: 10, color: "#94a3b8" }}>יתרה ₪{entry.bal.toLocaleString()}</div>
+                    <div style={{ fontSize: 10, color: "#94a3b8" }}>יתרה ₪{entry.bal.toLocaleString('he-IL')}</div>
                   </div>
                 </div>
                 <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
@@ -1615,7 +1619,7 @@ ${eventRows}</table>
           {/* Header */}
           <div style={{
             background: `linear-gradient(135deg, ${clr.from} 0%, ${clr.to} 100%)`,
-            padding: "14px 16px 52px", position: "relative", overflow: "hidden",
+            padding: "14px 16px 62px", position: "relative", overflow: "hidden",
           }}>
             <div style={{ position: "absolute", top: -40, left: -20, width: 150, height: 150, borderRadius: "50%", background: "rgba(255,255,255,0.07)" }} />
             <button onClick={onBack} style={{
@@ -1628,20 +1632,20 @@ ${eventRows}</table>
           </div>
 
           {/* Floating stat cards */}
-          <div style={{ display: "flex", gap: 8, padding: "0 14px", marginTop: -34, position: "relative", zIndex: 10, overflowX: "auto", paddingBottom: 4 }}>
+          <div style={{ display: "flex", gap: 8, padding: "0 14px", marginTop: -44, position: "relative", zIndex: 10, paddingBottom: 4 }}>
             {[
-              { icon: "chart",   l: "תקציב", v: `₪${totalBudget.toLocaleString()}`, c: clr.from },
-              { icon: "expense", l: "שולם",  v: `₪${totalSpent.toLocaleString()}`,  c: "#db2777" },
+              { icon: "chart",   l: "תקציב", v: `₪${totalBudget.toLocaleString('he-IL')}`, c: clr.from },
+              { icon: "expense", l: "שולם",  v: `₪${totalSpent.toLocaleString('he-IL')}`,  c: "#ef4444" },
               { icon: "users",   l: "שילמו", v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "#059669" },
-              { icon: "wallet",  l: "מזומן", v: `₪${totalInKupa.toLocaleString()}`,   c: "#ea580c" },
+              { icon: "wallet",  l: "מזומן", v: `₪${totalInKupa.toLocaleString('he-IL')}`,   c: clr.to },
             ].map(s => (
               <div key={s.l} style={{
-                background: "white", borderRadius: 14, padding: "10px 10px", minWidth: 82,
-                boxShadow: "0 4px 18px rgba(0,0,0,0.12)", flex: "0 0 auto", textAlign: "center",
+                background: "white", borderRadius: 16, padding: "14px 6px", flex: 1, minWidth: 0,
+                boxShadow: "0 4px 18px rgba(0,0,0,0.13)", textAlign: "center",
               }}>
-                <div style={{ display:"flex", justifyContent:"center", marginBottom: 2 }}><Icon n={s.icon} s={16} c={s.c} w={2} /></div>
-                <div style={{ fontWeight: 900, fontSize: 13, color: s.c, marginTop: 1 }}>{s.v}</div>
-                <div style={{ fontSize: 10, color: "#94a3b8" }}>{s.l}</div>
+                <div style={{ display:"flex", justifyContent:"center", marginBottom: 5 }}><Icon n={s.icon} s={22} c={s.c} w={2} /></div>
+                <div style={{ fontWeight: 900, fontSize: 14, color: s.c, marginTop: 2, lineHeight: 1.2 }}>{s.v}</div>
+                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{s.l}</div>
               </div>
             ))}
           </div>
