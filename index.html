@@ -774,11 +774,12 @@ ${eventRows}</table>
     const EMPTY_STUDENT_FORM = { name: "", paid: false, amount: "", note: "", paidBy: "", partial: false };
 
     function CollectTab({ students, setStudents, feePerStudent = 500, setFeePerStudent, expectedStudents = 0, setExpectedStudents, payboxLink = "", setPayboxLink, classWhatsappLink = "", setClassWhatsappLink }) {
-      const [search,   setSearch]   = useState("");
-      const [showAdd,  setShowAdd]  = useState(false);
-      const [addForm,  setAddForm]  = useState(EMPTY_STUDENT_FORM);
-      const [editId,   setEditId]   = useState(null);
-      const [editForm, setEditForm] = useState({});
+      const [search,        setSearch]        = useState("");
+      const [showAdd,       setShowAdd]       = useState(false);
+      const [addForm,       setAddForm]       = useState(EMPTY_STUDENT_FORM);
+      const [editId,        setEditId]        = useState(null);
+      const [editForm,      setEditForm]      = useState({});
+      const [studentsRaw,   setStudentsRaw]   = useState(String(expectedStudents));
 
       const paidCount      = students.filter(s => s.paid).length;
       const totalCollected = students.reduce((s, st) => s + (st.amount || 0), 0);
@@ -836,7 +837,7 @@ ${eventRows}</table>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <div>
                 <FieldLabel>מספר תלמידים</FieldLabel>
-                <input type="text" inputMode="numeric" value={expectedStudents} onChange={e => setExpectedStudents && setExpectedStudents(Number(e.target.value) || 0)} style={{ ...S.input, marginBottom: 0 }} />
+                <input type="text" inputMode="decimal" value={studentsRaw} onChange={e => { const raw = e.target.value; setStudentsRaw(raw); const num = parseFloat(raw); if (setExpectedStudents) setExpectedStudents(isNaN(num) ? 0 : num); }} style={{ ...S.input, marginBottom: 0 }} />
               </div>
               <div>
                 <FieldLabel>סכום לגבייה ₪</FieldLabel>
