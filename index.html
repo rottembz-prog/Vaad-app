@@ -34,6 +34,21 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey:            "AIzaSyBWHJYSzhGF11vd9OiJ8B8n6kwRKJqc_X4",
+      authDomain:        "vaad-app-b98ef.firebaseapp.com",
+      projectId:         "vaad-app-b98ef",
+      storageBucket:     "vaad-app-b98ef.firebasestorage.app",
+      messagingSenderId: "809987347388",
+      appId:             "1:809987347388:web:5f759604618a143a4b11b9",
+      measurementId:     "G-KWH1YG3V8D",
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
 </head>
 <body>
   <div id="root"><div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:Heebo,sans-serif;color:#94a3b8;font-size:14px">טוען...</div></div>
@@ -573,47 +588,52 @@ ${eventRows}</table>
       );
     }
 
-    function HomeScreen({ budgets, setBudgets, onSelect }) {
-      const [mode, setMode]         = useState("list"); // list | add | edit
+    function HomeScreen({ budgets, currentClass, user, onSignOut, onBack, onAddBudget, onDeleteBudget, onUpdateBudgetMeta, onSelect }) {
+      const [mode, setMode]           = useState("list"); // list | add | edit
       const [editingId, setEditingId] = useState(null);
       const [showHelp,  setShowHelp]  = useState(false);
+      const [showCode,  setShowCode]  = useState(false);
 
-      const addBudget = (form) => {
-        const b = {
-          id: Date.now(),
+      const addBudget = async (form) => {
+        await onAddBudget({
           name: form.name.trim(),
           className: form.className.trim(),
           year: form.year.trim(),
           colorKey: form.colorKey,
           feePerStudent: Number(form.feePerStudent) || 500,
           expectedStudents: 0,
-          students: [], events: [], cashLog: [], gifts: [],
+          students: [], events: [], cashLog: [],
           members: form.members || [],
           whatsappGroups: form.whatsappGroups || [],
           payboxLink: "",
           classWhatsappLink: "",
-        };
-        setBudgets(prev => [...prev, b]);
+        });
         setMode("list");
       };
 
-      const saveBudget = (form) => {
-        setBudgets(prev => prev.map(b => b.id === editingId
-          ? { ...b, name: form.name.trim(), className: form.className.trim(), year: form.year.trim(), colorKey: form.colorKey, feePerStudent: Number(form.feePerStudent) || b.feePerStudent, members: form.members || [], whatsappGroups: form.whatsappGroups || [] }
-          : b
-        ));
+      const saveBudget = async (form) => {
+        await onUpdateBudgetMeta(editingId, {
+          name: form.name.trim(),
+          className: form.className.trim(),
+          year: form.year.trim(),
+          colorKey: form.colorKey,
+          feePerStudent: Number(form.feePerStudent),
+          members: form.members || [],
+          whatsappGroups: form.whatsappGroups || [],
+        });
         setMode("list"); setEditingId(null);
       };
 
-      const copyBudget = (id) => {
+      const copyBudget = async (id) => {
         const src = budgets.find(b => b.id === id);
         if (!src) return;
-        setBudgets(prev => [...prev, { ...src, id: Date.now(), name: `עותק — ${src.name}` }]);
+        const { id: _id, ...rest } = src;
+        await onAddBudget({ ...rest, name: `עותק — ${src.name}` });
       };
 
-      const deleteBudget = (id) => {
+      const deleteBudget = async (id) => {
         if (window.confirm("למחוק תקציב זה? הנתונים יאבדו לצמיתות.")) {
-          setBudgets(prev => prev.filter(b => b.id !== id));
+          await onDeleteBudget(id);
         }
       };
 
