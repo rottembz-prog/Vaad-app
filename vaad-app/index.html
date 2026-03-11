@@ -3,20 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#7c3aed">
+  <meta name="theme-color" content="#0d9488">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <title>מנהל תקציבים — ועד הורים</title>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="application-name" content="Kupati">
+  <title>Kupati | קופתי</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230891b2'/%3E%3Cstop offset='100%25' stop-color='%2310b981'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Crect x='28' y='50' width='44' height='30' rx='4' fill='white' opacity='.92'/%3E%3Crect x='28' y='46' width='44' height='8' rx='2' fill='white'/%3E%3Crect x='44' y='42' width='12' height='5' rx='2' fill='%230d9488'/%3E%3Ccircle cx='37' cy='29' r='9' fill='%23f59e0b' stroke='%23d97706' stroke-width='1.5'/%3E%3Ccircle cx='52' cy='22' r='9' fill='%23f59e0b' stroke='%23d97706' stroke-width='1.5'/%3E%3Ccircle cx='67' cy='29' r='9' fill='%23f59e0b' stroke='%23d97706' stroke-width='1.5'/%3E%3Ctext x='37' y='33' text-anchor='middle' fill='white' font-size='9' font-weight='bold'%3E%E2%82%AA%3C/text%3E%3Ctext x='52' y='26' text-anchor='middle' fill='white' font-size='9' font-weight='bold'%3E%E2%82%AA%3C/text%3E%3Ctext x='67' y='33' text-anchor='middle' fill='white' font-size='9' font-weight='bold'%3E%E2%82%AA%3C/text%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230891b2'/%3E%3Cstop offset='100%25' stop-color='%2310b981'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Crect x='28' y='50' width='44' height='30' rx='4' fill='white' opacity='.92'/%3E%3Crect x='28' y='46' width='44' height='8' rx='2' fill='white'/%3E%3Crect x='44' y='42' width='12' height='5' rx='2' fill='%230d9488'/%3E%3Ccircle cx='37' cy='29' r='9' fill='%23f59e0b' stroke='%23d97706' stroke-width='1.5'/%3E%3Ccircle cx='52' cy='22' r='9' fill='%23f59e0b' stroke='%23d97706' stroke-width='1.5'/%3E%3Ccircle cx='67' cy='29' r='9' fill='%23f59e0b' stroke='%23d97706' stroke-width='1.5'/%3E%3Ctext x='37' y='33' text-anchor='middle' fill='white' font-size='9' font-weight='bold'%3E%E2%82%AA%3C/text%3E%3Ctext x='52' y='26' text-anchor='middle' fill='white' font-size='9' font-weight='bold'%3E%E2%82%AA%3C/text%3E%3Ctext x='67' y='33' text-anchor='middle' fill='white' font-size='9' font-weight='bold'%3E%E2%82%AA%3C/text%3E%3C/svg%3E">
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; min-height: 100%; }
-    body { font-family: 'Heebo', sans-serif; direction: rtl; background: #f8fafc; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'Heebo', sans-serif; direction: rtl; background: #f0fdfa; -webkit-font-smoothing: antialiased; }
     #root { min-height: 100vh; }
     input, select, button, textarea { font-family: 'Heebo', sans-serif; }
-    input:focus, select:focus, textarea:focus { outline: 2px solid #7c3aed; outline-offset: 0; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid #0d9488; outline-offset: 0; }
     button:active { opacity: 0.85; }
     ::-webkit-scrollbar { display: none; }
     input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .kupati-bg {
+      background-color: #f0fdfa;
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(13,148,136,0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(16,185,129,0.1) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(245,158,11,0.06) 0%, transparent 55%),
+        radial-gradient(circle at 80% 15%, rgba(8,145,178,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(5,150,105,0.07) 0%, transparent 40%);
+    }
   </style>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -67,7 +80,7 @@
       const catRows = Object.entries(catMap).map(([cat, val]) => `
         <tr><td>${cat}</td><td>₪${val.toLocaleString()}</td>
         <td><div style="background:#e2e8f0;border-radius:4px;height:10px;width:160px">
-        <div style="background:#7c3aed;height:10px;border-radius:4px;width:${Math.round((val/maxCatVal)*100)}%"></div>
+        <div style="background:#0d9488;height:10px;border-radius:4px;width:${Math.round((val/maxCatVal)*100)}%"></div>
         </div></td></tr>`).join('');
 
       const eventRows = events.map(e => `
@@ -87,15 +100,15 @@
 <title>דו״ח — ${budget.name}</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>body{font-family:'Heebo',sans-serif;direction:rtl;padding:24px;color:#0f172a;font-size:13px}
-h1{font-size:22px;margin-bottom:2px}h2{font-size:15px;margin-top:22px;color:#7c3aed;border-bottom:2px solid #ede9fe;padding-bottom:4px}
+h1{font-size:22px;margin-bottom:2px}h2{font-size:15px;margin-top:22px;color:#0d9488;border-bottom:2px solid #ccfbf1;padding-bottom:4px}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
 .stat{background:#f8fafc;border-radius:8px;padding:10px;text-align:center;border:1px solid #e2e8f0}
-.sv{font-size:18px;font-weight:900;color:#7c3aed}.sl{font-size:11px;color:#64748b}
+.sv{font-size:18px;font-weight:900;color:#0d9488}.sl{font-size:11px;color:#64748b}
 table{width:100%;border-collapse:collapse;margin-bottom:12px}
 th{background:#f1f5f9;padding:7px;text-align:right;font-size:12px;border:1px solid #e2e8f0}
 td{padding:6px 8px;border:1px solid #e2e8f0;font-size:12px}tr:nth-child(even){background:#f8fafc}
 .bar{height:12px;background:#e2e8f0;border-radius:4px;margin:4px 0}
-.bfill{height:12px;border-radius:4px;background:linear-gradient(90deg,#7c3aed,#db2777)}
+.bfill{height:12px;border-radius:4px;background:linear-gradient(90deg,#0d9488,#10b981)}
 .bfill-g{background:linear-gradient(90deg,#059669,#4ade80)}
 @media print{body{padding:8px}}</style></head>
 <body>
@@ -203,16 +216,16 @@ ${eventRows}</table>
       "מתנות": { bg: "#fdf2f8", text: "#be185d", dot: "#ec4899" },
       "פעילות": { bg: "#eff6ff", text: "#1d4ed8", dot: "#3b82f6" },
       "חג":     { bg: "#f0fdf4", text: "#166534", dot: "#22c55e" },
-      "ארוע":   { bg: "#faf5ff", text: "#7e22ce", dot: "#a855f7" },
+      "ארוע":   { bg: "#f0fdfa", text: "#0f766e", dot: "#14b8a6" },
       "שונות":  { bg: "#fff7ed", text: "#c2410c", dot: "#f97316" },
     };
 
     const BUDGET_COLORS = {
-      purple: { from: "#7c3aed", to: "#db2777", label: "סגול-ורוד" },
+      teal:   { from: "#0d9488", to: "#10b981", label: "טורקיז" },
       blue:   { from: "#1d4ed8", to: "#0891b2", label: "כחול" },
-      green:  { from: "#059669", to: "#0d9488", label: "ירוק" },
+      green:  { from: "#059669", to: "#065f46", label: "ירוק" },
       orange: { from: "#ea580c", to: "#dc2626", label: "כתום" },
-      teal:   { from: "#0f766e", to: "#1d4ed8", label: "טורקיז" },
+      amber:  { from: "#d97706", to: "#b45309", label: "זהב" },
     };
 
     const CAT_LIST = Object.keys(CAT_COLORS);
@@ -266,7 +279,7 @@ ${eventRows}</table>
       );
     }
 
-    function ProgressBar({ pct, color = "#7c3aed", style = {} }) {
+    function ProgressBar({ pct, color = "#0d9488", style = {} }) {
       return (
         <div style={{ background: "#f1f5f9", borderRadius: 100, height: 7, overflow: "hidden", ...style }}>
           <div style={{ height: "100%", borderRadius: 100, background: color, width: `${Math.min(Math.max(pct, 0), 100)}%`, transition: "width 0.4s ease" }} />
@@ -287,9 +300,9 @@ ${eventRows}</table>
               flex: 1, display: "flex", flexDirection: "column", alignItems: "center",
               gap: 2, background: "none", border: "none", cursor: "pointer", padding: "4px 0",
             }}>
-              <Icon n={t.icon} s={20} c={activeTab === t.id ? "#7c3aed" : "#94a3b8"} w={activeTab === t.id ? 2.2 : 1.6} />
-              <span style={{ fontSize: 10, fontWeight: activeTab === t.id ? 800 : 400, fontFamily: "inherit", color: activeTab === t.id ? "#7c3aed" : "#94a3b8" }}>{t.label}</span>
-              {activeTab === t.id && <div style={{ width: 18, height: 3, borderRadius: 100, background: "linear-gradient(90deg,#7c3aed,#db2777)" }} />}
+              <Icon n={t.icon} s={20} c={activeTab === t.id ? "#0d9488" : "#94a3b8"} w={activeTab === t.id ? 2.2 : 1.6} />
+              <span style={{ fontSize: 10, fontWeight: activeTab === t.id ? 800 : 400, fontFamily: "inherit", color: activeTab === t.id ? "#0d9488" : "#94a3b8" }}>{t.label}</span>
+              {activeTab === t.id && <div style={{ width: 18, height: 3, borderRadius: 100, background: "linear-gradient(90deg,#0d9488,#10b981)" }} />}
             </button>
           ))}
         </div>
@@ -342,10 +355,86 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     // HOME SCREEN — Budget Manager
     // ─────────────────────────────────────────
-    const EMPTY_BUDGET_FORM = { name: "", className: "", year: getDefaultYear(), colorKey: "purple", feePerStudent: "500", members: [], whatsappGroups: [] };
+    // ─────────────────────────────────────────
+    // KUPATI LOGO — inline SVG
+    // ─────────────────────────────────────────
+    function KupatiLogo({ size = 56 }) {
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width={size} height={size} style={{ borderRadius: size * 0.22, flexShrink: 0 }}>
+          <defs>
+            <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#0891b2" />
+              <stop offset="100%" stopColor="#10b981" />
+            </linearGradient>
+            <radialGradient id="glow1" cx="30%" cy="30%" r="50%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.25)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+            </radialGradient>
+          </defs>
+          <rect width="100" height="100" rx="22" fill="url(#logoGrad)" />
+          <rect width="100" height="100" rx="22" fill="url(#glow1)" />
+          {/* subtle circle lines */}
+          <circle cx="75" cy="25" r="18" fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth="1.2" />
+          <circle cx="25" cy="72" r="12" fill="none" stroke="rgba(255,255,255,0.13)" strokeWidth="1" />
+          {/* box body */}
+          <rect x="28" y="52" width="44" height="28" rx="4" fill="white" opacity="0.92" />
+          <rect x="28" y="46" width="44" height="9" rx="2" fill="white" />
+          {/* coin slot */}
+          <rect x="44" y="42" width="12" height="5" rx="2.5" fill="#0d9488" />
+          {/* coins */}
+          <circle cx="37" cy="28" r="9" fill="#f59e0b" stroke="#d97706" strokeWidth="1.5" />
+          <circle cx="52" cy="20" r="9" fill="#f59e0b" stroke="#d97706" strokeWidth="1.5" />
+          <circle cx="67" cy="28" r="9" fill="#f59e0b" stroke="#d97706" strokeWidth="1.5" />
+          <text x="37" y="32" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="sans-serif">₪</text>
+          <text x="52" y="24" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="sans-serif">₪</text>
+          <text x="67" y="32" textAnchor="middle" fill="white" fontSize="9" fontWeight="bold" fontFamily="sans-serif">₪</text>
+        </svg>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // HELP MODAL — הסברים
+    // ─────────────────────────────────────────
+    function HelpModal({ onClose }) {
+      const sections = [
+        { icon: "chart", title: "תקציב", color: "#0d9488", text: "ניהול תקציב הוצאות והכנסות: הוסיפי ארועים, קטגוריות ותאריכים. כשמסמנים 'שולם', הסכום עובר אוטומטית ליומן המזומן." },
+        { icon: "users", title: "גבייה", color: "#059669", text: "ניהול רשימת התלמידים ומעקב אחר תשלומים. ניתן להגדיר מספר תלמידים וסכום לגבייה. בתחתית הדף מופיעה הודעת תזכורת לשליחה בוואצאפ." },
+        { icon: "bulb", title: "רעיונות", color: "#d97706", text: "ספרייה משותפת לכל התקציבים — שמרי רעיונות לארועים ומתנות כולל פרטי ספק, מחיר וקישור. ניתן להעביר ישירות לתקציב." },
+        { icon: "wallet", title: "מזומן", color: "#ea580c", text: "יומן תנועות כספי: מציג אוטומטית את כל הגבייה וההוצאות מהתקציב, ומאפשר הוספת תנועות ידניות. הלוח 'לפי קופה' מאפשר לפצל לפי מי גבה את הכסף." },
+      ];
+      return (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "flex-end", justifyContent: "center" }} onClick={onClose}>
+          <div style={{ background: "white", borderRadius: "20px 20px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 480, maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <div style={{ fontWeight: 900, fontSize: 20, color: "#0f172a" }}>מדריך שימוש — Kupati</div>
+              <button onClick={onClose} style={{ background: "#f1f5f9", border: "none", borderRadius: 10, padding: "6px 12px", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "#64748b" }}>סגור ✕</button>
+            </div>
+            {sections.map(s => (
+              <div key={s.title} style={{ display: "flex", gap: 14, marginBottom: 18, alignItems: "flex-start" }}>
+                <div style={{ background: `${s.color}18`, borderRadius: 12, padding: 10, flexShrink: 0 }}>
+                  <Icon n={s.icon} s={22} c={s.color} w={2} />
+                </div>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: 15, color: "#0f172a", marginBottom: 4 }}>{s.title}</div>
+                  <div style={{ fontSize: 13, color: "#475569", lineHeight: 1.7 }}>{s.text}</div>
+                </div>
+              </div>
+            ))}
+            <div style={{ background: "#f0fdfa", borderRadius: 12, padding: 14, marginTop: 8, fontSize: 13, color: "#0f172a", lineHeight: 1.7 }}>
+              <div style={{ fontWeight: 700, marginBottom: 4 }}>טיפים:</div>
+              <div>• לחצי <strong>שמור + חדש</strong> להוספה מהירה של מספר רשומות</div>
+              <div>• ניתן לפצל 'שולם ע״י' בין מספר קופות — הפרידי בפסיק (לדוגמה: קופת ו1, קופת ו2)</div>
+              <div>• לחצי על סמל הדו״ח בכרטיס התקציב להפקת PDF שנתי</div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const EMPTY_BUDGET_FORM = { name: "", className: "", year: getDefaultYear(), colorKey: "teal", feePerStudent: "500", members: [], whatsappGroups: [] };
 
     function BudgetListCard({ budget, onSelect, onEdit, onDelete, onCopy, onReport }) {
-      const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.purple;
+      const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.teal;
       const paidCount  = budget.students.filter(s => s.paid).length;
       const total      = budget.students.length;
       const budgetSum  = budget.events.reduce((s, e) => s + e.budget, 0);
@@ -380,7 +469,7 @@ ${eventRows}</table>
               </>
             )}
             <div style={{ display: "flex", gap: 14, fontSize: 12, color: "#64748b", alignItems: "center" }}>
-              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="#7c3aed" w={2} /> ₪{budgetSum.toLocaleString()} תקציב</span>
+              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="#0d9488" w={2} /> ₪{budgetSum.toLocaleString()} תקציב</span>
               <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="wallet" s={13} c="#0ea5e9" w={2} /> ₪{collected.toLocaleString()} נגבה</span>
               {budget.feePerStudent && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={13} c="#10b981" w={2} /> ₪{budget.feePerStudent}/ילד</span>}
             </div>
@@ -416,7 +505,7 @@ ${eventRows}</table>
       const removeGroup = (i) => set("whatsappGroups", (form.whatsappGroups || []).filter((_, j) => j !== i));
 
       return (
-        <Card style={{ border: "2px solid #ede9fe" }}>
+        <Card style={{ border: "2px solid #ccfbf1" }}>
           <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 12 }}>{title}</div>
 
           <FieldLabel>שם הועד / הקבוצה</FieldLabel>
@@ -448,8 +537,8 @@ ${eventRows}</table>
 
           <FieldLabel>חברי הועד</FieldLabel>
           {(form.members || []).map((m, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f8fafc", borderRadius: 8, padding: "6px 10px" }}>
-              <span style={{ flex: 1, fontSize: 13 }}>👤 {m}</span>
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f0fdfa", borderRadius: 8, padding: "6px 10px" }}>
+              <span style={{ flex: 1, fontSize: 13, display:"flex", alignItems:"center", gap: 5 }}><Icon n="user" s={13} c="#64748b" w={1.8} /> {m}</span>
               <button onClick={() => removeMember(i)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 14, padding: 0 }}>✕</button>
             </div>
           ))}
@@ -457,14 +546,14 @@ ${eventRows}</table>
             <input value={newMember} onChange={e => setNewMember(e.target.value)}
               onKeyDown={e => e.key === "Enter" && addMember()}
               placeholder="שם חבר/ת ועד" style={{ ...S.input, marginBottom: 0, flex: 1 }} />
-            <button onClick={addMember} style={{ ...S.btn("#7c3aed"), flex: "none", padding: "10px 14px" }}>+ הוסף</button>
+            <button onClick={addMember} style={{ ...S.btn("#0d9488"), flex: "none", padding: "10px 14px" }}>+ הוסף</button>
           </div>
 
           <FieldLabel>קבוצות וואצאפ</FieldLabel>
           {(form.whatsappGroups || []).map((g, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f0fdf4", borderRadius: 8, padding: "6px 10px" }}>
-              <span style={{ flex: 1, fontSize: 13 }}>💬 {g.name}</span>
-              {g.link && <a href={g.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#7c3aed" }}>🔗</a>}
+              <span style={{ flex: 1, fontSize: 13, display:"flex", alignItems:"center", gap: 5 }}><Icon n="msg" s={13} c="#059669" w={1.8} /> {g.name}</span>
+              {g.link && <a href={g.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#0d9488" }}>🔗</a>}
               <button onClick={() => removeGroup(i)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 14, padding: 0 }}>✕</button>
             </div>
           ))}
@@ -477,7 +566,7 @@ ${eventRows}</table>
           </div>
 
           <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-            <button onClick={() => onSave(form)} style={S.btn("#7c3aed")} disabled={!form.name.trim()}>שמור</button>
+            <button onClick={() => onSave(form)} style={S.btn("#0d9488")} disabled={!form.name.trim()}>שמור</button>
             <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
           </div>
         </Card>
@@ -487,6 +576,7 @@ ${eventRows}</table>
     function HomeScreen({ budgets, setBudgets, onSelect }) {
       const [mode, setMode]         = useState("list"); // list | add | edit
       const [editingId, setEditingId] = useState(null);
+      const [showHelp,  setShowHelp]  = useState(false);
 
       const addBudget = (form) => {
         const b = {
@@ -530,18 +620,38 @@ ${eventRows}</table>
       const editingBudget = budgets.find(b => b.id === editingId);
 
       return (
-        <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
+        <div className="kupati-bg" style={{ minHeight: "100vh" }}>
+          {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
           {/* Header */}
           <div style={{
-            background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-            padding: "24px 20px 28px",
+            background: "linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #10b981 100%)",
+            padding: "32px 20px 36px", position: "relative", overflow: "hidden",
           }}>
-            <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 600, letterSpacing: 1, textTransform: "uppercase", marginBottom: 6 }}>מנהל תקציבים</div>
-            <div style={{ color: "white", fontWeight: 900, fontSize: 24 }}>ועד הורים</div>
-            <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, marginTop: 4 }}>בחרי תקציב לניהול</div>
+            {/* decorative circles */}
+            <div style={{ position: "absolute", top: -30, left: -20, width: 140, height: 140, borderRadius: "50%", background: "rgba(255,255,255,0.07)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: -20, right: 30, width: 100, height: 100, borderRadius: "50%", background: "rgba(245,158,11,0.12)", pointerEvents: "none" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
+              <KupatiLogo size={64} />
+              <div>
+                <div style={{ color: "white", fontWeight: 900, fontSize: 30, letterSpacing: -0.5, lineHeight: 1.1 }}>Kupati</div>
+                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 13, marginTop: 2 }}>ניהול גזברות כיתתית | תקציב וגבייה</div>
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+              <button onClick={() => setMode("add")} style={{
+                background: "rgba(255,255,255,0.22)", border: "1.5px solid rgba(255,255,255,0.4)",
+                borderRadius: 12, padding: "10px 18px", color: "white", fontWeight: 700, fontSize: 14,
+                cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 6,
+              }}><Icon n="plus" s={15} c="white" w={2.5} /> תקציב חדש</button>
+              <button onClick={() => setShowHelp(true)} style={{
+                background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)",
+                borderRadius: 12, padding: "10px 18px", color: "white", fontWeight: 700, fontSize: 14,
+                cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 6,
+              }}><Icon n="bulb" s={15} c="white" w={2} /> הסברים</button>
+            </div>
           </div>
 
-          <div style={{ padding: "20px 14px 30px" }}>
+          <div style={{ padding: "20px 14px 16px" }}>
             {mode === "add" && (
               <BudgetForm title="➕ תקציב חדש" onSave={addBudget} onCancel={() => setMode("list")} />
             )}
@@ -556,7 +666,7 @@ ${eventRows}</table>
 
             {budgets.length === 0 && mode === "list" && (
               <div style={{ textAlign: "center", color: "#94a3b8", padding: "40px 0" }}>
-                <div style={{ fontSize: 40, marginBottom: 12 }}>📋</div>
+                <div style={{ display:"flex", justifyContent:"center", marginBottom: 12 }}><Icon n="chart" s={48} c="#cbd5e1" w={1.2} /></div>
                 <div style={{ fontSize: 15, fontWeight: 600 }}>אין תקציבים עדיין</div>
                 <div style={{ fontSize: 13, marginTop: 4 }}>לחצי על הכפתור למטה כדי להוסיף</div>
               </div>
@@ -576,11 +686,19 @@ ${eventRows}</table>
 
             {mode === "list" && (
               <button onClick={() => setMode("add")} style={{
-                width: "100%", padding: 16, borderRadius: 16, border: "2px dashed #cbd5e1",
-                background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
-                cursor: "pointer", fontFamily: "inherit",
-              }}>+ הוסיפי תקציב חדש</button>
+                width: "100%", padding: 16, borderRadius: 16, border: "2px dashed #99f6e4",
+                background: "rgba(13,148,136,0.04)", color: "#0d9488", fontWeight: 700, fontSize: 14,
+                cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              }}><Icon n="plus" s={16} c="#0d9488" w={2.5} /> הוסיפי תקציב חדש</button>
             )}
+          </div>
+
+          {/* Footer */}
+          <div style={{ textAlign: "center", padding: "18px 20px 32px", color: "#94a3b8", fontSize: 12 }}>
+            <div style={{ fontWeight: 600, color: "#64748b", marginBottom: 4 }}>נוצר ע״י רותם וולף</div>
+            <a href="mailto:rottem.wolf@gmail.com" style={{ color: "#0d9488", textDecoration: "none", fontSize: 12 }}>rottem.wolf@gmail.com</a>
+            <span style={{ margin: "0 6px", color: "#cbd5e1" }}>•</span>
+            <a href="mailto:rottem.wolf@gmail.com?subject=Kupati Bug Report" style={{ color: "#94a3b8", textDecoration: "none", fontSize: 12 }}>דיווח על באג</a>
           </div>
         </div>
       );
@@ -591,9 +709,9 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     const EMPTY_EVENT = { name: "", date: "", budget: "", spent: "", category: "פעילות", notes: "", paidBy: "", done: false, type: "expense" };
 
-    function EventForm({ data, onChange, onSave, onCancel, title }) {
+    function EventForm({ data, onChange, onSave, onSaveAndNew, onCancel, title }) {
       return (
-        <Card style={{ border: "2px solid #ede9fe" }}>
+        <Card style={{ border: "2px solid #ccfbf1" }}>
           <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
           <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
             {["expense", "income"].map(t => (
@@ -641,7 +759,8 @@ ${eventRows}</table>
             הושלם ✅
           </label>
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={onSave} style={S.btn("#7c3aed")} disabled={!data.name.trim()}>שמור</button>
+            <button onClick={onSave} style={S.btn("#0d9488")} disabled={!data.name.trim()}>שמור</button>
+            {onSaveAndNew && <button onClick={onSaveAndNew} style={S.btn("#0f172a")} disabled={!data.name.trim()}>+ שמור וחדש</button>}
             <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
           </div>
         </Card>
@@ -665,8 +784,13 @@ ${eventRows}</table>
 
       const addEvent = () => {
         if (!addForm.name.trim()) return;
-        setEvents([...events, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
+        setEvents(prev => [...prev, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
         setAddForm(EMPTY_EVENT); setShowAdd(false);
+      };
+      const addEventAndNew = () => {
+        if (!addForm.name.trim()) return;
+        setEvents(prev => [...prev, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
+        setAddForm(EMPTY_EVENT);
       };
 
       const startEdit  = (ev) => { setEditId(ev.id); setEditForm({ ...ev, budget: String(ev.budget), spent: String(ev.spent), type: ev.type || "expense" }); };
@@ -685,8 +809,8 @@ ${eventRows}</table>
             {[
               { l: "תקציב הוצאות", v: `₪${totalExpBudget.toLocaleString()}`, c: "#ef4444", icon: "expense" },
               { l: "תקציב הכנסות", v: `₪${totalIncBudget.toLocaleString()}`, c: "#059669", icon: "income" },
-              { l: "שולם בפועל",   v: `₪${totalSpent.toLocaleString()}`,     c: "#db2777", icon: "cash" },
-              { l: "יתרה תקציבית", v: `₪${(totalIncBudget - totalExpBudget).toLocaleString()}`, c: totalIncBudget >= totalExpBudget ? "#7c3aed" : "#ef4444", icon: "chart" },
+              { l: "שולם בפועל",   v: `₪${totalSpent.toLocaleString()}`,     c: "#ea580c", icon: "cash" },
+              { l: "יתרה תקציבית", v: `₪${(totalIncBudget - totalExpBudget).toLocaleString()}`, c: totalIncBudget >= totalExpBudget ? "#0d9488" : "#ef4444", icon: "chart" },
             ].map(x => (
               <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
                 <div style={{ display:"flex", justifyContent:"center", marginBottom: 2 }}><Icon n={x.icon} s={18} c={x.c} w={2} /></div>
@@ -702,7 +826,7 @@ ${eventRows}</table>
               <button key={c} onClick={() => setFilter(c)} style={{
                 padding: "6px 12px", borderRadius: 20, border: "none", cursor: "pointer",
                 fontFamily: "inherit", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap",
-                background: filter === c ? "#7c3aed" : "#f1f5f9",
+                background: filter === c ? "#0d9488" : "#f1f5f9",
                 color:      filter === c ? "white"   : "#64748b",
               }}>{c}</button>
             ))}
@@ -714,7 +838,7 @@ ${eventRows}</table>
             return editId === ev.id ? (
               <EventForm key={ev.id} title="✏️ עריכת ארוע" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
             ) : (
-              <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "#22c55e" : "#7c3aed"}` }}>
+              <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "#22c55e" : "#0d9488"}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
@@ -729,20 +853,20 @@ ${eventRows}</table>
                     <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
                       <Badge text={ev.category} cat={ev.category} />
                       <span style={{ fontSize: 11, color: "#94a3b8" }}>{formatDate(ev.date)}</span>
-                      {ev.paidBy && <span style={{ fontSize: 11, color: "#64748b" }}>👤 {ev.paidBy}</span>}
+                      {ev.paidBy && <span style={{ fontSize: 11, color: "#64748b", display:"inline-flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {ev.paidBy}</span>}
                     </div>
-                    {ev.notes && <div style={{ fontSize: 11, color: "#64748b" }}>📝 {ev.notes}</div>}
+                    {ev.notes && <div style={{ fontSize: 11, color: "#64748b", display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="#94a3b8" w={1.8} /> {ev.notes}</div>}
                   </div>
                   <div style={{ textAlign: "left", flexShrink: 0, marginRight: 8 }}>
                     <div style={{ fontWeight: 900, fontSize: 16, color: "#0f172a" }}>₪{ev.budget.toLocaleString()}</div>
                     <div style={{ fontSize: 10, color: "#94a3b8" }}>תקציב</div>
-                    {ev.spent > 0 && <div style={{ fontSize: 12, fontWeight: 700, color: isIncome ? "#059669" : "#db2777", marginTop: 2 }}>₪{ev.spent.toLocaleString()} {isIncome ? "התקבל" : "שולם"}</div>}
+                    {ev.spent > 0 && <div style={{ fontSize: 12, fontWeight: 700, color: isIncome ? "#059669" : "#ea580c", marginTop: 2 }}>₪{ev.spent.toLocaleString()} {isIncome ? "התקבל" : "שולם"}</div>}
                   </div>
                 </div>
                 {ev.spent > 0 && ev.budget > 0 && (
                   <ProgressBar
                     pct={(ev.spent / ev.budget) * 100}
-                    color={isIncome ? "#22c55e" : ((ev.spent / ev.budget) > 1 ? "#ef4444" : (ev.spent / ev.budget) > 0.8 ? "#f59e0b" : "#7c3aed")}
+                    color={isIncome ? "#22c55e" : ((ev.spent / ev.budget) > 1 ? "#ef4444" : (ev.spent / ev.budget) > 0.8 ? "#f59e0b" : "#0d9488")}
                     style={{ marginTop: 8, marginBottom: 4 }}
                   />
                 )}
@@ -756,11 +880,11 @@ ${eventRows}</table>
 
           {/* Add form */}
           {showAdd ? (
-            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onCancel={() => setShowAdd(false)} />
+            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onSaveAndNew={addEventAndNew} onCancel={() => setShowAdd(false)} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
-              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+              background: "transparent", color: "#0d9488", fontWeight: 700, fontSize: 14,
               cursor: "pointer", fontFamily: "inherit",
             }}>+ הוסיפי ארוע</button>
           )}
@@ -789,10 +913,18 @@ ${eventRows}</table>
         s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? feePerStudent : s.amount } : s
       ));
 
+      const saveStudentData = (data) => {
+        if (!data.name.trim()) return false;
+        setStudents(prev => [...prev, { id: Date.now(), name: data.name.trim(), paid: !!data.paid, amount: Number(data.amount) || 0, note: data.note || "", paidBy: data.paidBy || "", partial: !!data.partial }]);
+        return true;
+      };
       const addStudent = () => {
-        if (!addForm.name.trim()) return;
-        setStudents([...students, { id: Date.now(), name: addForm.name.trim(), paid: !!addForm.paid, amount: Number(addForm.amount) || 0, note: addForm.note || "", paidBy: addForm.paidBy || "", partial: !!addForm.partial }]);
+        if (!saveStudentData(addForm)) return;
         setAddForm(EMPTY_STUDENT_FORM); setShowAdd(false);
+      };
+      const addStudentAndNew = () => {
+        if (!saveStudentData(addForm)) return;
+        setAddForm(EMPTY_STUDENT_FORM);
       };
 
       const startEdit = (s) => { setEditId(s.id); setEditForm({ ...s, amount: String(s.amount) }); };
@@ -810,8 +942,8 @@ ${eventRows}</table>
       const whatsappMsg = unpaidStudents.length === 0
         ? null
         : paidCount === 0
-          ? `שלום כיתה יקרה! 😊\nנפתחה גבייה לדמי ועד הורים לשנה"ל: ₪${feePerStudent} לתלמיד.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`
-          : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${feePerStudent}).\nטרם שולם: ${unpaidStudents.map(s => s.name).join(', ')}.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`;
+          ? `שלום כיתה יקרה! 😊\nנפתחה גבייה לדמי ועד הורים לשנה"ל: ₪${Number(feePerStudent).toLocaleString()} לתלמיד.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`
+          : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${Number(feePerStudent).toLocaleString()}).\nטרם שולם: ${unpaidStudents.map(s => s.name).join(', ')}.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`;
 
       return (
         <div>
@@ -820,7 +952,7 @@ ${eventRows}</table>
             <FieldLabel>קישור לפייבוקס / ביט</FieldLabel>
             <input value={payboxLink} onChange={e => setPayboxLink && setPayboxLink(e.target.value)}
               placeholder="https://paybox.me/..." style={{ ...S.input, marginBottom: payboxLink ? 6 : 0 }} />
-            {payboxLink && <a href={payboxLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#7c3aed" }}>🔗 פתח קישור לתשלום</a>}
+            {payboxLink && <a href={payboxLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#0d9488" }}>🔗 פתח קישור לתשלום</a>}
           </Card>
 
           {/* Class WhatsApp link */}
@@ -849,19 +981,36 @@ ${eventRows}</table>
             </div>
           </Card>
 
-          {/* Stats */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 16 }}>
-            {[
-              { l: "שילמו",    v: paidCount,                            c: "#059669", icon: "check" },
-              { l: "לא שילמו", v: students.length - paidCount,          c: "#ef4444", icon: "x" },
-              { l: "נגבה",     v: `₪${totalCollected.toLocaleString()}`, c: "#7c3aed", icon: "wallet" },
-            ].map(x => (
-              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
-                <div style={{ display:"flex", justifyContent:"center", marginBottom: 2 }}><Icon n={x.icon} s={18} c={x.c} w={2.2} /></div>
-                <div style={{ fontWeight: 900, fontSize: 18, color: x.c }}>{x.v}</div>
-                <div style={{ fontSize: 10, color: "#94a3b8" }}>{x.l}</div>
+          {/* Gradient summary header */}
+          <div style={{ background: "linear-gradient(135deg,#059669,#0d9488)", borderRadius: 20, padding: 20, color: "white", marginBottom: 12 }}>
+            <div style={{ opacity: 0.75, fontSize: 13, marginBottom: 2 }}>סה״כ נגבה</div>
+            <div style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
+              ₪{totalCollected.toLocaleString()}
+            </div>
+            {collectionBudgetTotal > 0 && (
+              <div style={{ marginTop: 10 }}>
+                <div style={{ background: "rgba(255,255,255,0.2)", borderRadius: 100, height: 7, overflow: "hidden" }}>
+                  <div style={{ height: "100%", borderRadius: 100, background: "rgba(255,255,255,0.7)", width: `${Math.min((totalCollected / collectionBudgetTotal) * 100, 100)}%`, transition: "width 0.4s ease" }} />
+                </div>
               </div>
-            ))}
+            )}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 12 }}>
+              <div>
+                <div style={{ opacity: 0.65, fontSize: 10 }}>שילמו</div>
+                <div style={{ fontWeight: 700, fontSize: 15, display:"flex", alignItems:"center", gap: 4 }}><Icon n="check" s={13} c="white" w={2.5} /> {paidCount}/{students.length}</div>
+              </div>
+              <div>
+                <div style={{ opacity: 0.65, fontSize: 10 }}>יעד גבייה</div>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>₪{collectionBudgetTotal.toLocaleString()}</div>
+              </div>
+              <div>
+                <div style={{ opacity: 0.65, fontSize: 10 }}>ממתינים</div>
+                <div style={{ fontWeight: 700, fontSize: 15, color: students.length - paidCount > 0 ? "#fde68a" : "#86efac", display:"flex", alignItems:"center", gap: 4 }}>
+                  {students.length - paidCount > 0 && <Icon n="x" s={13} c="#fde68a" w={2.5} />}
+                  {students.length - paidCount > 0 ? `${students.length - paidCount} ילדים` : "✓ הכל"}
+                </div>
+              </div>
+            </div>
           </div>
 
           <input placeholder="🔍 חפשי תלמיד..." value={search}
@@ -869,7 +1018,7 @@ ${eventRows}</table>
 
           {students.length > 0 && (
             <>
-              <ProgressBar pct={(paidCount / students.length) * 100} color="linear-gradient(90deg,#059669,#7c3aed)" />
+              <ProgressBar pct={(paidCount / students.length) * 100} color="linear-gradient(90deg,#0d9488,#10b981)" />
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#94a3b8", marginBottom: 14, marginTop: 4 }}>
                 <span>0%</span>
                 <span style={{ fontWeight: 600 }}>{Math.round((paidCount / students.length) * 100)}% שולם</span>
@@ -880,7 +1029,7 @@ ${eventRows}</table>
 
           {filtered.map(s => (
             editId === s.id ? (
-              <Card key={s.id} style={{ border: "2px solid #ede9fe" }}>
+              <Card key={s.id} style={{ border: "2px solid #ccfbf1" }}>
                 <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>✏️ עריכת תלמיד</div>
                 <FieldLabel>שם</FieldLabel>
                 <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} style={S.input} autoFocus />
@@ -899,7 +1048,7 @@ ${eventRows}</table>
                   🟠 תשלום חלקי
                 </label>
                 <div style={{ display: "flex", gap: 8 }}>
-                  <button onClick={saveEdit} style={S.btn("#7c3aed")}>שמור</button>
+                  <button onClick={saveEdit} style={S.btn("#0d9488")}>שמור</button>
                   <button onClick={cancelEdit} style={S.btn("#94a3b8")}>ביטול</button>
                 </div>
               </Card>
@@ -916,11 +1065,11 @@ ${eventRows}</table>
                       {students.indexOf(s) + 1}. {s.name}
                       {s.partial && !s.paid && <span style={{ fontSize: 10, background: "#fed7aa", color: "#c2410c", borderRadius: 6, padding: "1px 6px", fontWeight: 700 }}>חלקי</span>}
                     </div>
-                    {s.note   && <div style={{ fontSize: 11, color: "#f59e0b", marginTop: 2 }}>📝 {s.note}</div>}
-                    {s.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {s.paidBy}</div>}
+                    {s.note   && <div style={{ fontSize: 11, color: "#f59e0b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="#f59e0b" w={1.8} /> {s.note}</div>}
+                    {s.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {s.paidBy}</div>}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                    {(s.paid || s.amount > 0) && <span style={{ fontSize: 12, fontWeight: 700, color: s.paid ? "#059669" : "#f97316" }}>₪{s.amount}</span>}
+                    {(s.paid || s.amount > 0) && <span style={{ fontSize: 12, fontWeight: 700, color: s.paid ? "#059669" : "#f97316" }}>₪{(s.amount || 0).toLocaleString()}</span>}
                     <button onClick={() => toggle(s.id)} style={{
                       width: 36, height: 36, borderRadius: "50%", border: "none", cursor: "pointer",
                       background: s.paid ? "#dcfce7" : s.partial ? "#fed7aa" : "#fee2e2", fontSize: 18,
@@ -936,7 +1085,7 @@ ${eventRows}</table>
           ))}
 
           {showAdd ? (
-            <Card style={{ border: "2px solid #ede9fe" }}>
+            <Card style={{ border: "2px solid #ccfbf1" }}>
               <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>➕ תלמיד/ה חדש/ה</div>
               <FieldLabel>שם התלמיד/ה *</FieldLabel>
               <input value={addForm.name} onChange={e => setAddForm({ ...addForm, name: e.target.value })}
@@ -959,14 +1108,15 @@ ${eventRows}</table>
                 🟠 תשלום חלקי
               </label>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={addStudent} style={S.btn("#7c3aed")} disabled={!addForm.name.trim()}>הוסיפי</button>
+                <button onClick={addStudent} style={S.btn("#059669")} disabled={!addForm.name.trim()}>הוסיפי</button>
+                <button onClick={addStudentAndNew} style={S.btn("#0f172a")} disabled={!addForm.name.trim()}>+ שמור וחדש</button>
                 <button onClick={() => { setShowAdd(false); setAddForm(EMPTY_STUDENT_FORM); }} style={S.btn("#94a3b8")}>ביטול</button>
               </div>
             </Card>
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
-              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+              background: "transparent", color: "#0d9488", fontWeight: 700, fontSize: 14,
               cursor: "pointer", fontFamily: "inherit", marginTop: 4,
             }}>+ הוסיפי תלמיד/ה</button>
           )}
@@ -1003,14 +1153,14 @@ ${eventRows}</table>
 
     function GiftForm({ data, onChange, onSave, onCancel, title }) {
       return (
-        <Card style={{ border: "2px solid #ede9fe" }}>
+        <Card style={{ border: "2px solid #ccfbf1" }}>
           <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
           <FieldLabel>אמוג׳י</FieldLabel>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
             {EMOJIS.map(e => (
               <button key={e} onClick={() => onChange({ ...data, icon: e })} style={{
-                fontSize: 20, background: data.icon === e ? "#ede9fe" : "#f8fafc",
-                border: data.icon === e ? "2px solid #7c3aed" : "2px solid transparent",
+                fontSize: 20, background: data.icon === e ? "#ccfbf1" : "#f8fafc",
+                border: data.icon === e ? "2px solid #0d9488" : "2px solid transparent",
                 borderRadius: 8, padding: 4, cursor: "pointer",
               }}>{e}</button>
             ))}
@@ -1036,7 +1186,7 @@ ${eventRows}</table>
           <input type="file" accept="image/*" onChange={e => handlePhotoUpload(e, data, onChange)}
             style={{ ...S.input, padding: "6px 12px", cursor: "pointer" }} />
           <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
-            <button onClick={onSave} style={S.btn("#7c3aed")} disabled={!data.name.trim()}>שמור</button>
+            <button onClick={onSave} style={S.btn("#0d9488")} disabled={!data.name.trim()}>שמור</button>
             <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
           </div>
         </Card>
@@ -1097,13 +1247,13 @@ ${eventRows}</table>
                   {gift.notes      && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>{gift.notes}</div>}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 6, marginBottom: 8 }}>
                     {gift.tag        && <span style={{ fontSize: 10, fontWeight: 700, background: "#f0fdf4", color: "#059669", borderRadius: 8, padding: "2px 6px" }}>{gift.tag}</span>}
-                    {gift.priceRange && <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>{gift.priceRange}</span>}
+                    {gift.priceRange && <span style={{ fontSize: 12, fontWeight: 700, color: "#0d9488" }}>{gift.priceRange}</span>}
                   </div>
                   {gift.vendorLink && (
-                    <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#7c3aed", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
+                    <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#0d9488", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
                   )}
                   <div style={{ display: "flex", gap: 4 }}>
-                    {onAddEvent && <button onClick={() => startCopy(gift)} style={{ ...S.smallBtn("#ede9fe", "#7c3aed"), flex: 1, textAlign: "center" }} title="הוסף לתקציב">📊</button>}
+                    {onAddEvent && <button onClick={() => startCopy(gift)} style={{ ...S.smallBtn("#ccfbf1", "#0d9488"), flex: 1, textAlign: "center", display:"flex", alignItems:"center", justifyContent:"center" }} title="הוסף לתקציב"><Icon n="chart" s={12} c="#0d9488" w={2} /></button>}
                     <button onClick={() => startEdit(gift)} style={{ ...S.smallBtn("#e2e8f0", "#64748b"), flex: 1, textAlign: "center" }}>✏️</button>
                     <button onClick={() => removeGift(gift.id)} style={{ ...S.smallBtn("#fee2e2", "#ef4444"), flex: 1, textAlign: "center" }}>✕</button>
                   </div>
@@ -1119,8 +1269,8 @@ ${eventRows}</table>
 
           {/* Copy-to-budget form */}
           {copyGiftId !== null && (
-            <Card style={{ border: "2px solid #ede9fe" }}>
-              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>📊 הוסיפי לתקציב</div>
+            <Card style={{ border: "2px solid #ccfbf1" }}>
+              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14, display:"flex", alignItems:"center", gap: 6 }}><Icon n="chart" s={15} c="#0d9488" w={2} /> הוסיפי לתקציב</div>
               <FieldLabel>שם הארוע</FieldLabel>
               <input value={copyForm.name} onChange={e => setCopyForm({ ...copyForm, name: e.target.value })} style={S.input} />
               <FieldLabel>קטגוריה</FieldLabel>
@@ -1140,7 +1290,7 @@ ${eventRows}</table>
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={saveCopy} style={S.btn("#7c3aed")} disabled={!copyForm.name.trim()}>הוסיפי לתקציב</button>
+                <button onClick={saveCopy} style={S.btn("#0d9488")} disabled={!copyForm.name.trim()}>הוסיפי לתקציב</button>
                 <button onClick={() => setCopyGiftId(null)} style={S.btn("#94a3b8")}>ביטול</button>
               </div>
             </Card>
@@ -1151,7 +1301,7 @@ ${eventRows}</table>
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
-              background: "transparent", color: "#7c3aed", fontWeight: 700, fontSize: 14,
+              background: "transparent", color: "#0d9488", fontWeight: 700, fontSize: 14,
               cursor: "pointer", fontFamily: "inherit",
             }}>+ הוסיפי רעיון</button>
           )}
@@ -1164,7 +1314,7 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     const EMPTY_CASH = { date: "", desc: "", amount: "", type: "income", paidBy: "" };
 
-    function CashForm({ data, onChange, onSave, onCancel, title }) {
+    function CashForm({ data, onChange, onSave, onSaveAndNew, onCancel, title }) {
       return (
         <Card style={{ border: "2px solid #1e293b20" }}>
           <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
@@ -1194,6 +1344,7 @@ ${eventRows}</table>
           <input value={data.paidBy || ""} onChange={e => onChange({ ...data, paidBy: e.target.value })} placeholder="שם" style={S.input} />
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={onSave} style={S.btn("#0f172a")} disabled={!data.desc.trim() || !data.amount}>שמור</button>
+            {onSaveAndNew && <button onClick={onSaveAndNew} style={S.btn("#475569")} disabled={!data.desc.trim() || !data.amount}>+ שמור וחדש</button>}
             <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
           </div>
         </Card>
@@ -1224,35 +1375,44 @@ ${eventRows}</table>
       // Breakdown by קופה: all amounts (positive + negative) — named collectors + unassigned pool
       const byKupa = {};
       let kupaTotal = 0;
-      // Student payments
-      students.forEach(s => {
-        if ((s.amount || 0) !== 0) {
-          if (s.paidBy) { if (!byKupa[s.paidBy]) byKupa[s.paidBy] = 0; byKupa[s.paidBy] += s.amount; }
-          else kupaTotal += s.amount;
+      // Helper: allocate amount to named payer(s); comma-separated names split equally, remainder to קופת איסוף
+      const allocateToKupa = (paidBy, amount) => {
+        if (!paidBy || !paidBy.trim()) { kupaTotal += amount; return; }
+        const names = paidBy.split(',').map(n => n.trim()).filter(Boolean);
+        if (names.length === 1) {
+          if (!byKupa[names[0]]) byKupa[names[0]] = 0;
+          byKupa[names[0]] += amount;
+        } else {
+          const sign = amount >= 0 ? 1 : -1;
+          const perName = Math.floor(Math.abs(amount) / names.length);
+          names.forEach(name => {
+            if (!byKupa[name]) byKupa[name] = 0;
+            byKupa[name] += perName * sign;
+          });
+          kupaTotal += amount - (perName * names.length * sign);
         }
-      });
+      };
+      // Student payments
+      students.forEach(s => { if ((s.amount || 0) !== 0) allocateToKupa(s.paidBy, s.amount); });
       // Manual cash log (positive and negative)
-      cashLog.forEach(c => {
-        if (c.paidBy) { if (!byKupa[c.paidBy]) byKupa[c.paidBy] = 0; byKupa[c.paidBy] += c.amount; }
-        else kupaTotal += c.amount;
-      });
+      cashLog.forEach(c => allocateToKupa(c.paidBy, c.amount));
       // Budget expenses (always negative)
-      budgetExpenses.forEach(e => {
-        if (e.paidBy) { if (!byKupa[e.paidBy]) byKupa[e.paidBy] = 0; byKupa[e.paidBy] += e.amount; }
-        else kupaTotal += e.amount;
-      });
+      budgetExpenses.forEach(e => allocateToKupa(e.paidBy, e.amount));
       // Budget incomes (always positive)
-      budgetIncomes.forEach(e => {
-        if (e.paidBy) { if (!byKupa[e.paidBy]) byKupa[e.paidBy] = 0; byKupa[e.paidBy] += e.amount; }
-        else kupaTotal += e.amount;
-      });
+      budgetIncomes.forEach(e => allocateToKupa(e.paidBy, e.amount));
       const kupaEntries = Object.entries(byKupa);
 
       const addEntry = () => {
         if (!addForm.desc.trim() || !addForm.amount) return;
         const amt = Number(addForm.amount) * (addForm.type === "expense" ? -1 : 1);
-        setCashLog([...cashLog, { id: Date.now(), ...addForm, amount: amt }]);
+        setCashLog(prev => [...prev, { id: Date.now(), ...addForm, amount: amt }]);
         setAddForm(EMPTY_CASH); setShowAdd(false);
+      };
+      const addEntryAndNew = () => {
+        if (!addForm.desc.trim() || !addForm.amount) return;
+        const amt = Number(addForm.amount) * (addForm.type === "expense" ? -1 : 1);
+        setCashLog(prev => [...prev, { id: Date.now(), ...addForm, amount: amt }]);
+        setAddForm(EMPTY_CASH);
       };
 
       const startEdit  = (e) => { setEditId(e.id); setEditForm({ ...e, amount: String(Math.abs(e.amount)), type: e.amount >= 0 ? "income" : "expense" }); };
@@ -1297,11 +1457,11 @@ ${eventRows}</table>
 
           {/* Breakdown by קופה */}
           {(kupaEntries.length > 0 || kupaTotal !== 0) && (
-            <Card style={{ background: "#f8fafc", marginBottom: 12 }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: "#1e293b", marginBottom: 8 }}>💼 לפי קופה</div>
+            <Card style={{ background: "#f0fdfa", marginBottom: 12 }}>
+              <div style={{ fontWeight: 700, fontSize: 13, color: "#1e293b", marginBottom: 8, display:"flex", alignItems:"center", gap: 6 }}><Icon n="wallet" s={14} c="#1e293b" w={2} /> לפי קופה</div>
               {kupaEntries.map(([name, total]) => (
                 <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>👤 {name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a", display:"flex", alignItems:"center", gap: 5 }}><Icon n="user" s={13} c="#475569" w={1.8} /> {name}</span>
                   <span style={{ fontSize: 13, fontWeight: 700, color: total >= 0 ? "#059669" : "#ef4444" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString()}</span>
                 </div>
               ))}
@@ -1342,7 +1502,7 @@ ${eventRows}</table>
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                          <span style={{ background: "#dcfce7", color: "#059669", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>📊 תקציב</span>
+                          <span style={{ background: "#dcfce7", color: "#059669", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700, display:"inline-flex", alignItems:"center", gap: 3 }}><Icon n="chart" s={9} c="#059669" w={2} /> תקציב</span>
                           <div style={{ fontWeight: 800, fontSize: 15, color: "#059669" }}>+₪{entry.amount.toLocaleString()}</div>
                         </div>
                       </div>
@@ -1352,14 +1512,14 @@ ${eventRows}</table>
               )}
               {budgetExpenses.length > 0 && (
                 <>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                    📊 הוצאות מתקציב
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#0d9488", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                    <Icon n="chart" s={13} c="#0d9488" w={2} /> הוצאות מתקציב
                     <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 400 }}>עריכה רק מלשונית תקציב</span>
                   </div>
                   {budgetExpenses.map(entry => (
                     <div key={entry.id} style={{
-                      background: "#faf5ff", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
-                      boxShadow: "0 1px 6px rgba(0,0,0,0.05)", borderRight: "4px solid #a855f7",
+                      background: "#f0fdfa", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
+                      boxShadow: "0 1px 6px rgba(0,0,0,0.05)", borderRight: "4px solid #14b8a6",
                     }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ flex: 1 }}>
@@ -1369,7 +1529,7 @@ ${eventRows}</table>
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                          <span style={{ background: "#ede9fe", color: "#7c3aed", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>📊 תקציב</span>
+                          <span style={{ background: "#ccfbf1", color: "#0d9488", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700, display:"inline-flex", alignItems:"center", gap: 3 }}><Icon n="chart" s={9} c="#0d9488" w={2} /> תקציב</span>
                           <div style={{ fontWeight: 800, fontSize: 15, color: "#ef4444" }}>-₪{Math.abs(entry.amount).toLocaleString()}</div>
                         </div>
                       </div>
@@ -1378,7 +1538,7 @@ ${eventRows}</table>
                 </>
               )}
               {withBal.length > 0 && (
-                <div style={{ fontSize: 12, fontWeight: 700, color: "#64748b", marginBottom: 6, marginTop: 12 }}>📝 תנועות ידניות</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#64748b", marginBottom: 6, marginTop: 12, display:"flex", alignItems:"center", gap: 5 }}><Icon n="pencil" s={13} c="#64748b" w={1.8} /> תנועות ידניות</div>
               )}
             </>
           )}
@@ -1398,7 +1558,7 @@ ${eventRows}</table>
                     <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
                       {entry.date}
                     </div>
-                    {entry.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {entry.paidBy}</div>}
+                    {entry.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {entry.paidBy}</div>}
                   </div>
                   <div style={{ textAlign: "left", flexShrink: 0 }}>
                     <div style={{ fontWeight: 800, fontSize: 15, color: entry.amount > 0 ? "#059669" : "#ef4444" }}>
@@ -1416,7 +1576,7 @@ ${eventRows}</table>
           ))}
 
           {showAdd ? (
-            <CashForm title="➕ תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onCancel={() => setShowAdd(false)} />
+            <CashForm title="➕ תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onSaveAndNew={addEntryAndNew} onCancel={() => setShowAdd(false)} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
@@ -1432,7 +1592,7 @@ ${eventRows}</table>
     // BUDGET SCREEN — 4-tab layout for a single budget
     // ─────────────────────────────────────────
     function BudgetScreen({ budget, onUpdate, onBack, activeTab, setActiveTab, gifts, setGifts }) {
-      const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.purple;
+      const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.teal;
 
       const setStudents          = (students)  => onUpdate({ students });
       const setEvents            = (events)    => onUpdate({ events });
@@ -1452,7 +1612,7 @@ ${eventRows}</table>
       const totalInKupa           = collectedFromStudents + cashLogBalance - budgetExpensesTotal + budgetIncomesTotal;
 
       return (
-        <div style={{ minHeight: "100vh", maxWidth: 480, margin: "0 auto", background: "#f8fafc", fontFamily: "'Heebo', sans-serif", direction: "rtl" }}>
+        <div className="kupati-bg" style={{ minHeight: "100vh", maxWidth: 480, margin: "0 auto", fontFamily: "'Heebo', sans-serif", direction: "rtl" }}>
           {/* Header */}
           <div style={{
             background: `linear-gradient(135deg, ${clr.from} 0%, ${clr.to} 100%)`,
@@ -1462,8 +1622,8 @@ ${eventRows}</table>
             <button onClick={onBack} style={{
               background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 10,
               padding: "6px 12px", color: "white", cursor: "pointer", fontFamily: "inherit",
-              fontSize: 13, fontWeight: 600, marginBottom: 10, display: "flex", alignItems: "center", gap: 4,
-            }}>← כל התקציבים</button>
+              fontSize: 13, fontWeight: 600, marginBottom: 10, display: "flex", alignItems: "center", gap: 6,
+            }}><Icon n="arrowleft" s={14} c="white" w={2} /> Kupati</button>
             <div style={{ color: "white", fontWeight: 900, fontSize: 20, marginBottom: 2 }}>{budget.name}</div>
             <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
           </div>
@@ -1472,7 +1632,7 @@ ${eventRows}</table>
           <div style={{ display: "flex", gap: 8, padding: "0 14px", marginTop: -34, position: "relative", zIndex: 10, overflowX: "auto", paddingBottom: 4 }}>
             {[
               { icon: "chart",   l: "תקציב", v: `₪${totalBudget.toLocaleString()}`, c: clr.from },
-              { icon: "expense", l: "שולם",  v: `₪${totalSpent.toLocaleString()}`,  c: "#db2777" },
+              { icon: "expense", l: "שולם",  v: `₪${totalSpent.toLocaleString()}`,  c: "#ea580c" },
               { icon: "users",   l: "שילמו", v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "#059669" },
               { icon: "wallet",  l: "מזומן", v: `₪${totalInKupa.toLocaleString()}`,   c: "#ea580c" },
             ].map(s => (
@@ -1508,7 +1668,7 @@ ${eventRows}</table>
       name: "ועד הורים",
       className: "כיתה ו׳",
       year: "תשפ״ד–תשפ״ה",
-      colorKey: "purple",
+      colorKey: "teal",
       feePerStudent: 500,
       expectedStudents: 27,
       students: DEMO_STUDENTS,
