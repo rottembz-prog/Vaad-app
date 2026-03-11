@@ -449,7 +449,7 @@ ${eventRows}</table>
           <FieldLabel>חברי הועד</FieldLabel>
           {(form.members || []).map((m, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f8fafc", borderRadius: 8, padding: "6px 10px" }}>
-              <span style={{ flex: 1, fontSize: 13 }}>👤 {m}</span>
+              <span style={{ flex: 1, fontSize: 13, display:"flex", alignItems:"center", gap: 5 }}><Icon n="user" s={13} c="#64748b" w={1.8} /> {m}</span>
               <button onClick={() => removeMember(i)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 14, padding: 0 }}>✕</button>
             </div>
           ))}
@@ -463,7 +463,7 @@ ${eventRows}</table>
           <FieldLabel>קבוצות וואצאפ</FieldLabel>
           {(form.whatsappGroups || []).map((g, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f0fdf4", borderRadius: 8, padding: "6px 10px" }}>
-              <span style={{ flex: 1, fontSize: 13 }}>💬 {g.name}</span>
+              <span style={{ flex: 1, fontSize: 13, display:"flex", alignItems:"center", gap: 5 }}><Icon n="msg" s={13} c="#059669" w={1.8} /> {g.name}</span>
               {g.link && <a href={g.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#7c3aed" }}>🔗</a>}
               <button onClick={() => removeGroup(i)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 14, padding: 0 }}>✕</button>
             </div>
@@ -556,7 +556,7 @@ ${eventRows}</table>
 
             {budgets.length === 0 && mode === "list" && (
               <div style={{ textAlign: "center", color: "#94a3b8", padding: "40px 0" }}>
-                <div style={{ fontSize: 40, marginBottom: 12 }}>📋</div>
+                <div style={{ display:"flex", justifyContent:"center", marginBottom: 12 }}><Icon n="chart" s={48} c="#cbd5e1" w={1.2} /></div>
                 <div style={{ fontSize: 15, fontWeight: 600 }}>אין תקציבים עדיין</div>
                 <div style={{ fontSize: 13, marginTop: 4 }}>לחצי על הכפתור למטה כדי להוסיף</div>
               </div>
@@ -591,7 +591,7 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     const EMPTY_EVENT = { name: "", date: "", budget: "", spent: "", category: "פעילות", notes: "", paidBy: "", done: false, type: "expense" };
 
-    function EventForm({ data, onChange, onSave, onCancel, title }) {
+    function EventForm({ data, onChange, onSave, onSaveAndNew, onCancel, title }) {
       return (
         <Card style={{ border: "2px solid #ede9fe" }}>
           <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
@@ -642,6 +642,7 @@ ${eventRows}</table>
           </label>
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={onSave} style={S.btn("#7c3aed")} disabled={!data.name.trim()}>שמור</button>
+            {onSaveAndNew && <button onClick={onSaveAndNew} style={S.btn("#0f172a")} disabled={!data.name.trim()}>+ שמור וחדש</button>}
             <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
           </div>
         </Card>
@@ -665,8 +666,13 @@ ${eventRows}</table>
 
       const addEvent = () => {
         if (!addForm.name.trim()) return;
-        setEvents([...events, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
+        setEvents(prev => [...prev, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
         setAddForm(EMPTY_EVENT); setShowAdd(false);
+      };
+      const addEventAndNew = () => {
+        if (!addForm.name.trim()) return;
+        setEvents(prev => [...prev, { id: Date.now(), ...addForm, budget: Number(addForm.budget) || 0, spent: Number(addForm.spent) || 0 }]);
+        setAddForm(EMPTY_EVENT);
       };
 
       const startEdit  = (ev) => { setEditId(ev.id); setEditForm({ ...ev, budget: String(ev.budget), spent: String(ev.spent), type: ev.type || "expense" }); };
@@ -729,9 +735,9 @@ ${eventRows}</table>
                     <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
                       <Badge text={ev.category} cat={ev.category} />
                       <span style={{ fontSize: 11, color: "#94a3b8" }}>{formatDate(ev.date)}</span>
-                      {ev.paidBy && <span style={{ fontSize: 11, color: "#64748b" }}>👤 {ev.paidBy}</span>}
+                      {ev.paidBy && <span style={{ fontSize: 11, color: "#64748b", display:"inline-flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {ev.paidBy}</span>}
                     </div>
-                    {ev.notes && <div style={{ fontSize: 11, color: "#64748b" }}>📝 {ev.notes}</div>}
+                    {ev.notes && <div style={{ fontSize: 11, color: "#64748b", display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="#94a3b8" w={1.8} /> {ev.notes}</div>}
                   </div>
                   <div style={{ textAlign: "left", flexShrink: 0, marginRight: 8 }}>
                     <div style={{ fontWeight: 900, fontSize: 16, color: "#0f172a" }}>₪{ev.budget.toLocaleString()}</div>
@@ -756,7 +762,7 @@ ${eventRows}</table>
 
           {/* Add form */}
           {showAdd ? (
-            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onCancel={() => setShowAdd(false)} />
+            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onSaveAndNew={addEventAndNew} onCancel={() => setShowAdd(false)} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
@@ -789,10 +795,18 @@ ${eventRows}</table>
         s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? feePerStudent : s.amount } : s
       ));
 
+      const saveStudentData = (data) => {
+        if (!data.name.trim()) return false;
+        setStudents(prev => [...prev, { id: Date.now(), name: data.name.trim(), paid: !!data.paid, amount: Number(data.amount) || 0, note: data.note || "", paidBy: data.paidBy || "", partial: !!data.partial }]);
+        return true;
+      };
       const addStudent = () => {
-        if (!addForm.name.trim()) return;
-        setStudents([...students, { id: Date.now(), name: addForm.name.trim(), paid: !!addForm.paid, amount: Number(addForm.amount) || 0, note: addForm.note || "", paidBy: addForm.paidBy || "", partial: !!addForm.partial }]);
+        if (!saveStudentData(addForm)) return;
         setAddForm(EMPTY_STUDENT_FORM); setShowAdd(false);
+      };
+      const addStudentAndNew = () => {
+        if (!saveStudentData(addForm)) return;
+        setAddForm(EMPTY_STUDENT_FORM);
       };
 
       const startEdit = (s) => { setEditId(s.id); setEditForm({ ...s, amount: String(s.amount) }); };
@@ -849,19 +863,36 @@ ${eventRows}</table>
             </div>
           </Card>
 
-          {/* Stats */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8, marginBottom: 16 }}>
-            {[
-              { l: "שילמו",    v: paidCount,                            c: "#059669", icon: "check" },
-              { l: "לא שילמו", v: students.length - paidCount,          c: "#ef4444", icon: "x" },
-              { l: "נגבה",     v: `₪${totalCollected.toLocaleString()}`, c: "#7c3aed", icon: "wallet" },
-            ].map(x => (
-              <div key={x.l} style={{ background: "white", borderRadius: 14, padding: "12px 8px", textAlign: "center", boxShadow: "0 2px 10px rgba(0,0,0,0.07)" }}>
-                <div style={{ display:"flex", justifyContent:"center", marginBottom: 2 }}><Icon n={x.icon} s={18} c={x.c} w={2.2} /></div>
-                <div style={{ fontWeight: 900, fontSize: 18, color: x.c }}>{x.v}</div>
-                <div style={{ fontSize: 10, color: "#94a3b8" }}>{x.l}</div>
+          {/* Gradient summary header */}
+          <div style={{ background: "linear-gradient(135deg,#059669,#0d9488)", borderRadius: 20, padding: 20, color: "white", marginBottom: 12 }}>
+            <div style={{ opacity: 0.75, fontSize: 13, marginBottom: 2 }}>סה״כ נגבה</div>
+            <div style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
+              ₪{totalCollected.toLocaleString()}
+            </div>
+            {collectionBudgetTotal > 0 && (
+              <div style={{ marginTop: 10 }}>
+                <div style={{ background: "rgba(255,255,255,0.2)", borderRadius: 100, height: 7, overflow: "hidden" }}>
+                  <div style={{ height: "100%", borderRadius: 100, background: "rgba(255,255,255,0.7)", width: `${Math.min((totalCollected / collectionBudgetTotal) * 100, 100)}%`, transition: "width 0.4s ease" }} />
+                </div>
               </div>
-            ))}
+            )}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 12 }}>
+              <div>
+                <div style={{ opacity: 0.65, fontSize: 10 }}>שילמו</div>
+                <div style={{ fontWeight: 700, fontSize: 15, display:"flex", alignItems:"center", gap: 4 }}><Icon n="check" s={13} c="white" w={2.5} /> {paidCount}/{students.length}</div>
+              </div>
+              <div>
+                <div style={{ opacity: 0.65, fontSize: 10 }}>יעד גבייה</div>
+                <div style={{ fontWeight: 700, fontSize: 15 }}>₪{collectionBudgetTotal.toLocaleString()}</div>
+              </div>
+              <div>
+                <div style={{ opacity: 0.65, fontSize: 10 }}>ממתינים</div>
+                <div style={{ fontWeight: 700, fontSize: 15, color: students.length - paidCount > 0 ? "#fde68a" : "#86efac", display:"flex", alignItems:"center", gap: 4 }}>
+                  {students.length - paidCount > 0 && <Icon n="x" s={13} c="#fde68a" w={2.5} />}
+                  {students.length - paidCount > 0 ? `${students.length - paidCount} ילדים` : "✓ הכל"}
+                </div>
+              </div>
+            </div>
           </div>
 
           <input placeholder="🔍 חפשי תלמיד..." value={search}
@@ -916,8 +947,8 @@ ${eventRows}</table>
                       {students.indexOf(s) + 1}. {s.name}
                       {s.partial && !s.paid && <span style={{ fontSize: 10, background: "#fed7aa", color: "#c2410c", borderRadius: 6, padding: "1px 6px", fontWeight: 700 }}>חלקי</span>}
                     </div>
-                    {s.note   && <div style={{ fontSize: 11, color: "#f59e0b", marginTop: 2 }}>📝 {s.note}</div>}
-                    {s.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {s.paidBy}</div>}
+                    {s.note   && <div style={{ fontSize: 11, color: "#f59e0b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="#f59e0b" w={1.8} /> {s.note}</div>}
+                    {s.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {s.paidBy}</div>}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
                     {(s.paid || s.amount > 0) && <span style={{ fontSize: 12, fontWeight: 700, color: s.paid ? "#059669" : "#f97316" }}>₪{s.amount}</span>}
@@ -959,7 +990,8 @@ ${eventRows}</table>
                 🟠 תשלום חלקי
               </label>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={addStudent} style={S.btn("#7c3aed")} disabled={!addForm.name.trim()}>הוסיפי</button>
+                <button onClick={addStudent} style={S.btn("#059669")} disabled={!addForm.name.trim()}>הוסיפי</button>
+                <button onClick={addStudentAndNew} style={S.btn("#0f172a")} disabled={!addForm.name.trim()}>+ שמור וחדש</button>
                 <button onClick={() => { setShowAdd(false); setAddForm(EMPTY_STUDENT_FORM); }} style={S.btn("#94a3b8")}>ביטול</button>
               </div>
             </Card>
@@ -1103,7 +1135,7 @@ ${eventRows}</table>
                     <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#7c3aed", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
                   )}
                   <div style={{ display: "flex", gap: 4 }}>
-                    {onAddEvent && <button onClick={() => startCopy(gift)} style={{ ...S.smallBtn("#ede9fe", "#7c3aed"), flex: 1, textAlign: "center" }} title="הוסף לתקציב">📊</button>}
+                    {onAddEvent && <button onClick={() => startCopy(gift)} style={{ ...S.smallBtn("#ede9fe", "#7c3aed"), flex: 1, textAlign: "center", display:"flex", alignItems:"center", justifyContent:"center" }} title="הוסף לתקציב"><Icon n="chart" s={12} c="#7c3aed" w={2} /></button>}
                     <button onClick={() => startEdit(gift)} style={{ ...S.smallBtn("#e2e8f0", "#64748b"), flex: 1, textAlign: "center" }}>✏️</button>
                     <button onClick={() => removeGift(gift.id)} style={{ ...S.smallBtn("#fee2e2", "#ef4444"), flex: 1, textAlign: "center" }}>✕</button>
                   </div>
@@ -1120,7 +1152,7 @@ ${eventRows}</table>
           {/* Copy-to-budget form */}
           {copyGiftId !== null && (
             <Card style={{ border: "2px solid #ede9fe" }}>
-              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>📊 הוסיפי לתקציב</div>
+              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14, display:"flex", alignItems:"center", gap: 6 }}><Icon n="chart" s={15} c="#7c3aed" w={2} /> הוסיפי לתקציב</div>
               <FieldLabel>שם הארוע</FieldLabel>
               <input value={copyForm.name} onChange={e => setCopyForm({ ...copyForm, name: e.target.value })} style={S.input} />
               <FieldLabel>קטגוריה</FieldLabel>
@@ -1164,7 +1196,7 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     const EMPTY_CASH = { date: "", desc: "", amount: "", type: "income", paidBy: "" };
 
-    function CashForm({ data, onChange, onSave, onCancel, title }) {
+    function CashForm({ data, onChange, onSave, onSaveAndNew, onCancel, title }) {
       return (
         <Card style={{ border: "2px solid #1e293b20" }}>
           <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
@@ -1194,6 +1226,7 @@ ${eventRows}</table>
           <input value={data.paidBy || ""} onChange={e => onChange({ ...data, paidBy: e.target.value })} placeholder="שם" style={S.input} />
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={onSave} style={S.btn("#0f172a")} disabled={!data.desc.trim() || !data.amount}>שמור</button>
+            {onSaveAndNew && <button onClick={onSaveAndNew} style={S.btn("#475569")} disabled={!data.desc.trim() || !data.amount}>+ שמור וחדש</button>}
             <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
           </div>
         </Card>
@@ -1251,8 +1284,14 @@ ${eventRows}</table>
       const addEntry = () => {
         if (!addForm.desc.trim() || !addForm.amount) return;
         const amt = Number(addForm.amount) * (addForm.type === "expense" ? -1 : 1);
-        setCashLog([...cashLog, { id: Date.now(), ...addForm, amount: amt }]);
+        setCashLog(prev => [...prev, { id: Date.now(), ...addForm, amount: amt }]);
         setAddForm(EMPTY_CASH); setShowAdd(false);
+      };
+      const addEntryAndNew = () => {
+        if (!addForm.desc.trim() || !addForm.amount) return;
+        const amt = Number(addForm.amount) * (addForm.type === "expense" ? -1 : 1);
+        setCashLog(prev => [...prev, { id: Date.now(), ...addForm, amount: amt }]);
+        setAddForm(EMPTY_CASH);
       };
 
       const startEdit  = (e) => { setEditId(e.id); setEditForm({ ...e, amount: String(Math.abs(e.amount)), type: e.amount >= 0 ? "income" : "expense" }); };
@@ -1298,10 +1337,10 @@ ${eventRows}</table>
           {/* Breakdown by קופה */}
           {(kupaEntries.length > 0 || kupaTotal !== 0) && (
             <Card style={{ background: "#f8fafc", marginBottom: 12 }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: "#1e293b", marginBottom: 8 }}>💼 לפי קופה</div>
+              <div style={{ fontWeight: 700, fontSize: 13, color: "#1e293b", marginBottom: 8, display:"flex", alignItems:"center", gap: 6 }}><Icon n="wallet" s={14} c="#1e293b" w={2} /> לפי קופה</div>
               {kupaEntries.map(([name, total]) => (
                 <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>👤 {name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a", display:"flex", alignItems:"center", gap: 5 }}><Icon n="user" s={13} c="#475569" w={1.8} /> {name}</span>
                   <span style={{ fontSize: 13, fontWeight: 700, color: total >= 0 ? "#059669" : "#ef4444" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString()}</span>
                 </div>
               ))}
@@ -1342,7 +1381,7 @@ ${eventRows}</table>
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                          <span style={{ background: "#dcfce7", color: "#059669", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>📊 תקציב</span>
+                          <span style={{ background: "#dcfce7", color: "#059669", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700, display:"inline-flex", alignItems:"center", gap: 3 }}><Icon n="chart" s={9} c="#059669" w={2} /> תקציב</span>
                           <div style={{ fontWeight: 800, fontSize: 15, color: "#059669" }}>+₪{entry.amount.toLocaleString()}</div>
                         </div>
                       </div>
@@ -1353,7 +1392,7 @@ ${eventRows}</table>
               {budgetExpenses.length > 0 && (
                 <>
                   <div style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                    📊 הוצאות מתקציב
+                    <Icon n="chart" s={13} c="#7c3aed" w={2} /> הוצאות מתקציב
                     <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 400 }}>עריכה רק מלשונית תקציב</span>
                   </div>
                   {budgetExpenses.map(entry => (
@@ -1369,7 +1408,7 @@ ${eventRows}</table>
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                          <span style={{ background: "#ede9fe", color: "#7c3aed", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>📊 תקציב</span>
+                          <span style={{ background: "#ede9fe", color: "#7c3aed", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700, display:"inline-flex", alignItems:"center", gap: 3 }}><Icon n="chart" s={9} c="#7c3aed" w={2} /> תקציב</span>
                           <div style={{ fontWeight: 800, fontSize: 15, color: "#ef4444" }}>-₪{Math.abs(entry.amount).toLocaleString()}</div>
                         </div>
                       </div>
@@ -1378,7 +1417,7 @@ ${eventRows}</table>
                 </>
               )}
               {withBal.length > 0 && (
-                <div style={{ fontSize: 12, fontWeight: 700, color: "#64748b", marginBottom: 6, marginTop: 12 }}>📝 תנועות ידניות</div>
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#64748b", marginBottom: 6, marginTop: 12, display:"flex", alignItems:"center", gap: 5 }}><Icon n="pencil" s={13} c="#64748b" w={1.8} /> תנועות ידניות</div>
               )}
             </>
           )}
@@ -1398,7 +1437,7 @@ ${eventRows}</table>
                     <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
                       {entry.date}
                     </div>
-                    {entry.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {entry.paidBy}</div>}
+                    {entry.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {entry.paidBy}</div>}
                   </div>
                   <div style={{ textAlign: "left", flexShrink: 0 }}>
                     <div style={{ fontWeight: 800, fontSize: 15, color: entry.amount > 0 ? "#059669" : "#ef4444" }}>
@@ -1416,7 +1455,7 @@ ${eventRows}</table>
           ))}
 
           {showAdd ? (
-            <CashForm title="➕ תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onCancel={() => setShowAdd(false)} />
+            <CashForm title="➕ תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onSaveAndNew={addEntryAndNew} onCancel={() => setShowAdd(false)} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
