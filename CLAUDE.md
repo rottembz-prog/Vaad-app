@@ -1,5 +1,36 @@
 # Vaad-App — Claude Code Project Context
 
+## MANDATORY: Git & Deployment Workflow
+
+**Every code change request MUST follow this workflow automatically — no exceptions, no need to ask.**
+
+### Step-by-step (follow every time)
+
+1. **Make the code changes** as requested
+2. **Stage and commit** with a clear `feat:` / `fix:` message
+3. **Push immediately** to the current session branch:
+   ```bash
+   git push -u origin <current-session-branch>
+   ```
+4. **Done** — the platform auto-creates a PR and auto-merges to `main`, which triggers GitHub Pages deployment
+
+### Rules
+- Always push at the end of EVERY task — even if multiple tasks are done in one session
+- Never leave committed changes un-pushed
+- Branch naming: `claude/<description>-<SESSION_ID>` (provided by the system per session)
+- Never push directly to `main` (blocked by the proxy)
+- The platform handles PR creation + merge to main automatically on each push
+
+### What happens automatically
+```
+You push to claude/branch  →  Platform opens PR  →  Platform merges to main  →  GitHub Pages redeploys
+```
+
+### Deployment URL
+https://rottembz-prog.github.io/Vaad-app/
+
+---
+
 ## Memory System
 
 All conversations are automatically saved in the [`memory/`](./memory/) folder.
@@ -33,7 +64,10 @@ memory/
       2026-03-02.md
 ```
 
+---
+
 ## Project
+
 Vaad-App (ועד בית) — Building management expense tracker.
 - **Tech:** Vanilla JS + Firebase (Firestore + Auth)
 - **Hosting:** GitHub Pages
