@@ -1939,13 +1939,18 @@ ${eventRows}</table>
     // CLASS SCREEN — Select / Create / Join group
     // ─────────────────────────────────────────
     function ClassScreen({ user, onSelectClass }) {
-      const [mode, setMode]         = useState("list"); // list | create | join
-      const [classes, setClasses]   = useState([]);
-      const [loading, setLoading]   = useState(true);
+      const [mode, setMode]             = useState("list"); // list | create | join
+      const [classes, setClasses]       = useState([]);
+      const [loading, setLoading]       = useState(true);
       const [createName, setCreateName] = useState("");
-      const [joinCode, setJoinCode] = useState("");
-      const [error, setError]       = useState("");
-      const [saving, setSaving]     = useState(false);
+      const [joinCode, setJoinCode]     = useState("");
+      const [error, setError]           = useState("");
+      const [saving, setSaving]         = useState(false);
+      const [showHelp, setShowHelp]     = useState(false);
+      const [editingClassId, setEditingClassId] = useState(null);
+      const [editingName, setEditingName]       = useState("");
+      const [confirmDeleteCls, setConfirmDeleteCls] = useState(null);
+      const [toast, setToast]           = useState("");
 
       useEffect(() => {
         const unsub = firebase.firestore()
@@ -1973,7 +1978,7 @@ ${eventRows}</table>
           });
           onSelectClass({ id: ref.id, name: createName.trim(), inviteCode: code, members: [user.uid] });
         } catch (e) {
-          setError("שגיאה ביצירת הקבוצה — נסי שוב");
+          setError("שגיאה ביצירת הקבוצה — נסה שוב");
         }
         setSaving(false);
       };
@@ -1986,7 +1991,7 @@ ${eventRows}</table>
             .collection("classes")
             .where("inviteCode", "==", joinCode.trim().toUpperCase())
             .get();
-          if (snap.empty) { setError("קוד לא נמצא — בדקי שוב"); setSaving(false); return; }
+          if (snap.empty) { setError("קוד לא נמצא — בדוק שוב"); setSaving(false); return; }
           const doc = snap.docs[0];
           const classData = { id: doc.id, ...doc.data() };
           if (!classData.members.includes(user.uid)) {
@@ -1997,91 +2002,198 @@ ${eventRows}</table>
           }
           onSelectClass(classData);
         } catch (e) {
-          setError("שגיאה בהצטרפות — נסי שוב");
+          setError("שגיאה בהצטרפות — נסה שוב");
         }
         setSaving(false);
       };
 
       const cancelSubMode = () => { setMode("list"); setError(""); setCreateName(""); setJoinCode(""); };
 
+      const copyCode = (code, e) => {
+        e.stopPropagation();
+        navigator.clipboard.writeText(code).then(() => {
+          setToast("הקוד הועתק!");
+          setTimeout(() => setToast(""), 2000);
+        });
+      };
+
+      const startEdit = (cls, e) => {
+        e.stopPropagation();
+        setEditingClassId(cls.id);
+        setEditingName(cls.name);
+      };
+
+      const saveEdit = async (clsId, e) => {
+        e.stopPropagation();
+        if (!editingName.trim()) return;
+        try {
+          await firebase.firestore().collection("classes").doc(clsId).update({ name: editingName.trim() });
+        } catch (_) {}
+        setEditingClassId(null);
+      };
+
+      const cancelEdit = (e) => { e.stopPropagation(); setEditingClassId(null); };
+
+      const doDeleteClass = async () => {
+        if (!confirmDeleteCls) return;
+        try {
+          await firebase.firestore().collection("classes").doc(confirmDeleteCls.id).delete();
+        } catch (_) {}
+        setConfirmDeleteCls(null);
+      };
+
       return (
         <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "'Heebo', sans-serif", direction: "rtl" }}>
+
+          {/* Help Modal */}
+          {showHelp && (
+            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+              <div style={{ background: "white", borderRadius: 20, padding: "28px 24px", maxWidth: 380, width: "100%", direction: "rtl" }}>
+                <div style={{ fontWeight: 900, fontSize: 20, color: "#1e293b", marginBottom: 16 }}>מה זה קבוצות?</div>
+                <div style={{ fontSize: 14, color: "#475569", lineHeight: 1.8 }}>
+                  <p style={{ marginTop: 0 }}>קבוצות מאפשרות לך לנהל תקציבים שונים עם קבוצות שונות של אנשים.</p>
+                  <p>לדוגמה: אם אתה מנהל ועד הורים של 3 ילדים בכיתות שונות, תוכל לפתוח קבוצה נפרדת לכל כיתה ולשתף אותה עם ההורים הרלוונטיים.</p>
+                  <p style={{ fontWeight: 700, color: "#1e293b", marginBottom: 4 }}>איך לשתף קבוצה?</p>
+                  <p style={{ marginTop: 0 }}>שלח את קוד הקבוצה לאנשים שאתה רוצה להוסיף.<br/>מי שמצטרף עם הקוד יוכל לצפות בתקציבים בלבד — רק יוצר הקבוצה יכול לערוך.</p>
+                </div>
+                <button onClick={() => setShowHelp(false)} style={{ ...S.btn("#0d9488"), width: "100%", marginTop: 8 }}>הבנתי</button>
+              </div>
+            </div>
+          )}
+
+          {/* Delete Confirmation Modal */}
+          {confirmDeleteCls && (
+            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
+              <div style={{ background: "white", borderRadius: 20, padding: "28px 24px", maxWidth: 360, width: "100%", direction: "rtl" }}>
+                <div style={{ fontWeight: 900, fontSize: 18, color: "#1e293b", marginBottom: 12 }}>מחיקת קבוצה</div>
+                <div style={{ fontSize: 14, color: "#475569", lineHeight: 1.7, marginBottom: 20 }}>
+                  האם אתה בטוח שברצונך למחוק את הקבוצה <strong>"{confirmDeleteCls.name}"</strong>? פעולה זו לא ניתנת לביטול.
+                </div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button onClick={doDeleteClass} style={{ ...S.btn("#ef4444"), flex: 1 }}>מחק</button>
+                  <button onClick={() => setConfirmDeleteCls(null)} style={{ ...S.btn("#94a3b8"), flex: 1 }}>ביטול</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Toast */}
+          {toast && (
+            <div style={{ position: "fixed", bottom: 32, left: "50%", transform: "translateX(-50%)", background: "#1e293b", color: "white", padding: "10px 24px", borderRadius: 40, fontSize: 14, fontWeight: 600, zIndex: 2000, pointerEvents: "none" }}>
+              {toast}
+            </div>
+          )}
+
+          {/* Header */}
           <div style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)", padding: "24px 20px 28px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
                 <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 600, marginBottom: 4 }}>שלום, {user.displayName || user.email?.split("@")[0]}</div>
                 <div style={{ color: "white", fontWeight: 900, fontSize: 22 }}>הקבוצות שלי</div>
-                <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, marginTop: 3 }}>בחרי קבוצה לניהול תקציב</div>
+                <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, marginTop: 3 }}>בחר קבוצה לניהול תקציב</div>
               </div>
-              <button onClick={() => firebase.auth().signOut()} style={{ background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 10, padding: "8px 14px", color: "white", cursor: "pointer", fontSize: 13, fontFamily: "inherit" }}>
-                יציאה
-              </button>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <button onClick={() => setShowHelp(true)} title="עזרה" style={{ background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 10, width: 40, height: 40, color: "white", cursor: "pointer", fontSize: 18, fontWeight: 700, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>?</button>
+                <button onClick={() => firebase.auth().signOut()} style={{ background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 10, padding: "10px 22px", color: "white", cursor: "pointer", fontSize: 15, fontWeight: 600, fontFamily: "inherit" }}>
+                  יציאה
+                </button>
+              </div>
             </div>
           </div>
 
-          <div style={{ padding: "20px 14px 30px" }}>
-            {loading ? (
-              <div style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>טוען...</div>
-            ) : (
-              <>
-                {classes.map(cls => (
-                  <div key={cls.id} onClick={() => onSelectClass(cls)} style={{
-                    background: "white", borderRadius: 16, padding: "16px 20px", marginBottom: 12,
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.08)", cursor: "pointer",
-                    borderRight: "4px solid #0d9488", display: "flex", justifyContent: "space-between", alignItems: "center",
-                  }}>
-                    <div>
-                      <div style={{ fontWeight: 800, fontSize: 16, color: "#1e293b" }}>{cls.name}</div>
-                      <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>
-                        {cls.members?.length || 1} חברים · קוד: <span style={{ fontWeight: 700, color: "#0d9488", letterSpacing: 2 }}>{cls.inviteCode}</span>
+          {/* Content with decorative circles */}
+          <div style={{ position: "relative", padding: "20px 14px 30px", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: -60, right: -80, width: 420, height: 420, borderRadius: "50%", background: "#86efac", opacity: 0.22, filter: "blur(100px)", zIndex: 0, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: -80, left: -60, width: 360, height: 360, borderRadius: "50%", background: "#bbf7d0", opacity: 0.25, filter: "blur(90px)", zIndex: 0, pointerEvents: "none" }} />
+            <div style={{ position: "absolute", top: "45%", left: "25%", width: 300, height: 300, borderRadius: "50%", background: "#86efac", opacity: 0.18, filter: "blur(120px)", zIndex: 0, pointerEvents: "none" }} />
+
+            <div style={{ position: "relative", zIndex: 1 }}>
+              {loading ? (
+                <div style={{ textAlign: "center", padding: 40, color: "#94a3b8" }}>טוען...</div>
+              ) : (
+                <>
+                  {classes.map(cls => (
+                    editingClassId === cls.id ? (
+                      <div key={cls.id} style={{ background: "white", borderRadius: 16, padding: "16px 20px", marginBottom: 12, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", borderRight: "4px solid #f59e0b" }}>
+                        <div style={{ fontWeight: 700, fontSize: 13, color: "#64748b", marginBottom: 8 }}>עריכת שם קבוצה</div>
+                        <input
+                          value={editingName}
+                          onChange={e => setEditingName(e.target.value)}
+                          onKeyDown={e => { if (e.key === "Enter") saveEdit(cls.id, e); if (e.key === "Escape") cancelEdit(e); }}
+                          style={{ ...S.input, marginBottom: 10 }}
+                          autoFocus
+                        />
+                        <div style={{ display: "flex", gap: 8 }}>
+                          <button onClick={e => saveEdit(cls.id, e)} style={S.btn("#0d9488")}>שמור</button>
+                          <button onClick={cancelEdit} style={S.btn("#94a3b8")}>ביטול</button>
+                        </div>
                       </div>
+                    ) : (
+                      <div key={cls.id} style={{ background: "white", borderRadius: 16, padding: "16px 20px", marginBottom: 12, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", borderRight: "4px solid #0d9488" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <div onClick={() => onSelectClass(cls)} style={{ flex: 1, cursor: "pointer" }}>
+                            <div style={{ fontWeight: 800, fontSize: 16, color: "#1e293b" }}>{cls.name}</div>
+                            <div style={{ fontSize: 12, color: "#64748b", marginTop: 3, display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+                              <span>{cls.members?.length || 1} חברים · קוד:</span>
+                              <span style={{ fontWeight: 700, color: "#0d9488", letterSpacing: 2 }}>{cls.inviteCode}</span>
+                              <button onClick={e => copyCode(cls.inviteCode, e)} title="העתק קוד" style={{ background: "none", border: "none", cursor: "pointer", padding: "1px 3px", fontSize: 13, color: "#0d9488", lineHeight: 1 }}>📋</button>
+                            </div>
+                          </div>
+                          <div style={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 0 }}>
+                            <button onClick={e => startEdit(cls, e)} title="שנה שם" style={{ background: "none", border: "none", cursor: "pointer", padding: "6px 8px", fontSize: 15, borderRadius: 8 }}>✏️</button>
+                            <button onClick={e => { e.stopPropagation(); setConfirmDeleteCls(cls); }} title="מחק" style={{ background: "none", border: "none", cursor: "pointer", padding: "6px 8px", fontSize: 15, borderRadius: 8 }}>🗑️</button>
+                            <div onClick={() => onSelectClass(cls)} style={{ cursor: "pointer", paddingRight: 4 }}>
+                              <Icon n="arrow" s={18} c="#0d9488" w={2} />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  ))}
+
+                  {classes.length === 0 && mode === "list" && (
+                    <div style={{ textAlign: "center", color: "#94a3b8", padding: "30px 0 20px" }}>
+                      <div style={{ fontSize: 40, marginBottom: 10 }}>👨‍👩‍👧‍👦</div>
+                      <div style={{ fontWeight: 600, fontSize: 15 }}>אין קבוצות עדיין</div>
+                      <div style={{ fontSize: 13, marginTop: 4 }}>צור קבוצה חדשה או הצטרף עם קוד</div>
                     </div>
-                    <Icon n="arrow" s={18} c="#0d9488" w={2} />
-                  </div>
-                ))}
+                  )}
 
-                {classes.length === 0 && mode === "list" && (
-                  <div style={{ textAlign: "center", color: "#94a3b8", padding: "30px 0 20px" }}>
-                    <div style={{ fontSize: 40, marginBottom: 10 }}>👨‍👩‍👧‍👦</div>
-                    <div style={{ fontWeight: 600, fontSize: 15 }}>אין קבוצות עדיין</div>
-                    <div style={{ fontSize: 13, marginTop: 4 }}>צרי קבוצה חדשה או הצטרפי עם קוד</div>
-                  </div>
-                )}
+                  {mode === "create" && (
+                    <Card style={{ border: "2px solid #ccfbf1" }}>
+                      <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12 }}>➕ קבוצה חדשה</div>
+                      <FieldLabel>שם הקבוצה</FieldLabel>
+                      <input value={createName} onChange={e => setCreateName(e.target.value)} placeholder="למשל: ועד הורים כיתה ו׳" style={S.input} autoFocus onKeyDown={e => e.key === "Enter" && createClass()} />
+                      {error && <div style={{ color: "#ef4444", fontSize: 12, marginBottom: 8 }}>{error}</div>}
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <button onClick={createClass} disabled={saving || !createName.trim()} style={S.btn("#0d9488")}>{saving ? "יוצר..." : "צור קבוצה"}</button>
+                        <button onClick={cancelSubMode} style={S.btn("#94a3b8")}>ביטול</button>
+                      </div>
+                    </Card>
+                  )}
 
-                {mode === "create" && (
-                  <Card style={{ border: "2px solid #ccfbf1" }}>
-                    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12 }}>➕ קבוצה חדשה</div>
-                    <FieldLabel>שם הקבוצה</FieldLabel>
-                    <input value={createName} onChange={e => setCreateName(e.target.value)} placeholder="למשל: ועד הורים כיתה ו׳" style={S.input} autoFocus onKeyDown={e => e.key === "Enter" && createClass()} />
-                    {error && <div style={{ color: "#ef4444", fontSize: 12, marginBottom: 8 }}>{error}</div>}
-                    <div style={{ display: "flex", gap: 8 }}>
-                      <button onClick={createClass} disabled={saving || !createName.trim()} style={S.btn("#0d9488")}>{saving ? "יוצר..." : "צרי קבוצה"}</button>
-                      <button onClick={cancelSubMode} style={S.btn("#94a3b8")}>ביטול</button>
+                  {mode === "join" && (
+                    <Card style={{ border: "2px solid #dcfce7" }}>
+                      <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12 }}>🔗 הצטרפות לקבוצה</div>
+                      <FieldLabel>קוד הצטרפות (6 תווים)</FieldLabel>
+                      <input value={joinCode} onChange={e => setJoinCode(e.target.value)} placeholder="ABC123" style={{ ...S.input, letterSpacing: 3, textAlign: "center", textTransform: "uppercase" }} autoFocus onKeyDown={e => e.key === "Enter" && joinClass()} />
+                      {error && <div style={{ color: "#ef4444", fontSize: 12, marginBottom: 8 }}>{error}</div>}
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <button onClick={joinClass} disabled={saving || !joinCode.trim()} style={S.btn("#059669")}>{saving ? "מצטרף..." : "הצטרף"}</button>
+                        <button onClick={cancelSubMode} style={S.btn("#94a3b8")}>ביטול</button>
+                      </div>
+                    </Card>
+                  )}
+
+                  {mode === "list" && (
+                    <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
+                      <button onClick={() => setMode("create")} style={{ ...S.btn("#0d9488"), flex: 1 }}>+ קבוצה חדשה</button>
+                      <button onClick={() => setMode("join")} style={{ ...S.btn("#059669"), flex: 1 }}>🔗 הצטרף עם קוד</button>
                     </div>
-                  </Card>
-                )}
-
-                {mode === "join" && (
-                  <Card style={{ border: "2px solid #dcfce7" }}>
-                    <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 12 }}>🔗 הצטרפות לקבוצה</div>
-                    <FieldLabel>קוד הצטרפות (6 תווים)</FieldLabel>
-                    <input value={joinCode} onChange={e => setJoinCode(e.target.value)} placeholder="ABC123" style={{ ...S.input, letterSpacing: 3, textAlign: "center", textTransform: "uppercase" }} autoFocus onKeyDown={e => e.key === "Enter" && joinClass()} />
-                    {error && <div style={{ color: "#ef4444", fontSize: 12, marginBottom: 8 }}>{error}</div>}
-                    <div style={{ display: "flex", gap: 8 }}>
-                      <button onClick={joinClass} disabled={saving || !joinCode.trim()} style={S.btn("#059669")}>{saving ? "מצטרף..." : "הצטרפי"}</button>
-                      <button onClick={cancelSubMode} style={S.btn("#94a3b8")}>ביטול</button>
-                    </div>
-                  </Card>
-                )}
-
-                {mode === "list" && (
-                  <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
-                    <button onClick={() => setMode("create")} style={{ ...S.btn("#0d9488"), flex: 1 }}>+ קבוצה חדשה</button>
-                    <button onClick={() => setMode("join")} style={{ ...S.btn("#059669"), flex: 1 }}>🔗 הצטרפי עם קוד</button>
-                  </div>
-                )}
-              </>
-            )}
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       );
