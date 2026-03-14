@@ -87,6 +87,30 @@
       return '₪' + (Number(n) || 0).toLocaleString('he-IL');
     }
 
+    // ─────────────────────────────────────────
+    // SHARED — clipboard utility
+    // ─────────────────────────────────────────
+    function copyToClipboard(text, onSuccess) {
+      const fallback = () => {
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); document.body.removeChild(ta);
+        onSuccess && onSuccess();
+      };
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => onSuccess && onSuccess()).catch(fallback);
+      } else { fallback(); }
+    }
+
+    function Toast({ message }) {
+      if (!message) return null;
+      return (
+        <div style={{ position: "fixed", bottom: 90, left: "50%", transform: "translateX(-50%)", background: "#0f172a", color: "white", borderRadius: 12, padding: "10px 22px", fontSize: 14, fontWeight: 600, zIndex: 999, boxShadow: "0 4px 20px rgba(0,0,0,0.25)", whiteSpace: "nowrap" }}>
+          {message}
+        </div>
+      );
+    }
+
     function generateReport(budget) {
       const events   = budget.events   || [];
       const students = budget.students || [];
@@ -138,6 +162,7 @@ td{padding:6px 8px;border:1px solid #e2e8f0;font-size:12px}tr:nth-child(even){ba
 .bfill-g{background:linear-gradient(90deg,#059669,#4ade80)}
 @media print{body{padding:8px}}</style></head>
 <body>
+<div style="margin-bottom:16px"><button onclick="window.close()" style="background:#f1f5f9;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:#0f172a">← חזרה לאפליקציה</button></div>
 <h1>${budget.name}</h1><p style="color:#64748b">${budget.className} • ${budget.year}</p>
 ${membersHtml}${groupsHtml}
 <h2>📊 סיכום כספי</h2>
@@ -383,6 +408,40 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     const EMPTY_BUDGET_FORM = { name: "", className: "", year: getDefaultYear(), colorKey: "teal", feePerStudent: "500", members: [], whatsappGroups: [] };
 
+    // ─────────────────────────────────────────
+    // SHARED — Action Buttons
+    // ─────────────────────────────────────────
+    function ActionButtons({ onEdit, onDelete, onCopy, onReport, showEdit = true, showDelete = true, showCopy = false, showReport = false }) {
+      const btn = { background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "6px 8px", color: "white", cursor: "pointer", lineHeight: 1, display: "flex", alignItems: "center" };
+      return (
+        <div style={{ display: "flex", gap: 6 }}>
+          {showReport && <button onClick={e => { e.stopPropagation(); onReport && onReport(); }} style={btn} title="דו״ח PDF"><Icon n="report" s={15} c="white" w={1.8} /></button>}
+          {showCopy   && <button onClick={e => { e.stopPropagation(); onCopy   && onCopy();   }} style={btn} title="שכפל"><Icon n="copy"   s={15} c="white" w={1.8} /></button>}
+          {showEdit   && <button onClick={e => { e.stopPropagation(); onEdit   && onEdit();   }} style={btn} title="ערוך"><Icon n="pencil" s={15} c="white" w={1.8} /></button>}
+          {showDelete && <button onClick={e => { e.stopPropagation(); onDelete && onDelete(); }} style={btn} title="מחק"><Icon n="trash"  s={15} c="white" w={1.8} /></button>}
+        </div>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // SHARED — Confirm Delete Modal
+    // ─────────────────────────────────────────
+    function ConfirmDeleteModal({ isOpen, itemName, onConfirm, onCancel }) {
+      if (!isOpen) return null;
+      return (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 20px" }} onClick={onCancel}>
+          <div style={{ background: "white", borderRadius: 20, padding: "24px 20px", width: "100%", maxWidth: 380 }} onClick={e => e.stopPropagation()}>
+            <div style={{ fontWeight: 800, fontSize: 17, color: "#0f172a", marginBottom: 10 }}>אישור מחיקה</div>
+            <div style={{ fontSize: 14, color: "#64748b", lineHeight: 1.7, marginBottom: 20 }}>האם אתה בטוח שברצונך למחוק את &apos;{itemName}&apos;? פעולה זו לא ניתנת לביטול.</div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={onConfirm} style={{ flex: 1, padding: "12px 0", borderRadius: 12, border: "none", background: "#ef4444", color: "white", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>מחק</button>
+              <button onClick={onCancel}  style={{ flex: 1, padding: "12px 0", borderRadius: 12, border: "none", background: "#f1f5f9", color: "#64748b", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>ביטול</button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
     function BudgetListCard({ budget, onSelect, onEdit, onDelete, onCopy, onReport }) {
       const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.teal;
       const paidCount  = budget.students.filter(s => s.paid).length;
@@ -399,12 +458,7 @@ ${eventRows}</table>
                 <div style={{ color: "white", fontWeight: 900, fontSize: 18, marginBottom: 2 }}>{budget.name}</div>
                 <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
               </div>
-              <div style={{ display: "flex", gap: 6 }}>
-                <button onClick={onReport} style={{ background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "6px 8px", color: "white", cursor: "pointer", lineHeight: 1, display:"flex", alignItems:"center" }} title="דו״ח PDF"><Icon n="report" s={15} c="white" w={1.8} /></button>
-                <button onClick={onCopy}   style={{ background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "6px 8px", color: "white", cursor: "pointer", lineHeight: 1, display:"flex", alignItems:"center" }} title="שכפלי"><Icon n="copy" s={15} c="white" w={1.8} /></button>
-                <button onClick={onEdit}   style={{ background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "6px 8px", color: "white", cursor: "pointer", lineHeight: 1, display:"flex", alignItems:"center" }} title="ערכי"><Icon n="pencil" s={15} c="white" w={1.8} /></button>
-                <button onClick={onDelete} style={{ background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "6px 8px", color: "white", cursor: "pointer", lineHeight: 1, display:"flex", alignItems:"center" }} title="מחקי"><Icon n="trash" s={15} c="white" w={1.8} /></button>
-              </div>
+              <ActionButtons onReport={onReport} onCopy={onCopy} onEdit={onEdit} onDelete={onDelete} showReport showCopy showEdit showDelete />
             </div>
           </div>
           {/* Stats */}
@@ -427,7 +481,7 @@ ${eventRows}</table>
               marginTop: 12, width: "100%", padding: "11px 0", borderRadius: 12, border: "none",
               background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`,
               color: "white", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "inherit",
-            }}>כנסי לתקציב ←</button>
+            }}>כנס לתקציב ←</button>
           </div>
         </div>
       );
@@ -559,47 +613,43 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     // HELP MODAL — הסברים
     // ─────────────────────────────────────────
-    function HelpModal({ onClose }) {
-      const sections = [
-        { icon: "chart", title: "תקציב", color: "#0d9488", text: "ניהול תקציב הוצאות והכנסות: הוסיפי ארועים, קטגוריות ותאריכים. כשמסמנים 'שולם', הסכום עובר אוטומטית ליומן המזומן." },
-        { icon: "users", title: "גבייה", color: "#059669", text: "ניהול רשימת התלמידים ומעקב אחר תשלומים. ניתן להגדיר מספר תלמידים וסכום לגבייה. בתחתית הדף מופיעה הודעת תזכורת לשליחה בוואצאפ." },
-        { icon: "bulb", title: "רעיונות", color: "#d97706", text: "ספרייה משותפת לכל התקציבים — שמרי רעיונות לארועים ומתנות כולל פרטי ספק, מחיר וקישור. ניתן להעביר ישירות לתקציב." },
-        { icon: "wallet", title: "מזומן", color: "#ea580c", text: "יומן תנועות כספי: מציג אוטומטית את כל הגבייה וההוצאות מהתקציב, ומאפשר הוספת תנועות ידניות. הלוח 'לפי קופה' מאפשר לפצל לפי מי גבה את הכסף." },
-      ];
+    // SHARED — Help Modal (generic, prop-driven)
+    // ─────────────────────────────────────────
+    function HelpModal({ isOpen, onClose, title, content, closeLabel = "הבנתי" }) {
+      if (!isOpen) return null;
       return (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "flex-end", justifyContent: "center" }} onClick={onClose}>
           <div style={{ background: "white", borderRadius: "20px 20px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 480, maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-              <div style={{ fontWeight: 900, fontSize: 20, color: "#0f172a" }}>מדריך שימוש — Kupati</div>
+              <div style={{ fontWeight: 900, fontSize: 20, color: "#0f172a" }}>{title}</div>
               <button onClick={onClose} style={{ background: "#f1f5f9", border: "none", borderRadius: 10, padding: "6px 12px", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "#64748b" }}>סגור ✕</button>
             </div>
-            {sections.map(s => (
-              <div key={s.title} style={{ display: "flex", gap: 14, marginBottom: 18, alignItems: "flex-start" }}>
-                <div style={{ background: `${s.color}18`, borderRadius: 12, padding: 10, flexShrink: 0 }}>
-                  <Icon n={s.icon} s={22} c={s.color} w={2} />
-                </div>
-                <div>
-                  <div style={{ fontWeight: 800, fontSize: 15, color: "#0f172a", marginBottom: 4 }}>{s.title}</div>
-                  <div style={{ fontSize: 13, color: "#475569", lineHeight: 1.7 }}>{s.text}</div>
-                </div>
-              </div>
-            ))}
-            <div style={{ background: "#f0fdfa", borderRadius: 12, padding: 14, marginTop: 8, fontSize: 13, color: "#0f172a", lineHeight: 1.7 }}>
-              <div style={{ fontWeight: 700, marginBottom: 4 }}>טיפים:</div>
-              <div>• לחצי <strong>שמור + חדש</strong> להוספה מהירה של מספר רשומות</div>
-              <div>• ניתן לפצל 'שולם ע״י' בין מספר קופות — הפרידי בפסיק (לדוגמה: קופת ו1, קופת ו2)</div>
-              <div>• לחצי על סמל הדו״ח בכרטיס התקציב להפקת PDF שנתי</div>
-            </div>
+            <div style={{ fontSize: 14, color: "#475569", lineHeight: 1.9, whiteSpace: "pre-line" }}>{content}</div>
+            <button onClick={onClose} style={{ marginTop: 20, width: "100%", padding: "13px 0", borderRadius: 12, border: "none", background: "#0d9488", color: "white", fontWeight: 700, fontSize: 15, cursor: "pointer", fontFamily: "inherit" }}>{closeLabel}</button>
           </div>
         </div>
       );
     }
 
+    const BUDGET_HELP_CONTENT = `כאן תוכל לנהל את התקציב של הקבוצה שלך.
+
+כל תקציב כולל:
+• שם התקציב ושנת הפעילות
+• מספר שילמו מתוך סך המשתתפים
+• סכום שנגבה, נותר לגבייה, ותקציב לילד
+
+לחץ על התקציב כדי להיכנס ולנהל את רשימת המשתתפים.
+
+שיתוף: שלח את קוד ההצטרפות לאחרים — הם יוכלו לצפות בלבד.`;
+
     function HomeScreen({ budgets, currentClass, user, onSignOut, onBack, onAddBudget, onDeleteBudget, onUpdateBudgetMeta, onSelect }) {
-      const [mode, setMode]           = useState("list"); // list | add | edit
-      const [editingId, setEditingId] = useState(null);
-      const [showCode, setShowCode]   = useState(false);
-      const [showHelp, setShowHelp]   = useState(false);
+      const [mode, setMode]                 = useState("list"); // list | add | edit
+      const [editingId, setEditingId]       = useState(null);
+      const [showHelp, setShowHelp]         = useState(false);
+      const [deleteConfirmId, setDeleteConfirmId] = useState(null);
+      const [toast, setToast]               = useState("");
+
+      const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(""), 2000); };
 
       const handleAdd = async (form) => {
         await onAddBudget({
@@ -638,17 +688,21 @@ ${eventRows}</table>
         await onAddBudget({ ...rest, name: `עותק — ${src.name}` });
       };
 
-      const handleDelete = async (id) => {
-        if (window.confirm("למחוק תקציב זה? הנתונים יאבדו לצמיתות.")) {
-          await onDeleteBudget(id);
-        }
+      const handleDeleteConfirmed = async () => {
+        if (deleteConfirmId) { await onDeleteBudget(deleteConfirmId); }
+        setDeleteConfirmId(null);
       };
 
       const editingBudget = budgets.find(b => b.id === editingId);
+      const deleteTargetName = deleteConfirmId ? (budgets.find(b => b.id === deleteConfirmId)?.name || "") : "";
+
+      const navBtnStyle = { background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 10, padding: "8px 14px", color: "white", cursor: "pointer", fontSize: 13, fontFamily: "inherit", fontWeight: 600 };
 
       return (
         <div className="kupati-bg" style={{ minHeight: "100vh" }}>
-          {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
+          <Toast message={toast} />
+          <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} title="איך עובד דף התקציב?" content={BUDGET_HELP_CONTENT} closeLabel="הבנתי" />
+          <ConfirmDeleteModal isOpen={!!deleteConfirmId} itemName={deleteTargetName} onConfirm={handleDeleteConfirmed} onCancel={() => setDeleteConfirmId(null)} />
           {/* Header */}
           <div style={{
             background: "linear-gradient(135deg, #0f766e 0%, #0d9488 50%, #10b981 100%)",
@@ -668,27 +722,21 @@ ${eventRows}</table>
               </div>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
                 <div style={{ display: "flex", gap: 6 }}>
-                  <button onClick={onBack} style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 10, padding: "6px 10px", color: "white", cursor: "pointer", fontSize: 11, fontFamily: "inherit" }}>
-                    ← קבוצות
-                  </button>
-                  <button onClick={onSignOut} style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 10, padding: "6px 10px", color: "white", cursor: "pointer", fontSize: 11, fontFamily: "inherit" }}>
-                    יציאה
-                  </button>
+                  <button onClick={onBack} style={navBtnStyle}>← קבוצות</button>
+                  <button onClick={onSignOut} style={navBtnStyle}>יציאה</button>
                 </div>
                 {currentClass?.inviteCode && (
-                  <button onClick={() => setShowCode(v => !v)} style={{ background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 8, padding: "5px 10px", color: "white", cursor: "pointer", fontSize: 11, fontFamily: "inherit", display: "flex", alignItems: "center", gap: 5 }}>
-                    🔗 קוד הצטרפות{showCode ? ` · ${currentClass.inviteCode}` : ""}
+                  <button
+                    onClick={() => copyToClipboard(currentClass.inviteCode, () => showToast("הקוד הועתק!"))}
+                    style={{ ...navBtnStyle, display: "flex", alignItems: "center", gap: 5 }}
+                  >
+                    🔗 קוד הצטרפות
                   </button>
                 )}
               </div>
             </div>
 
             <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-              <button onClick={() => setMode("add")} style={{
-                background: "rgba(255,255,255,0.22)", border: "1.5px solid rgba(255,255,255,0.4)",
-                borderRadius: 12, padding: "10px 18px", color: "white", fontWeight: 700, fontSize: 14,
-                cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", gap: 6,
-              }}><Icon n="plus" s={15} c="white" w={2.5} /> תקציב חדש</button>
               <button onClick={() => setShowHelp(true)} style={{
                 background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)",
                 borderRadius: 12, padding: "10px 18px", color: "white", fontWeight: 700, fontSize: 14,
@@ -714,7 +762,7 @@ ${eventRows}</table>
               <div style={{ textAlign: "center", color: "#94a3b8", padding: "40px 0" }}>
                 <div style={{ display:"flex", justifyContent:"center", marginBottom: 12 }}><Icon n="chart" s={48} c="#cbd5e1" w={1.2} /></div>
                 <div style={{ fontSize: 15, fontWeight: 600 }}>אין תקציבים עדיין</div>
-                <div style={{ fontSize: 13, marginTop: 4 }}>לחצי על הכפתור למעלה כדי להוסיף</div>
+                <div style={{ fontSize: 13, marginTop: 4 }}>לחץ על הכפתור למטה כדי להוסיף</div>
               </div>
             )}
 
@@ -724,7 +772,7 @@ ${eventRows}</table>
                 budget={{ students: [], events: [], cashLog: [], ...b }}
                 onSelect={() => onSelect(b.id)}
                 onEdit={() => { setEditingId(b.id); setMode("edit"); }}
-                onDelete={() => handleDelete(b.id)}
+                onDelete={() => setDeleteConfirmId(b.id)}
                 onCopy={() => handleCopy(b.id)}
                 onReport={() => generateReport({ students: [], events: [], cashLog: [], ...b })}
               />
@@ -735,7 +783,7 @@ ${eventRows}</table>
                 width: "100%", padding: 16, borderRadius: 16, border: "2px dashed #99f6e4",
                 background: "rgba(13,148,136,0.04)", color: "#0d9488", fontWeight: 700, fontSize: 14,
                 cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-              }}><Icon n="plus" s={16} c="#0d9488" w={2.5} /> הוסיפי תקציב חדש</button>
+              }}><Icon n="plus" s={16} c="#0d9488" w={2.5} /> הוסף תקציב חדש +</button>
             )}
           </div>
 
@@ -1938,6 +1986,17 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     // CLASS SCREEN — Select / Create / Join group
     // ─────────────────────────────────────────
+    const GROUPS_HELP_CONTENT = `כאן תוכל לנהל את הקבוצות שלך.
+
+כל קבוצה מייצגת ועד, כיתה, או כל קבוצה אחרת שאתה מנהל עבורה תקציב.
+
+כדי להוסיף חברים לקבוצה:
+• לחץ על הקבוצה
+• שלח את קוד ההצטרפות לחברים
+• הם יוכלו להצטרף עם הקוד
+
+ניתן ליצור קבוצות חדשות או להצטרף לקיימות עם קוד.`;
+
     function ClassScreen({ user, onSelectClass }) {
       const [mode, setMode]             = useState("list"); // list | create | join
       const [classes, setClasses]       = useState([]);
@@ -2007,14 +2066,21 @@ ${eventRows}</table>
         setSaving(false);
       };
 
+      const deleteClass = async () => {
+        if (!deleteConfirmId) return;
+        try {
+          await firebase.firestore().collection("classes").doc(deleteConfirmId).update({
+            members: firebase.firestore.FieldValue.arrayRemove(user.uid),
+          });
+        } catch (e) { /* ignore */ }
+        setDeleteConfirmId(null);
+      };
+
       const cancelSubMode = () => { setMode("list"); setError(""); setCreateName(""); setJoinCode(""); };
 
       const copyCode = (code, e) => {
         e.stopPropagation();
-        navigator.clipboard.writeText(code).then(() => {
-          setToast("הקוד הועתק!");
-          setTimeout(() => setToast(""), 2000);
-        });
+        copyToClipboard(code, () => { setToast("הקוד הועתק!"); setTimeout(() => setToast(""), 2000); });
       };
 
       const startEdit = (cls, e) => {
@@ -2044,46 +2110,9 @@ ${eventRows}</table>
 
       return (
         <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "'Heebo', sans-serif", direction: "rtl" }}>
-
-          {/* Help Modal */}
-          {showHelp && (
-            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-              <div style={{ background: "white", borderRadius: 20, padding: "28px 24px", maxWidth: 380, width: "100%", direction: "rtl" }}>
-                <div style={{ fontWeight: 900, fontSize: 20, color: "#1e293b", marginBottom: 16 }}>מה זה קבוצות?</div>
-                <div style={{ fontSize: 14, color: "#475569", lineHeight: 1.8 }}>
-                  <p style={{ marginTop: 0 }}>קבוצות מאפשרות לך לנהל תקציבים שונים עם קבוצות שונות של אנשים.</p>
-                  <p>לדוגמה: אם אתה מנהל ועד הורים של 3 ילדים בכיתות שונות, תוכל לפתוח קבוצה נפרדת לכל כיתה ולשתף אותה עם ההורים הרלוונטיים.</p>
-                  <p style={{ fontWeight: 700, color: "#1e293b", marginBottom: 4 }}>איך לשתף קבוצה?</p>
-                  <p style={{ marginTop: 0 }}>שלח את קוד הקבוצה לאנשים שאתה רוצה להוסיף.<br/>מי שמצטרף עם הקוד יוכל לצפות בתקציבים בלבד — רק יוצר הקבוצה יכול לערוך.</p>
-                </div>
-                <button onClick={() => setShowHelp(false)} style={{ ...S.btn("#0d9488"), width: "100%", marginTop: 8 }}>הבנתי</button>
-              </div>
-            </div>
-          )}
-
-          {/* Delete Confirmation Modal */}
-          {confirmDeleteCls && (
-            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }}>
-              <div style={{ background: "white", borderRadius: 20, padding: "28px 24px", maxWidth: 360, width: "100%", direction: "rtl" }}>
-                <div style={{ fontWeight: 900, fontSize: 18, color: "#1e293b", marginBottom: 12 }}>מחיקת קבוצה</div>
-                <div style={{ fontSize: 14, color: "#475569", lineHeight: 1.7, marginBottom: 20 }}>
-                  האם אתה בטוח שברצונך למחוק את הקבוצה <strong>"{confirmDeleteCls.name}"</strong>? פעולה זו לא ניתנת לביטול.
-                </div>
-                <div style={{ display: "flex", gap: 8 }}>
-                  <button onClick={doDeleteClass} style={{ ...S.btn("#ef4444"), flex: 1 }}>מחק</button>
-                  <button onClick={() => setConfirmDeleteCls(null)} style={{ ...S.btn("#94a3b8"), flex: 1 }}>ביטול</button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Toast */}
-          {toast && (
-            <div style={{ position: "fixed", bottom: 32, left: "50%", transform: "translateX(-50%)", background: "#1e293b", color: "white", padding: "10px 24px", borderRadius: 40, fontSize: 14, fontWeight: 600, zIndex: 2000, pointerEvents: "none" }}>
-              {toast}
-            </div>
-          )}
-
+          <Toast message={toast} />
+          <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} title="הקבוצות שלי" content={GROUPS_HELP_CONTENT} closeLabel="הבנתי" />
+          <ConfirmDeleteModal isOpen={!!confirmDeleteCls} itemName={confirmDeleteCls?.name || ""} onConfirm={doDeleteClass} onCancel={() => setConfirmDeleteCls(null)} />
           {/* Header */}
           <div style={{ background: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)", padding: "24px 20px 28px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -2092,9 +2121,11 @@ ${eventRows}</table>
                 <div style={{ color: "white", fontWeight: 900, fontSize: 22 }}>הקבוצות שלי</div>
                 <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, marginTop: 3 }}>בחר קבוצה לניהול תקציב</div>
               </div>
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <button onClick={() => setShowHelp(true)} title="עזרה" style={{ background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 10, width: 40, height: 40, color: "white", cursor: "pointer", fontSize: 18, fontWeight: 700, fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center" }}>?</button>
-                <button onClick={() => firebase.auth().signOut()} style={{ background: "rgba(255,255,255,0.15)", border: "none", borderRadius: 10, padding: "10px 22px", color: "white", cursor: "pointer", fontSize: 15, fontWeight: 600, fontFamily: "inherit" }}>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={() => setShowHelp(true)} style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 10, padding: "8px 14px", color: "white", cursor: "pointer", fontSize: 13, fontFamily: "inherit", fontWeight: 600 }}>
+                  הסברים
+                </button>
+                <button onClick={() => firebase.auth().signOut()} style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 10, padding: "8px 14px", color: "white", cursor: "pointer", fontSize: 13, fontFamily: "inherit", fontWeight: 600 }}>
                   יציאה
                 </button>
               </div>
