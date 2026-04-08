@@ -65,6 +65,10 @@
     // ─────────────────────────────────────────
     // HELPERS
     // ─────────────────────────────────────────
+    function escapeHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
     function getDefaultYear() {
       const now = new Date();
       const m = now.getMonth() + 1;
@@ -128,26 +132,26 @@
       const maxCatVal = Math.max(...Object.values(catMap), 1);
 
       const catRows = Object.entries(catMap).map(([cat, val]) => `
-        <tr><td>${cat}</td><td>₪${val.toLocaleString('he-IL')}</td>
+        <tr><td>${escapeHtml(cat)}</td><td>₪${val.toLocaleString('he-IL')}</td>
         <td><div style="background:#e2e8f0;border-radius:4px;height:10px;width:160px">
         <div style="background:#0d9488;height:10px;border-radius:4px;width:${Math.round((val/maxCatVal)*100)}%"></div>
         </div></td></tr>`).join('');
 
       const eventRows = events.map(e => `
-        <tr><td>${e.name}</td><td>${formatDate(e.date)}</td><td>${e.category}</td>
+        <tr><td>${escapeHtml(e.name)}</td><td>${formatDate(e.date)}</td><td>${escapeHtml(e.category)}</td>
         <td>${(e.type||'expense')==='income' ? 'הכנסה' : 'הוצאה'}</td>
         <td>₪${e.budget.toLocaleString('he-IL')}</td><td>₪${e.spent.toLocaleString('he-IL')}</td>
         <td>${e.done ? '✅' : '⬜'}</td></tr>`).join('');
 
       const membersHtml = (budget.members||[]).length > 0
-        ? `<p><strong>חברי הועד:</strong> ${(budget.members||[]).join(', ')}</p>` : '';
+        ? `<p><strong>חברי הועד:</strong> ${(budget.members||[]).map(escapeHtml).join(', ')}</p>` : '';
       const groupsHtml = (budget.whatsappGroups||[]).length > 0
-        ? `<p><strong>קבוצות וואצאפ:</strong> ${(budget.whatsappGroups||[]).map(g => g.name).join(', ')}</p>` : '';
+        ? `<p><strong>קבוצות וואצאפ:</strong> ${(budget.whatsappGroups||[]).map(g => escapeHtml(g.name)).join(', ')}</p>` : '';
       const collPct = students.length > 0 ? Math.round((paidCount / students.length) * 100) : 0;
       const spentPct = totalBudgetExp > 0 ? Math.round((totalSpent / totalBudgetExp) * 100) : 0;
 
       const html = `<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8">
-<title>דו״ח — ${budget.name}</title>
+<title>דו״ח — ${escapeHtml(budget.name)}</title>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=swap" rel="stylesheet">
 <style>body{font-family:'Heebo',sans-serif;direction:rtl;padding:24px;color:#0f172a;font-size:13px}
 h1{font-size:22px;margin-bottom:2px}h2{font-size:15px;margin-top:22px;color:#0d9488;border-bottom:2px solid #ccfbf1;padding-bottom:4px}
@@ -163,7 +167,7 @@ td{padding:6px 8px;border:1px solid #e2e8f0;font-size:12px}tr:nth-child(even){ba
 @media print{body{padding:8px}}</style></head>
 <body>
 <div style="margin-bottom:16px"><button onclick="window.close()" style="background:#f1f5f9;border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;color:#0f172a">← חזרה לאפליקציה</button></div>
-<h1>${budget.name}</h1><p style="color:#64748b">${budget.className} • ${budget.year}</p>
+<h1>${escapeHtml(budget.name)}</h1><p style="color:#64748b">${escapeHtml(budget.className)} • ${escapeHtml(budget.year)}</p>
 ${membersHtml}${groupsHtml}
 <h2>📊 סיכום כספי</h2>
 <div class="grid">
@@ -1883,7 +1887,8 @@ ${eventRows}</table>
           const provider = new firebase.auth.GoogleAuthProvider();
           await firebase.auth().signInWithPopup(provider);
         } catch (e) {
-          setError("שגיאה בהתחברות עם Google — נסי שוב");
+          console.error("Google sign-in error:", e.code, e.message);
+          setError(`שגיאה בהתחברות עם Google — נסי שוב (${e.code})`);
         }
         setLoading(false);
       };
