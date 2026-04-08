@@ -46,7 +46,7 @@
       .event-grid   { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
       .student-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
       .gift-grid    { grid-template-columns: repeat(3, 1fr) !important; }
-      .cal-grid     { grid-template-columns: repeat(4, 1fr) !important; }
+      .cal-grid     { grid-template-columns: repeat(4, 1fr) !important; gap: 10px !important; }
       /* typography scaling */
       .ev-name       { font-size: 16px !important; }
       .ev-budget-val { font-size: 20px !important; }
@@ -971,12 +971,12 @@ ${eventRows}</table>
         byMonth[key].push(ev);
       });
       return (
-        <div className="cal-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 16 }}>
+        <div className="cal-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 6, marginBottom: 16 }}>
           {months.map(({ yr, month }) => {
             const key = `${yr}-${month}`;
             const mes = byMonth[key] || [];
             return (
-              <div key={key} style={{ background: "white", borderRadius: 12, padding: "10px 10px 8px", boxShadow: "0 1px 6px rgba(0,0,0,0.07)", minHeight: 72 }}>
+              <div key={key} style={{ background: "white", borderRadius: 10, padding: "7px 8px 6px", boxShadow: "0 1px 4px rgba(0,0,0,0.07)", minHeight: 54 }}>
                 <div style={{ fontWeight: 800, fontSize: 11, color: "#64748b", marginBottom: 5, borderBottom: "1px solid #f1f5f9", paddingBottom: 4 }}>
                   {HEB_MONTHS[month]} <span style={{ fontWeight: 400, color: "#cbd5e1" }}>{yr}</span>
                 </div>
