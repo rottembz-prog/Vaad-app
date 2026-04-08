@@ -30,13 +30,31 @@
         radial-gradient(circle at 80% 15%, rgba(8,145,178,0.08) 0%, transparent 40%),
         radial-gradient(circle at 20% 80%, rgba(5,150,105,0.07) 0%, transparent 40%);
     }
+    /* ── Mobile (default, < 768px) ── */
+    .ev-name       { font-size: 14px; }
+    .ev-budget-val { font-size: 16px; }
+    .ev-paid-val   { font-size: 12px; }
+    .ev-amount-col { min-width: 72px; text-align: left; }
+    .ev-meta       { font-size: 11px; }
+    .summary-val   { font-size: 24px; }
+    .summary-lbl   { font-size: 11px; }
+
+    /* ── Desktop (≥ 768px) ── */
     @media (min-width: 768px) {
       .bs-screen    { max-width: 1200px !important; }
       .bs-tab-pad   { padding: 24px 48px 100px !important; }
-      .event-grid   { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
-      .student-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+      .event-grid   { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
+      .student-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
       .gift-grid    { grid-template-columns: repeat(3, 1fr) !important; }
       .cal-grid     { grid-template-columns: repeat(4, 1fr) !important; }
+      /* typography scaling */
+      .ev-name       { font-size: 16px !important; }
+      .ev-budget-val { font-size: 20px !important; }
+      .ev-paid-val   { font-size: 14px !important; }
+      .ev-amount-col { min-width: 96px !important; }
+      .ev-meta       { font-size: 13px !important; }
+      .summary-val   { font-size: 30px !important; }
+      .summary-lbl   { font-size: 13px !important; }
     }
   </style>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -1020,7 +1038,7 @@ ${eventRows}</table>
       const [filterCat,   setFilterCat]   = useState("הכל");
       const [filterStatus,setFilterStatus]= useState("הכל");
       const [filterType,  setFilterType]  = useState("הכל");
-      const [showCalendar,setShowCalendar]= useState(false);
+      const [showCalendar,setShowCalendar]= useState(true);
       const [addForm,     setAddForm]     = useState(EMPTY_EVENT);
       const [editId,      setEditId]      = useState(null);
       const [editForm,    setEditForm]    = useState({});
@@ -1082,8 +1100,8 @@ ${eventRows}</table>
                 { l: "יתרה תקציבית", v: fmt(balance),        c: balance >= 0 ? "#4ade80" : "#f87171" },
               ].map(x => (
                 <div key={x.l}>
-                  <div style={{ fontSize: 24, fontWeight: 900, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
-                  <div style={{ fontSize: 11, opacity: 0.55, marginTop: 2 }}>{x.l}</div>
+                  <div className="summary-val" style={{ fontSize: 24, fontWeight: 900, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
+                  <div className="summary-lbl" style={{ fontSize: 11, opacity: 0.55, marginTop: 2 }}>{x.l}</div>
                 </div>
               ))}
             </div>
@@ -1099,37 +1117,51 @@ ${eventRows}</table>
           </div>
 
           {/* Filters + calendar toggle */}
-          <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap", alignItems: "flex-end" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 130px" }}>
-              <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>קטגוריה</span>
-              <select value={filterCat} onChange={e => setFilterCat(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
-                <option value="הכל">הכל</option>
-                {CAT_LIST.map(c => <option key={c}>{c}</option>)}
-              </select>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 100px" }}>
-              <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>סטטוס</span>
-              <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
-                <option value="הכל">הכל</option>
-                <option value="עתידי">עתידי</option>
-                <option value="הושלם">הושלם</option>
-              </select>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 100px" }}>
-              <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>סוג</span>
-              <select value={filterType} onChange={e => setFilterType(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
-                <option value="הכל">הכל</option>
-                <option value="הוצאה">הוצאה</option>
-                <option value="הכנסה">הכנסה</option>
-              </select>
-            </div>
-            <button onClick={() => setShowCalendar(v => !v)} style={{
-              padding: "6px 12px", borderRadius: 10, border: "none", cursor: "pointer",
-              fontFamily: "inherit", fontWeight: 700, fontSize: 12,
-              background: showCalendar ? "#0d9488" : "#f1f5f9",
-              color: showCalendar ? "white" : "#64748b", whiteSpace: "nowrap", alignSelf: "flex-end",
-            }}>📅 {showCalendar ? "הסתר לוח" : "לוח שנתי"}</button>
-          </div>
+          {(() => {
+            const isFiltered = filterCat !== "הכל" || filterStatus !== "הכל" || filterType !== "הכל";
+            return (
+              <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap", alignItems: "flex-end" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 130px" }}>
+                  <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>קטגוריה</span>
+                  <select value={filterCat} onChange={e => setFilterCat(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
+                    <option value="הכל">הכל</option>
+                    {CAT_LIST.map(c => <option key={c}>{c}</option>)}
+                  </select>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 100px" }}>
+                  <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>סטטוס</span>
+                  <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
+                    <option value="הכל">הכל</option>
+                    <option value="עתידי">עתידי</option>
+                    <option value="הושלם">הושלם</option>
+                  </select>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 100px" }}>
+                  <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>סוג</span>
+                  <select value={filterType} onChange={e => setFilterType(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
+                    <option value="הכל">הכל</option>
+                    <option value="הוצאה">הוצאה</option>
+                    <option value="הכנסה">הכנסה</option>
+                  </select>
+                </div>
+                <div style={{ display: "flex", gap: 6, alignSelf: "flex-end" }}>
+                  {isFiltered && (
+                    <button onClick={() => { setFilterCat("הכל"); setFilterStatus("הכל"); setFilterType("הכל"); }} style={{
+                      padding: "6px 10px", borderRadius: 10, border: "1px solid #e2e8f0", cursor: "pointer",
+                      fontFamily: "inherit", fontWeight: 700, fontSize: 12,
+                      background: "#fff7ed", color: "#ea580c", whiteSpace: "nowrap",
+                    }}>✕ איפוס</button>
+                  )}
+                  <button onClick={() => setShowCalendar(v => !v)} style={{
+                    padding: "6px 12px", borderRadius: 10, border: "none", cursor: "pointer",
+                    fontFamily: "inherit", fontWeight: 700, fontSize: 12,
+                    background: showCalendar ? "#0d9488" : "#f1f5f9",
+                    color: showCalendar ? "white" : "#64748b", whiteSpace: "nowrap",
+                  }}>📅 {showCalendar ? "הסתר לוח" : "לוח שנתי"}</button>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Yearly calendar */}
           {showCalendar && <YearCalendar events={events} budgetYear={year} />}
@@ -1148,22 +1180,22 @@ ${eventRows}</table>
                       <button onClick={() => toggleDone(ev.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1 }}>
                         {ev.done ? "✅" : "⬜"}
                       </button>
-                      <span style={{ fontWeight: 700, fontSize: 14, color: "#0f172a" }}>{ev.name}</span>
+                      <span className="ev-name" style={{ fontWeight: 700, fontSize: 14, color: "#0f172a" }}>{ev.name}</span>
                       <span style={{ fontSize: 10, fontWeight: 700, padding: "1px 6px", borderRadius: 8, background: isIncome ? "#dcfce7" : "#fee2e2", color: isIncome ? "#059669" : "#ef4444" }}>
                         <span style={{ display:"inline-flex", alignItems:"center", gap: 3 }}><Icon n={isIncome ? "income" : "expense"} s={10} c={isIncome ? "#059669" : "#ef4444"} w={2.2} />{isIncome ? "הכנסה" : "הוצאה"}</span>
                       </span>
                     </div>
-                    <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
+                    <div className="ev-meta" style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
                       <Badge text={ev.category} cat={ev.category} />
                       <span style={{ fontSize: 11, color: "#94a3b8" }}>{formatDate(ev.date)}</span>
                       {ev.paidBy && <span style={{ fontSize: 11, color: "#64748b", display:"inline-flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {ev.paidBy}</span>}
                     </div>
                     {ev.notes && <div style={{ fontSize: 11, color: "#64748b", display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="#94a3b8" w={1.8} /> {ev.notes}</div>}
                   </div>
-                  <div style={{ textAlign: "left", flexShrink: 0, marginRight: 8 }}>
-                    <div style={{ fontWeight: 900, fontSize: 16, color: "#0f172a" }}>₪{ev.budget.toLocaleString('he-IL')}</div>
+                  <div className="ev-amount-col" style={{ textAlign: "left", flexShrink: 0, marginRight: 8, minWidth: 72 }}>
+                    <div className="ev-budget-val" style={{ fontWeight: 900, fontSize: 16, color: "#0f172a" }}>₪{ev.budget.toLocaleString('he-IL')}</div>
                     <div style={{ fontSize: 10, color: "#94a3b8" }}>תקציב</div>
-                    {ev.spent > 0 && <div style={{ fontSize: 12, fontWeight: 700, color: isIncome ? "#059669" : "#ea580c", marginTop: 2 }}>₪{ev.spent.toLocaleString('he-IL')} {isIncome ? "התקבל" : "שולם"}</div>}
+                    {ev.spent > 0 && <div className="ev-paid-val" style={{ fontSize: 12, fontWeight: 700, color: isIncome ? "#059669" : "#ea580c", marginTop: 2 }}>₪{ev.spent.toLocaleString('he-IL')} {isIncome ? "התקבל" : "שולם"}</div>}
                   </div>
                 </div>
                 {ev.spent > 0 && ev.budget > 0 && (
@@ -1384,7 +1416,7 @@ ${eventRows}</table>
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 700, fontSize: 14, color: "#0f172a", display: "flex", alignItems: "center", gap: 6 }}>
+                    <div className="ev-name" style={{ fontWeight: 700, fontSize: 14, color: "#0f172a", display: "flex", alignItems: "center", gap: 6 }}>
                       {students.indexOf(s) + 1}. {s.name}
                       {s.partial && !s.paid && <span style={{ fontSize: 10, background: "#fed7aa", color: "#c2410c", borderRadius: 6, padding: "1px 6px", fontWeight: 700 }}>חלקי</span>}
                     </div>
@@ -1392,7 +1424,7 @@ ${eventRows}</table>
                     {s.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {s.paidBy}</div>}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                    {(s.paid || s.amount > 0) && <span style={{ fontSize: 12, fontWeight: 700, color: s.paid ? "#059669" : "#f97316" }}>₪{(s.amount || 0).toLocaleString('he-IL')}</span>}
+                    {(s.paid || s.amount > 0) && <span className="ev-paid-val" style={{ fontSize: 12, fontWeight: 700, color: s.paid ? "#059669" : "#f97316" }}>₪{(s.amount || 0).toLocaleString('he-IL')}</span>}
                     <button onClick={() => toggle(s.id)} style={{
                       width: 36, height: 36, borderRadius: "50%", border: "none", cursor: "pointer",
                       background: s.paid ? "#dcfce7" : s.partial ? "#fed7aa" : "#fee2e2", fontSize: 18,
