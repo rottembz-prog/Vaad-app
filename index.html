@@ -1552,18 +1552,16 @@ ${eventRows}</table>
     }
 
     function CashTab({ cashLog, setCashLog, students = [], events = [] }) {
-      const [showAdd,  setShowAdd]  = useState(false);
-      const [addForm,  setAddForm]  = useState(EMPTY_CASH);
       const [editId,   setEditId]   = useState(null);
       const [editForm, setEditForm] = useState({});
       const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
       const budgetExpenses        = events
         .filter(ev => (ev.type || "expense") === "expense" && ev.spent > 0)
-        .map(ev => ({ id: "budget-exp-" + ev.id, desc: ev.name, amount: -ev.spent, date: ev.date, paidBy: ev.paidBy || "", fromBudget: true, budgetType: "expense" }));
+        .map(ev => ({ id: "budget-exp-" + ev.id, desc: ev.name, amount: -ev.spent, date: ev.date, paidBy: ev.paidBy || "", paidBySplit: ev.paidBySplit || [], fromBudget: true, budgetType: "expense" }));
       const budgetIncomes         = events
         .filter(ev => ev.type === "income" && ev.spent > 0)
-        .map(ev => ({ id: "budget-inc-" + ev.id, desc: ev.name, amount: ev.spent, date: ev.date, paidBy: ev.paidBy || "", fromBudget: true, budgetType: "income" }));
+        .map(ev => ({ id: "budget-inc-" + ev.id, desc: ev.name, amount: ev.spent, date: ev.date, paidBy: ev.paidBy || "", paidBySplit: ev.paidBySplit || [], fromBudget: true, budgetType: "income" }));
       const budgetExpTotal        = budgetExpenses.reduce((s, e) => s + e.amount, 0);
       const budgetIncTotal        = budgetIncomes.reduce((s, e) => s + e.amount, 0);
 
@@ -1623,21 +1621,35 @@ ${eventRows}</table>
           allocateToKupa(c.paidBy, c.amount);
         }
       });
-      // Budget expenses (always negative)
-      budgetExpenses.forEach(e => allocateToKupa(e.paidBy, e.amount));
-      // Budget incomes (always positive)
-      budgetIncomes.forEach(e => allocateToKupa(e.paidBy, e.amount));
+      // Budget expenses (always negative) — use actual per-kupa split amounts when available
+      budgetExpenses.forEach(e => {
+        if (e.paidBySplit && e.paidBySplit.length > 0) {
+          let splitSum = 0;
+          e.paidBySplit.forEach(s => {
+            if (s.name) { if (!byKupa[s.name]) byKupa[s.name] = 0; byKupa[s.name] -= (s.amount || 0); }
+            splitSum += (s.amount || 0);
+          });
+          const remainder = Math.abs(e.amount) - splitSum;
+          if (remainder > 0.001) kupaTotal += e.amount < 0 ? -remainder : remainder;
+        } else {
+          allocateToKupa(e.paidBy, e.amount);
+        }
+      });
+      // Budget incomes (always positive) — use actual per-kupa split amounts when available
+      budgetIncomes.forEach(e => {
+        if (e.paidBySplit && e.paidBySplit.length > 0) {
+          let splitSum = 0;
+          e.paidBySplit.forEach(s => {
+            if (s.name) { if (!byKupa[s.name]) byKupa[s.name] = 0; byKupa[s.name] += (s.amount || 0); }
+            splitSum += (s.amount || 0);
+          });
+          const remainder = e.amount - splitSum;
+          if (remainder > 0.001) kupaTotal += remainder;
+        } else {
+          allocateToKupa(e.paidBy, e.amount);
+        }
+      });
       const kupaEntries = Object.entries(byKupa);
-
-      const buildEntry = (form) => {
-        const amt = Number(form.amount) * (form.type === "expense" ? -1 : 1);
-        const splits = (form.paidBySplit || []).map(s => ({ ...s, amount: Number(s.amount) || 0 }));
-        const paidBy = splits.map(s => s.name).filter(Boolean).join(', ');
-        return { id: Date.now(), ...form, amount: amt, paidBy, paidBySplit: splits };
-      };
-
-      const addEntry       = () => { if (!addForm.desc.trim() || !addForm.amount) return; setCashLog([...cashLog, buildEntry(addForm)]); setAddForm(EMPTY_CASH); setShowAdd(false); };
-      const addEntryAndNew = () => { if (!addForm.desc.trim() || !addForm.amount) return; setCashLog([...cashLog, buildEntry(addForm)]); setAddForm(EMPTY_CASH); };
 
       const startEdit  = (e) => {
         const paidBySplit = (e.paidBySplit
@@ -1814,15 +1826,9 @@ ${eventRows}</table>
             )
           ))}
 
-          {showAdd ? (
-            <CashForm title="תנועה חדשה" data={addForm} onChange={setAddForm} onSave={addEntry} onSaveAndNew={addEntryAndNew} onCancel={() => { setShowAdd(false); setAddForm(EMPTY_CASH); }} />
-          ) : (
-            <button onClick={() => setShowAdd(true)} style={{
-              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
-              background: "transparent", color: "#0f172a", fontWeight: 700, fontSize: 14,
-              cursor: "pointer", fontFamily: "inherit", marginTop: 4,
-            }}>+ רשמי תנועה</button>
-          )}
+          <div style={{ marginTop: 8, padding: "12px 16px", borderRadius: 12, background: "#f8fafc", border: "1px solid #e2e8f0", fontSize: 12, color: "#94a3b8", textAlign: "center" }}>
+            תנועות נוצרות אוטומטית מלשונית <strong style={{ color: "#0d9488" }}>תקציב</strong>
+          </div>
         </div>
         </React.Fragment>
       );
