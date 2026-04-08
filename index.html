@@ -55,8 +55,8 @@
       .ev-paid-val   { font-size: 14px !important; }
       .ev-amount-col { min-width: 96px !important; }
       .ev-meta       { font-size: 13px !important; }
-      /* תקציב summary dark card: 4 cols, bigger numbers */
-      .summary-grid  { grid-template-columns: repeat(4, 1fr) !important; gap: 24px !important; }
+      /* תקציב summary dark card: keep 3 cols, bigger numbers */
+      .summary-grid  { grid-template-columns: repeat(3, 1fr) !important; gap: 24px !important; }
       .summary-val   { font-size: 36px !important; }
       .summary-lbl   { font-size: 14px !important; }
       /* מזומן dark card */
@@ -1059,11 +1059,12 @@ ${eventRows}</table>
       const [editForm,    setEditForm]    = useState({});
       const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
-      const totalExpBudget   = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
-      const totalIncBudget   = collectionBudget + events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
-      const totalSpent       = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.spent, 0);
-      const budgetPerStudent = expectedStudents > 0 ? Math.round(totalExpBudget / expectedStudents) : null;
-      const balance          = totalIncBudget - totalExpBudget;
+      const totalExpBudget    = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
+      const totalIncBudget    = collectionBudget + events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
+      const totalSpent        = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.spent, 0);
+      const totalIncomeActual = events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.spent, 0);
+      const budgetPerStudent  = expectedStudents > 0 ? Math.round(totalExpBudget / expectedStudents) : null;
+      const balance           = totalIncBudget - totalExpBudget;
       const filtered = events.filter(e => {
         if (filterCat    !== "הכל" && e.category !== filterCat) return false;
         if (filterStatus !== "הכל") { if (filterStatus === "הושלם" && !e.done) return false; if (filterStatus === "עתידי" && e.done) return false; }
@@ -1107,11 +1108,11 @@ ${eventRows}</table>
         <div>
           {/* Summary — dark card */}
           <div style={{ background: "linear-gradient(135deg,#1e293b,#0f172a)", borderRadius: 20, padding: 20, color: "white", marginBottom: 16 }}>
-            <div className="summary-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            {/* Budget totals grid — 3 stats */}
+            <div className="summary-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
               {[
                 { l: "תקציב הוצאות", v: fmt(totalExpBudget), c: "#f87171" },
                 { l: "תקציב הכנסות", v: fmt(totalIncBudget), c: "#4ade80" },
-                { l: "שולם בפועל",   v: fmt(totalSpent),     c: "#c084fc" },
                 { l: "יתרה תקציבית", v: fmt(balance),        c: balance >= 0 ? "#4ade80" : "#f87171" },
               ].map(x => (
                 <div key={x.l}>
@@ -1120,8 +1121,23 @@ ${eventRows}</table>
                 </div>
               ))}
             </div>
+
+            {/* Actual rows — transferred to מזומן */}
+            {[
+              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#c084fc" },
+              { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#34d399" },
+            ].map(x => (
+              <div key={x.l} style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <div className="summary-lbl" style={{ fontSize: 11, opacity: 0.7 }}>{x.l}</div>
+                  <div style={{ fontSize: 10, opacity: 0.4 }}>מועבר ל״מזומן״</div>
+                </div>
+                <div className="summary-val" style={{ fontSize: 24, fontWeight: 900, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
+              </div>
+            ))}
+
             {budgetPerStudent !== null && (
-              <div style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <div style={{ opacity: 0.55, fontSize: 11 }}>תקציב לתלמיד</div>
                   <div style={{ opacity: 0.4, fontSize: 10 }}>הוצאות ÷ {expectedStudents} תלמידים</div>
@@ -1893,12 +1909,12 @@ ${eventRows}</table>
                 <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>₪{collectedFromStudents.toLocaleString('he-IL')}</div>
               </div>
               <div>
-                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>הכנסות נוספות</div>
-                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>+₪{totalIn.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>הכנסות בפועל</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#34d399", fontSize: 13 }}>+₪{budgetIncTotal.toLocaleString('he-IL')}</div>
               </div>
               <div>
-                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>הוצאות</div>
-                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{totalOut.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>הוצאות בפועל</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{Math.abs(budgetExpTotal).toLocaleString('he-IL')}</div>
               </div>
             </div>
           </div>
