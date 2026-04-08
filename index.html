@@ -1164,7 +1164,7 @@ ${eventRows}</table>
           })()}
 
           {/* Yearly calendar */}
-          {showCalendar && <YearCalendar events={events} budgetYear={year} />}
+          {showCalendar && <YearCalendar events={filtered} budgetYear={year} />}
 
           {/* Event list */}
           <div className="event-grid">
