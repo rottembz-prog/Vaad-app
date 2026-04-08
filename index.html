@@ -2240,6 +2240,9 @@ ${eventRows}</table>
       const [gifts, setGifts]                   = useState([]);
       const [activeBudgetId, setActiveBudgetId] = useState(null);
       const [activeTab, setActiveTab]           = useState("budget");
+      const [toast, setToast]                   = useState("");
+
+      const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(""), 2000); };
 
       // Auth state listener
       useEffect(() => {
@@ -2260,16 +2263,28 @@ ${eventRows}</table>
       const classRef = () => firebase.firestore().collection("classes").doc(currentClass.id);
 
       const handleAddBudget = async (data) => {
-        await classRef().collection("budgets").add(data);
+        try {
+          await classRef().collection("budgets").add(data);
+        } catch (e) {
+          showToast("שגיאה בשמירה — נסה שוב");
+        }
       };
 
       const handleDeleteBudget = async (id) => {
-        await classRef().collection("budgets").doc(String(id)).delete();
+        try {
+          await classRef().collection("budgets").doc(String(id)).delete();
+        } catch (e) {
+          showToast("שגיאה במחיקה — נסה שוב");
+        }
       };
 
       const handleUpdateBudget = useCallback(async (id, updates) => {
-        await firebase.firestore().collection("classes").doc(currentClass?.id)
-          .collection("budgets").doc(String(id)).update(updates);
+        try {
+          await firebase.firestore().collection("classes").doc(currentClass?.id)
+            .collection("budgets").doc(String(id)).update(updates);
+        } catch (e) {
+          showToast("שגיאה בעדכון — נסה שוב");
+        }
       }, [currentClass?.id]);
 
       // Gifts: batch-rewrite all gifts on every change (simple & correct for small collections)
@@ -2281,7 +2296,11 @@ ${eventRows}</table>
         const existing = await giftsRef.get();
         existing.docs.forEach(d => batch.delete(d.ref));
         newGifts.forEach(g => batch.set(giftsRef.doc(String(g.id)), { ...g }));
-        await batch.commit();
+        try {
+          await batch.commit();
+        } catch (e) {
+          showToast("שגיאה בשמירת מתנות — נסה שוב");
+        }
       }, [currentClass?.id, gifts]);
 
       // Loading
@@ -2297,30 +2316,36 @@ ${eventRows}</table>
 
       if (!activeBudget) {
         return (
-          <HomeScreen
-            budgets={budgets}
-            currentClass={currentClass}
-            user={user}
-            onSignOut={() => firebase.auth().signOut()}
-            onBack={() => { setCurrentClass(null); setActiveBudgetId(null); }}
-            onAddBudget={handleAddBudget}
-            onDeleteBudget={handleDeleteBudget}
-            onUpdateBudgetMeta={(id, data) => classRef().collection("budgets").doc(String(id)).update(data)}
-            onSelect={(id) => { setActiveBudgetId(id); setActiveTab("budget"); }}
-          />
+          <React.Fragment>
+            <Toast message={toast} />
+            <HomeScreen
+              budgets={budgets}
+              currentClass={currentClass}
+              user={user}
+              onSignOut={() => firebase.auth().signOut()}
+              onBack={() => { setCurrentClass(null); setActiveBudgetId(null); }}
+              onAddBudget={handleAddBudget}
+              onDeleteBudget={handleDeleteBudget}
+              onUpdateBudgetMeta={(id, data) => classRef().collection("budgets").doc(String(id)).update(data)}
+              onSelect={(id) => { setActiveBudgetId(id); setActiveTab("budget"); }}
+            />
+          </React.Fragment>
         );
       }
 
       return (
-        <BudgetScreen
-          budget={activeBudget}
-          onUpdate={(updates) => handleUpdateBudget(activeBudgetId, updates)}
-          onBack={() => setActiveBudgetId(null)}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          gifts={gifts}
-          setGifts={handleSetGifts}
-        />
+        <React.Fragment>
+          <Toast message={toast} />
+          <BudgetScreen
+            budget={activeBudget}
+            onUpdate={(updates) => handleUpdateBudget(activeBudgetId, updates)}
+            onBack={() => setActiveBudgetId(null)}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            gifts={gifts}
+            setGifts={handleSetGifts}
+          />
+        </React.Fragment>
       );
     }
 
