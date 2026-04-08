@@ -30,6 +30,14 @@
         radial-gradient(circle at 80% 15%, rgba(8,145,178,0.08) 0%, transparent 40%),
         radial-gradient(circle at 20% 80%, rgba(5,150,105,0.07) 0%, transparent 40%);
     }
+    @media (min-width: 768px) {
+      .bs-screen    { max-width: 1200px !important; }
+      .bs-tab-pad   { padding: 24px 48px 100px !important; }
+      .event-grid   { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+      .student-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+      .gift-grid    { grid-template-columns: repeat(3, 1fr) !important; }
+      .cal-grid     { grid-template-columns: repeat(4, 1fr) !important; }
+    }
   </style>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -85,6 +93,14 @@
         return `${d}/${m}/${y}`;
       }
       return iso;
+    }
+
+    function parseSortDate(d) {
+      if (!d) return Infinity;
+      if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return new Date(d).getTime();
+      const m = d.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/);
+      if (m) { let y = parseInt(m[3]); if (y < 100) y += 2000; return new Date(y, parseInt(m[2]) - 1, parseInt(m[1])).getTime(); }
+      return Infinity;
     }
 
     function fmt(n) {
@@ -915,12 +931,99 @@ ${eventRows}</table>
       );
     }
 
-    function BudgetTab({ events, setEvents, collectionBudget = 0, expectedStudents = 0 }) {
-      const [showAdd, setShowAdd] = useState(false);
-      const [filter, setFilter]  = useState("הכל");
-      const [addForm, setAddForm] = useState(EMPTY_EVENT);
-      const [editId, setEditId]  = useState(null);
-      const [editForm, setEditForm] = useState({});
+    const HEB_MONTHS = ["ינואר","פברואר","מרץ","אפריל","מאי","יוני","יולי","אוגוסט","ספטמבר","אוקטובר","נובמבר","דצמבר"];
+
+    function YearCalendar({ events, budgetYear }) {
+      const [hoveredId, setHoveredId] = useState(null);
+      const match = (budgetYear || "").match(/(\d{4})/);
+      const startYear = match ? parseInt(match[1]) : (new Date().getMonth() >= 8 ? new Date().getFullYear() : new Date().getFullYear() - 1);
+      // School year: Sep (8) of startYear → Aug (7) of startYear+1
+      const months = Array.from({ length: 12 }, (_, i) => {
+        const monthIdx = (8 + i) % 12;
+        const yr = monthIdx >= 8 ? startYear : startYear + 1;
+        return { yr, month: monthIdx };
+      });
+      const byMonth = {};
+      events.forEach(ev => {
+        const ts = parseSortDate(ev.date);
+        if (ts === Infinity) return;
+        const d = new Date(ts);
+        const key = `${d.getFullYear()}-${d.getMonth()}`;
+        if (!byMonth[key]) byMonth[key] = [];
+        byMonth[key].push(ev);
+      });
+      return (
+        <div className="cal-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginBottom: 16 }}>
+          {months.map(({ yr, month }) => {
+            const key = `${yr}-${month}`;
+            const mes = byMonth[key] || [];
+            return (
+              <div key={key} style={{ background: "white", borderRadius: 12, padding: "10px 10px 8px", boxShadow: "0 1px 6px rgba(0,0,0,0.07)", minHeight: 72 }}>
+                <div style={{ fontWeight: 800, fontSize: 11, color: "#64748b", marginBottom: 5, borderBottom: "1px solid #f1f5f9", paddingBottom: 4 }}>
+                  {HEB_MONTHS[month]} <span style={{ fontWeight: 400, color: "#cbd5e1" }}>{yr}</span>
+                </div>
+                {mes.length === 0
+                  ? <div style={{ fontSize: 10, color: "#e2e8f0" }}>—</div>
+                  : mes.map(ev => {
+                    const isIncome = (ev.type || "expense") === "income";
+                    return (
+                      <div key={ev.id} style={{ position: "relative", marginBottom: 3 }}
+                        onMouseEnter={() => setHoveredId(ev.id)}
+                        onMouseLeave={() => setHoveredId(null)}
+                      >
+                        <div style={{
+                          fontSize: 10, padding: "2px 6px", borderRadius: 6, cursor: "default",
+                          background: isIncome ? "#dcfce7" : "#fee2e2",
+                          color: isIncome ? "#059669" : "#ef4444",
+                          fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                          opacity: ev.done ? 0.6 : 1,
+                        }}>
+                          {ev.done ? "✅ " : ""}{ev.name}
+                        </div>
+                        {hoveredId === ev.id && (
+                          <div style={{
+                            position: "absolute", zIndex: 200, background: "white", borderRadius: 12,
+                            padding: 12, boxShadow: "0 8px 32px rgba(0,0,0,0.18)", minWidth: 210,
+                            right: 0, top: "calc(100% + 4px)", border: "1px solid #e2e8f0",
+                          }}>
+                            <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a", marginBottom: 6 }}>{ev.name}</div>
+                            {ev.date && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 2 }}>📅 {formatDate(ev.date)}</div>}
+                            <div style={{ fontSize: 11, color: "#64748b", marginBottom: 2 }}>🏷️ {ev.category}</div>
+                            <div style={{ fontSize: 11, marginBottom: 4 }}>
+                              תקציב: <strong>₪{ev.budget.toLocaleString('he-IL')}</strong>
+                              {ev.spent > 0 && <> &nbsp;|&nbsp; שולם: <strong style={{ color: isIncome ? "#059669" : "#ea580c" }}>₪{ev.spent.toLocaleString('he-IL')}</strong></>}
+                            </div>
+                            {ev.notes && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>📝 {ev.notes}</div>}
+                            <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+                              <span style={{ fontSize: 10, padding: "1px 6px", borderRadius: 6, background: isIncome ? "#dcfce7" : "#fee2e2", color: isIncome ? "#059669" : "#ef4444", fontWeight: 700 }}>
+                                {isIncome ? "הכנסה" : "הוצאה"}
+                              </span>
+                              <span style={{ fontSize: 10, padding: "1px 6px", borderRadius: 6, background: ev.done ? "#f0fdf4" : "#f8fafc", color: ev.done ? "#059669" : "#94a3b8", fontWeight: 700 }}>
+                                {ev.done ? "הושלם ✅" : "עתידי"}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })
+                }
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    function BudgetTab({ events, setEvents, collectionBudget = 0, expectedStudents = 0, year = "" }) {
+      const [showAdd,     setShowAdd]     = useState(false);
+      const [filterCat,   setFilterCat]   = useState("הכל");
+      const [filterStatus,setFilterStatus]= useState("הכל");
+      const [filterType,  setFilterType]  = useState("הכל");
+      const [showCalendar,setShowCalendar]= useState(false);
+      const [addForm,     setAddForm]     = useState(EMPTY_EVENT);
+      const [editId,      setEditId]      = useState(null);
+      const [editForm,    setEditForm]    = useState({});
       const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
       const totalExpBudget   = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
@@ -928,10 +1031,13 @@ ${eventRows}</table>
       const totalSpent       = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.spent, 0);
       const budgetPerStudent = expectedStudents > 0 ? Math.round(totalExpBudget / expectedStudents) : null;
       const balance          = totalIncBudget - totalExpBudget;
-      const cats             = ["הכל", ...CAT_LIST];
-      const filtered         = filter === "הכל" ? events : events.filter(e => e.category === filter);
-      const parseSortDate    = (d) => { if (!d) return Infinity; if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return new Date(d).getTime(); const m = d.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/); if (m) { let y = parseInt(m[3]); if (y < 100) y += 2000; return new Date(y, parseInt(m[2]) - 1, parseInt(m[1])).getTime(); } return Infinity; };
-      const sorted           = [...filtered].sort((a, b) => parseSortDate(a.date) - parseSortDate(b.date));
+      const filtered = events.filter(e => {
+        if (filterCat    !== "הכל" && e.category !== filterCat) return false;
+        if (filterStatus !== "הכל") { if (filterStatus === "הושלם" && !e.done) return false; if (filterStatus === "עתידי" && e.done) return false; }
+        if (filterType   !== "הכל") { const inc = (e.type || "expense") === "income"; if (filterType === "הכנסה" && !inc) return false; if (filterType === "הוצאה" && inc) return false; }
+        return true;
+      });
+      const sorted = [...filtered].sort((a, b) => parseSortDate(a.date) - parseSortDate(b.date));
 
       const buildEvent = (form) => {
         const splits = (form.paidBySplit || []).map(s => ({ ...s, amount: Number(s.amount) || 0 }));
@@ -992,19 +1098,44 @@ ${eventRows}</table>
             )}
           </div>
 
-          {/* Filters */}
-          <div style={{ display: "flex", gap: 6, overflowX: "auto", marginBottom: 14, paddingBottom: 2 }}>
-            {cats.map(c => (
-              <button key={c} onClick={() => setFilter(c)} style={{
-                padding: "6px 12px", borderRadius: 20, border: "none", cursor: "pointer",
-                fontFamily: "inherit", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap",
-                background: filter === c ? "#0d9488" : "#f1f5f9",
-                color:      filter === c ? "white"   : "#64748b",
-              }}>{c}</button>
-            ))}
+          {/* Filters + calendar toggle */}
+          <div style={{ display: "flex", gap: 8, marginBottom: 14, flexWrap: "wrap", alignItems: "flex-end" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 130px" }}>
+              <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>קטגוריה</span>
+              <select value={filterCat} onChange={e => setFilterCat(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
+                <option value="הכל">הכל</option>
+                {CAT_LIST.map(c => <option key={c}>{c}</option>)}
+              </select>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 100px" }}>
+              <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>סטטוס</span>
+              <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
+                <option value="הכל">הכל</option>
+                <option value="עתידי">עתידי</option>
+                <option value="הושלם">הושלם</option>
+              </select>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 2, flex: "1 1 100px" }}>
+              <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 700 }}>סוג</span>
+              <select value={filterType} onChange={e => setFilterType(e.target.value)} style={{ ...S.input, marginBottom: 0, fontSize: 12, padding: "6px 8px" }}>
+                <option value="הכל">הכל</option>
+                <option value="הוצאה">הוצאה</option>
+                <option value="הכנסה">הכנסה</option>
+              </select>
+            </div>
+            <button onClick={() => setShowCalendar(v => !v)} style={{
+              padding: "6px 12px", borderRadius: 10, border: "none", cursor: "pointer",
+              fontFamily: "inherit", fontWeight: 700, fontSize: 12,
+              background: showCalendar ? "#0d9488" : "#f1f5f9",
+              color: showCalendar ? "white" : "#64748b", whiteSpace: "nowrap", alignSelf: "flex-end",
+            }}>📅 {showCalendar ? "הסתר לוח" : "לוח שנתי"}</button>
           </div>
 
+          {/* Yearly calendar */}
+          {showCalendar && <YearCalendar events={events} budgetYear={year} />}
+
           {/* Event list */}
+          <div className="event-grid">
           {sorted.map(ev => {
             const isIncome = (ev.type || "expense") === "income";
             return editId === ev.id ? (
@@ -1049,6 +1180,8 @@ ${eventRows}</table>
               </Card>
             );
           })}
+
+          </div>{/* /event-grid */}
 
           {/* Add form */}
           {showAdd ? (
@@ -1210,6 +1343,7 @@ ${eventRows}</table>
             </>
           )}
 
+          <div className="student-grid">
           {filtered.map(s => (
             editId === s.id ? (
               <Card key={s.id} style={{ border: "2px solid #ccfbf1" }}>
@@ -1272,6 +1406,7 @@ ${eventRows}</table>
               </div>
             )
           ))}
+          </div>{/* /student-grid */}
 
           {showAdd ? (
             <Card style={{ border: "2px solid #ccfbf1" }}>
@@ -1426,7 +1561,7 @@ ${eventRows}</table>
           <input placeholder="🔍 חפשי רעיון, ספק, תג..." value={search}
             onChange={e => setSearch(e.target.value)} style={{ ...S.input, marginBottom: 12 }} />
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
+          <div className="gift-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
             {filtered.map(gift => (
               editId === gift.id ? null : (
                 <div key={gift.id} style={{ background: "white", borderRadius: 16, padding: 14, boxShadow: "0 2px 14px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" }}>
@@ -1873,7 +2008,7 @@ ${eventRows}</table>
       const totalInKupa           = collectedFromStudents + cashLogBalance - budgetExpensesTotal + budgetIncomesTotal;
 
       return (
-        <div style={{ minHeight: "100vh", maxWidth: 480, margin: "0 auto", background: "#f8fafc", fontFamily: "'Heebo', sans-serif", direction: "rtl" }}>
+        <div className="bs-screen" style={{ minHeight: "100vh", maxWidth: 480, margin: "0 auto", background: "#f8fafc", fontFamily: "'Heebo', sans-serif", direction: "rtl" }}>
           {/* Header */}
           <div style={{
             background: `linear-gradient(135deg, ${clr.from} 0%, ${clr.to} 100%)`,
@@ -1909,8 +2044,8 @@ ${eventRows}</table>
           </div>
 
           {/* Tab content */}
-          <div style={{ padding: "14px 14px 90px" }}>
-            {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} expectedStudents={budget.expectedStudents || 0} />}
+          <div className="bs-tab-pad" style={{ padding: "14px 14px 90px" }}>
+            {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} expectedStudents={budget.expectedStudents || 0} year={budget.year || ""} />}
             {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent || 500} setFeePerStudent={setFeePerStudent} expectedStudents={budget.expectedStudents || 0} setExpectedStudents={setExpectedStudents} payboxLink={budget.payboxLink || ""} setPayboxLink={setPayboxLink} classWhatsappLink={budget.classWhatsappLink || ""} setClassWhatsappLink={setClassWhatsappLink} />}
             {activeTab === "gifts"   && <GiftsTab   gifts={gifts} setGifts={setGifts} onAddEvent={(ev) => setEvents([...budget.events, { id: Date.now(), ...ev }])} />}
             {activeTab === "cash"    && <CashTab     cashLog={budget.cashLog}   setCashLog={setCashLog} students={budget.students} events={budget.events} />}
