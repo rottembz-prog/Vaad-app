@@ -1668,6 +1668,15 @@ ${eventRows}</table>
       const removeEntry   = (id) => setConfirmDeleteId(id);
       const doRemoveEntry = () => { setCashLog(cashLog.filter(c => c.id !== confirmDeleteId)); setConfirmDeleteId(null); };
 
+      // Returns paidBy string + "קופת איסוף" when the remainder is non-zero
+      const displayPaidBy = (entry) => {
+        const splitTotal = (entry.paidBySplit || []).reduce((s, sp) => s + (sp.amount || 0), 0);
+        const remainder  = Math.abs(entry.amount) - splitTotal;
+        const names = (entry.paidBy || "").split(',').map(n => n.trim()).filter(Boolean);
+        if (remainder > 0.001) names.push("קופת איסוף");
+        return names.join(', ');
+      };
+
       // running balance
       let running = 0;
       const withBal = cashLog.map(c => { running += c.amount; return { ...c, bal: running }; });
@@ -1749,7 +1758,7 @@ ${eventRows}</table>
                         <div style={{ flex: 1 }}>
                           <div style={{ fontWeight: 600, fontSize: 14, color: "#0f172a" }}>{entry.desc}</div>
                           <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
-                            {formatDate(entry.date)}{entry.paidBy && ` • ${entry.paidBy}`}
+                            {formatDate(entry.date)}{displayPaidBy(entry) && ` • ${displayPaidBy(entry)}`}
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
@@ -1776,7 +1785,7 @@ ${eventRows}</table>
                         <div style={{ flex: 1 }}>
                           <div style={{ fontWeight: 600, fontSize: 14, color: "#0f172a" }}>{entry.desc}</div>
                           <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
-                            {formatDate(entry.date)}{entry.paidBy && ` • ${entry.paidBy}`}
+                            {formatDate(entry.date)}{displayPaidBy(entry) && ` • ${displayPaidBy(entry)}`}
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
@@ -1809,7 +1818,7 @@ ${eventRows}</table>
                     <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
                       {entry.date}
                     </div>
-                    {entry.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {entry.paidBy}</div>}
+                    {displayPaidBy(entry) && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {displayPaidBy(entry)}</div>}
                   </div>
                   <div style={{ textAlign: "left", flexShrink: 0 }}>
                     <div style={{ fontWeight: 800, fontSize: 15, color: entry.amount > 0 ? "#059669" : "#ef4444" }}>
