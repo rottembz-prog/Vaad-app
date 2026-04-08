@@ -2297,16 +2297,19 @@ ${eventRows}</table>
           .collection("budgets").doc(String(id)).update(updates);
       }, [currentClass?.id]);
 
-      // Gifts: batch-rewrite all gifts on every change (simple & correct for small collections)
+      // Gifts: update only what changed — per-document add/edit/delete
       const handleSetGifts = useCallback(async (updater) => {
         const newGifts = typeof updater === "function" ? updater(gifts) : updater;
-        const db = firebase.firestore();
         const giftsRef = classRef().collection("gifts");
-        const batch = db.batch();
-        const existing = await giftsRef.get();
-        existing.docs.forEach(d => batch.delete(d.ref));
-        newGifts.forEach(g => batch.set(giftsRef.doc(String(g.id)), { ...g }));
-        await batch.commit();
+        const removedIds = gifts.filter(g => !newGifts.find(ng => ng.id === g.id)).map(g => g.id);
+        const upserted   = newGifts.filter(ng => {
+          const old = gifts.find(g => g.id === ng.id);
+          return !old || JSON.stringify(old) !== JSON.stringify(ng);
+        });
+        await Promise.all([
+          ...removedIds.map(id => giftsRef.doc(String(id)).delete()),
+          ...upserted.map(g  => giftsRef.doc(String(g.id)).set({ ...g })),
+        ]);
       }, [currentClass?.id, gifts]);
 
       // Loading
