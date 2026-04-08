@@ -46,16 +46,24 @@
       .event-grid   { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
       .student-grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
       .gift-grid    { grid-template-columns: repeat(3, 1fr) !important; }
-      .cal-grid     { grid-template-columns: repeat(4, 1fr) !important; gap: 10px !important; }
+      /* calendar: 6 compact landscape cells per row on desktop */
+      .cal-grid     { grid-template-columns: repeat(6, 1fr) !important; gap: 8px !important; }
       .cal-cell     { aspect-ratio: 1 !important; }
-      /* typography scaling */
+      /* event card typography */
       .ev-name       { font-size: 16px !important; }
       .ev-budget-val { font-size: 20px !important; }
       .ev-paid-val   { font-size: 14px !important; }
       .ev-amount-col { min-width: 96px !important; }
       .ev-meta       { font-size: 13px !important; }
-      .summary-val   { font-size: 30px !important; }
-      .summary-lbl   { font-size: 13px !important; }
+      /* תקציב summary dark card: 4 cols, bigger numbers */
+      .summary-grid  { grid-template-columns: repeat(4, 1fr) !important; gap: 24px !important; }
+      .summary-val   { font-size: 36px !important; }
+      .summary-lbl   { font-size: 14px !important; }
+      /* מזומן dark card */
+      .cash-total-val { font-size: 54px !important; letter-spacing: -2px !important; }
+      .cash-lbl       { font-size: 16px !important; }
+      .cash-sub-val   { font-size: 18px !important; }
+      .cash-sub-lbl   { font-size: 13px !important; }
     }
   </style>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -1099,7 +1107,7 @@ ${eventRows}</table>
         <div>
           {/* Summary — dark card */}
           <div style={{ background: "linear-gradient(135deg,#1e293b,#0f172a)", borderRadius: 20, padding: 20, color: "white", marginBottom: 16 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <div className="summary-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               {[
                 { l: "תקציב הוצאות", v: fmt(totalExpBudget), c: "#f87171" },
                 { l: "תקציב הכנסות", v: fmt(totalIncBudget), c: "#4ade80" },
@@ -1875,22 +1883,22 @@ ${eventRows}</table>
             background: "linear-gradient(135deg,#1e293b,#0f172a)",
             borderRadius: 20, padding: 20, color: "white", marginBottom: 12,
           }}>
-            <div style={{ opacity: 0.6, fontSize: 13, marginBottom: 2 }}>סה״כ בקופה</div>
-            <div style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
+            <div className="cash-lbl" style={{ opacity: 0.6, fontSize: 13, marginBottom: 2 }}>סה״כ בקופה</div>
+            <div className="cash-total-val" style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
               {totalInKupa < 0 ? "-" : ""}₪{Math.abs(totalInKupa).toLocaleString('he-IL')}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14 }}>
               <div>
-                <div style={{ opacity: 0.5, fontSize: 10 }}>גבייה</div>
-                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>₪{collectedFromStudents.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>גבייה</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>₪{collectedFromStudents.toLocaleString('he-IL')}</div>
               </div>
               <div>
-                <div style={{ opacity: 0.5, fontSize: 10 }}>הכנסות נוספות</div>
-                <div style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>+₪{totalIn.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>הכנסות נוספות</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>+₪{totalIn.toLocaleString('he-IL')}</div>
               </div>
               <div>
-                <div style={{ opacity: 0.5, fontSize: 10 }}>הוצאות</div>
-                <div style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{totalOut.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>הוצאות</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{totalOut.toLocaleString('he-IL')}</div>
               </div>
             </div>
           </div>
