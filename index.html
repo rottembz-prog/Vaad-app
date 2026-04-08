@@ -921,6 +921,7 @@ ${eventRows}</table>
       const [addForm, setAddForm] = useState(EMPTY_EVENT);
       const [editId, setEditId]  = useState(null);
       const [editForm, setEditForm] = useState({});
+      const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
       const totalExpBudget   = events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
       const totalIncBudget   = collectionBudget + events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
@@ -952,10 +953,18 @@ ${eventRows}</table>
         setEvents(events.map(e => e.id === editId ? { ...editForm, id: editId, budget: Number(editForm.budget) || 0, spent: Number(editForm.spent) || 0, paidBy, paidBySplit: splits } : e));
         setEditId(null);
       };
-      const removeEvent = (id) => { if (window.confirm("למחוק ארוע זה?")) setEvents(events.filter(e => e.id !== id)); };
-      const toggleDone  = (id) => setEvents(events.map(e => e.id === id ? { ...e, done: !e.done } : e));
+      const removeEvent   = (id) => setConfirmDeleteId(id);
+      const doRemoveEvent = () => { setEvents(events.filter(e => e.id !== confirmDeleteId)); setConfirmDeleteId(null); };
+      const toggleDone    = (id) => setEvents(events.map(e => e.id === id ? { ...e, done: !e.done } : e));
 
       return (
+        <React.Fragment>
+          <ConfirmDeleteModal
+            isOpen={!!confirmDeleteId}
+            itemName={(events.find(e => e.id === confirmDeleteId) || {}).name || ""}
+            onConfirm={doRemoveEvent}
+            onCancel={() => setConfirmDeleteId(null)}
+          />
         <div>
           {/* Summary — dark card */}
           <div style={{ background: "linear-gradient(135deg,#1e293b,#0f172a)", borderRadius: 20, padding: 20, color: "white", marginBottom: 16 }}>
@@ -1052,6 +1061,7 @@ ${eventRows}</table>
             }}>+ הוסיפי ארוע</button>
           )}
         </div>
+        </React.Fragment>
       );
     }
 
@@ -1067,6 +1077,7 @@ ${eventRows}</table>
       const [editId,        setEditId]        = useState(null);
       const [editForm,      setEditForm]      = useState({});
       const [studentsRaw,   setStudentsRaw]   = useState(String(expectedStudents));
+      const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
       const paidCount      = students.filter(s => s.paid).length;
       const totalCollected = students.reduce((s, st) => s + (st.amount || 0), 0);
@@ -1100,7 +1111,8 @@ ${eventRows}</table>
         ));
         setEditId(null);
       };
-      const removeStudent = (id) => { if (window.confirm("למחוק תלמיד זה?")) setStudents(students.filter(s => s.id !== id)); };
+      const removeStudent   = (id) => setConfirmDeleteId(id);
+      const doRemoveStudent = () => { setStudents(students.filter(s => s.id !== confirmDeleteId)); setConfirmDeleteId(null); };
 
       const unpaidStudents = students.filter(s => !s.paid);
       const whatsappMsg = unpaidStudents.length === 0
@@ -1110,6 +1122,13 @@ ${eventRows}</table>
           : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${feePerStudent}).\nטרם שולם: ${unpaidStudents.map(s => s.name).join(', ')}.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`;
 
       return (
+        <React.Fragment>
+          <ConfirmDeleteModal
+            isOpen={!!confirmDeleteId}
+            itemName={(students.find(s => s.id === confirmDeleteId) || {}).name || ""}
+            onConfirm={doRemoveStudent}
+            onCancel={() => setConfirmDeleteId(null)}
+          />
         <div>
           {/* Paybox / Bit link */}
           <Card style={{ marginBottom: 10 }}>
@@ -1309,6 +1328,7 @@ ${eventRows}</table>
             </Card>
           )}
         </div>
+        </React.Fragment>
       );
     }
 
@@ -1536,6 +1556,7 @@ ${eventRows}</table>
       const [addForm,  setAddForm]  = useState(EMPTY_CASH);
       const [editId,   setEditId]   = useState(null);
       const [editForm, setEditForm] = useState({});
+      const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
       const budgetExpenses        = events
         .filter(ev => (ev.type || "expense") === "expense" && ev.spent > 0)
@@ -1632,13 +1653,21 @@ ${eventRows}</table>
         setCashLog(cashLog.map(c => c.id === editId ? { ...editForm, id: editId, amount: amt, paidBy, paidBySplit: splits } : c));
         setEditId(null);
       };
-      const removeEntry = (id) => { if (window.confirm("למחוק תנועה זו?")) setCashLog(cashLog.filter(c => c.id !== id)); };
+      const removeEntry   = (id) => setConfirmDeleteId(id);
+      const doRemoveEntry = () => { setCashLog(cashLog.filter(c => c.id !== confirmDeleteId)); setConfirmDeleteId(null); };
 
       // running balance
       let running = 0;
       const withBal = cashLog.map(c => { running += c.amount; return { ...c, bal: running }; });
 
       return (
+        <React.Fragment>
+          <ConfirmDeleteModal
+            isOpen={!!confirmDeleteId}
+            itemName={(cashLog.find(c => c.id === confirmDeleteId) || {}).desc || ""}
+            onConfirm={doRemoveEntry}
+            onCancel={() => setConfirmDeleteId(null)}
+          />
         <div>
           {/* סה"כ בקופה */}
           <div style={{
@@ -1795,6 +1824,7 @@ ${eventRows}</table>
             }}>+ רשמי תנועה</button>
           )}
         </div>
+        </React.Fragment>
       );
     }
 
