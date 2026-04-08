@@ -1668,12 +1668,18 @@ ${eventRows}</table>
       const removeEntry   = (id) => setConfirmDeleteId(id);
       const doRemoveEntry = () => { setCashLog(cashLog.filter(c => c.id !== confirmDeleteId)); setConfirmDeleteId(null); };
 
-      // Returns paidBy string + "קופת איסוף" when the remainder is non-zero
+      // Returns paidBy string + "קופת איסוף" when there is a genuine remainder
       const displayPaidBy = (entry) => {
-        const splitTotal = (entry.paidBySplit || []).reduce((s, sp) => s + (sp.amount || 0), 0);
-        const remainder  = Math.abs(entry.amount) - splitTotal;
         const names = (entry.paidBy || "").split(',').map(n => n.trim()).filter(Boolean);
-        if (remainder > 0.001) names.push("קופת איסוף");
+        if (entry.paidBySplit && entry.paidBySplit.length > 0) {
+          // Explicit splits: remainder = unallocated portion → goes to קופת איסוף
+          const splitTotal = entry.paidBySplit.reduce((s, sp) => s + (sp.amount || 0), 0);
+          if (Math.abs(entry.amount) - splitTotal > 0.001) names.push("קופת איסוף");
+        } else if (!entry.paidBy || !entry.paidBy.trim()) {
+          // No payer at all: entire amount goes to קופת איסוף
+          names.push("קופת איסוף");
+        }
+        // paidBy set but no paidBySplit → named payer(s) cover the full amount, no remainder
         return names.join(', ');
       };
 
