@@ -185,10 +185,30 @@
       } else { fallback(); }
     }
 
-    function Toast({ message }) {
+    function Toast({ message, type = "success" }) {
       if (!message) return null;
+      const isError = type === "error";
       return (
-        <div style={{ position: "fixed", bottom: 90, left: "50%", transform: "translateX(-50%)", background: "#0f172a", color: "white", borderRadius: 12, padding: "10px 22px", fontSize: 14, fontWeight: 600, zIndex: 999, boxShadow: "0 4px 20px rgba(0,0,0,0.25)", whiteSpace: "nowrap" }}>
+        <div style={{
+          position: "fixed",
+          bottom: "calc(80px + env(safe-area-inset-bottom, 0px))",
+          left: "50%",
+          transform: "translateX(-50%)",
+          background: isError ? "var(--color-danger)" : "var(--color-secondary)",
+          color: "white",
+          borderRadius: 14,
+          padding: "11px 20px",
+          fontSize: "var(--text-xs)",
+          fontWeight: 600,
+          zIndex: 1000,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.22)",
+          whiteSpace: "nowrap",
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          maxWidth: "90vw",
+        }}>
+          <Icon n={isError ? "alertTri" : "checkCircle"} s={16} c="white" w={2.2} />
           {message}
         </div>
       );
@@ -646,13 +666,32 @@ ${eventRows}</table>
     function ConfirmDeleteModal({ isOpen, itemName, onConfirm, onCancel }) {
       if (!isOpen) return null;
       return (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 20px" }} onClick={onCancel}>
-          <div style={{ background: "white", borderRadius: 20, padding: "24px 20px", width: "100%", maxWidth: 380 }} onClick={e => e.stopPropagation()}>
-            <div style={{ fontWeight: 800, fontSize: 17, color: "#0f172a", marginBottom: 10 }}>אישור מחיקה</div>
-            <div style={{ fontSize: 14, color: "#64748b", lineHeight: 1.7, marginBottom: 20 }}>האם אתה בטוח שברצונך למחוק את &apos;{itemName}&apos;? פעולה זו לא ניתנת לביטול.</div>
+        <div
+          style={{ position: "fixed", inset: 0, background: "rgba(26,46,42,0.55)", zIndex: 200, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 20px", backdropFilter: "blur(2px)" }}
+          onClick={onCancel}
+        >
+          <div
+            style={{ background: "var(--color-surface)", borderRadius: 20, padding: "28px 24px", width: "100%", maxWidth: 380, boxShadow: "0 8px 40px rgba(0,0,0,0.18)" }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Icon */}
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+              <div style={{ width: 52, height: 52, borderRadius: "50%", background: "#FEE2E2", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon n="trash" s={24} c="var(--color-danger)" w={2} />
+              </div>
+            </div>
+            {/* Title */}
+            <div style={{ fontWeight: 700, fontSize: "var(--text-lg)", color: "var(--color-text-primary)", marginBottom: 8, textAlign: "center" }}>
+              אישור מחיקה
+            </div>
+            {/* Body */}
+            <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", lineHeight: 1.7, marginBottom: 24, textAlign: "center" }}>
+              האם למחוק את <strong style={{ color: "var(--color-text-primary)" }}>&apos;{itemName}&apos;</strong>?<br />פעולה זו אינה ניתנת לביטול.
+            </div>
+            {/* Buttons */}
             <div style={{ display: "flex", gap: 10 }}>
-              <button onClick={onConfirm} style={{ flex: 1, padding: "12px 0", borderRadius: 12, border: "none", background: "#ef4444", color: "white", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>מחק</button>
-              <button onClick={onCancel}  style={{ flex: 1, padding: "12px 0", borderRadius: 12, border: "none", background: "#f1f5f9", color: "#64748b", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "inherit" }}>ביטול</button>
+              <Button variant="danger"    onClick={onConfirm} style={{ flex: 1 }} icon="trash">מחק</Button>
+              <Button variant="secondary" onClick={onCancel}  style={{ flex: 1 }}>ביטול</Button>
             </div>
           </div>
         </div>
@@ -835,14 +874,14 @@ ${eventRows}</table>
     function HelpModal({ isOpen, onClose, title, content, closeLabel = "הבנתי" }) {
       if (!isOpen) return null;
       return (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "flex-end", justifyContent: "center" }} onClick={onClose}>
-          <div style={{ background: "white", borderRadius: "20px 20px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 480, maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(26,46,42,0.55)", zIndex: 200, display: "flex", alignItems: "flex-end", justifyContent: "center", backdropFilter: "blur(2px)" }} onClick={onClose}>
+          <div style={{ background: "var(--color-surface)", borderRadius: "20px 20px 0 0", padding: "24px 20px 36px", width: "100%", maxWidth: 480, maxHeight: "85vh", overflowY: "auto" }} onClick={e => e.stopPropagation()}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-              <div style={{ fontWeight: 900, fontSize: 20, color: "#0f172a" }}>{title}</div>
-              <button onClick={onClose} style={{ background: "#f1f5f9", border: "none", borderRadius: 10, padding: "6px 12px", cursor: "pointer", fontFamily: "inherit", fontWeight: 700, color: "#64748b" }}>סגור ✕</button>
+              <div style={{ fontWeight: 700, fontSize: "var(--text-xl)", color: "var(--color-text-primary)" }}>{title}</div>
+              <button onClick={onClose} style={{ background: "var(--color-primary-light)", border: "none", borderRadius: 10, padding: "6px 12px", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, color: "var(--color-primary)" }}>סגור ✕</button>
             </div>
-            <div style={{ fontSize: 14, color: "#475569", lineHeight: 1.9, whiteSpace: "pre-line" }}>{content}</div>
-            <button onClick={onClose} style={{ marginTop: 20, width: "100%", padding: "13px 0", borderRadius: 12, border: "none", background: "#0d9488", color: "white", fontWeight: 700, fontSize: 15, cursor: "pointer", fontFamily: "inherit" }}>{closeLabel}</button>
+            <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", lineHeight: 1.9, whiteSpace: "pre-line" }}>{content}</div>
+            <Button variant="primary" onClick={onClose} style={{ marginTop: 20, width: "100%" }}>{closeLabel}</Button>
           </div>
         </div>
       );
