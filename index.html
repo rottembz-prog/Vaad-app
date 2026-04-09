@@ -709,10 +709,31 @@ ${eventRows}</table>
     const EMPTY_BUDGET_FORM = { name: "", className: "", year: getDefaultYear(), colorKey: "teal", feePerStudent: "500", members: [], whatsappGroups: [] };
 
     // ─────────────────────────────────────────
-    // SHARED — Action Buttons
+    // SHARED — Icon button (edit / delete / any)
+    // Used consistently across ALL pages/tabs
+    // ─────────────────────────────────────────
+    function IconBtn({ icon, color, onClick, title, size = 16, stopProp = false }) {
+      return (
+        <button
+          onClick={e => { if (stopProp) e.stopPropagation(); onClick && onClick(e); }}
+          title={title}
+          style={{
+            background: "none", border: "none", cursor: "pointer",
+            padding: 6, borderRadius: 8, lineHeight: 1,
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            transition: "opacity 150ms",
+          }}
+        >
+          <Icon n={icon} s={size} c={color} w={1.8} />
+        </button>
+      );
+    }
+
+    // ─────────────────────────────────────────
+    // SHARED — Action Buttons (card header — white icons on gradient)
     // ─────────────────────────────────────────
     function ActionButtons({ onEdit, onDelete, onCopy, onReport, showEdit = true, showDelete = true, showCopy = false, showReport = false }) {
-      const btn = { background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "6px 8px", color: "white", cursor: "pointer", lineHeight: 1, display: "flex", alignItems: "center" };
+      const btn = { background: "rgba(255,255,255,0.22)", border: "none", borderRadius: 8, padding: "6px 8px", color: "white", cursor: "pointer", lineHeight: 1, display: "flex", alignItems: "center", transition: "opacity 150ms" };
       return (
         <div style={{ display: "flex", gap: 6 }}>
           {showReport && <button onClick={e => { e.stopPropagation(); onReport && onReport(); }} style={btn} title="דו״ח PDF"><Icon n="report" s={15} c="white" w={1.8} /></button>}
@@ -1516,9 +1537,9 @@ ${eventRows}</table>
                     style={{ marginTop: 8, marginBottom: 4 }}
                   />
                 )}
-                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-                  <button onClick={() => startEdit(ev)} style={S.smallBtn("#e2e8f0", "#64748b")}>עריכה</button>
-                  <button onClick={() => removeEvent(ev.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+                <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
+                  <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(ev)}       title="ערוך"  />
+                  <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeEvent(ev.id)} title="מחק"   />
                 </div>
               </Card>
             );
@@ -1742,9 +1763,9 @@ ${eventRows}</table>
                     }}>{s.paid ? "✅" : s.partial ? "🟠" : "❌"}</button>
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-                  <button onClick={() => startEdit(s)} style={S.smallBtn("#e2e8f0", "#64748b")}>עריכה</button>
-                  <button onClick={() => removeStudent(s.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+                <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
+                  <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(s)}          title="ערוך" />
+                  <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeStudent(s.id)}  title="מחק"  />
                 </div>
               </div>
             )
@@ -1924,10 +1945,10 @@ ${eventRows}</table>
                   {gift.vendorLink && (
                     <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#0d9488", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
                   )}
-                  <div style={{ display: "flex", gap: 4 }}>
-                    {onAddEvent && <button onClick={() => startCopy(gift)} style={{ ...S.smallBtn("#ccfbf1", "#0d9488"), flex: 1, textAlign: "center" }} title="הוסף לתקציב">📊</button>}
-                    <button onClick={() => startEdit(gift)} style={{ ...S.smallBtn("#e2e8f0", "#64748b"), flex: 1, textAlign: "center" }}>✏️</button>
-                    <button onClick={() => removeGift(gift.id)} style={{ ...S.smallBtn("#fee2e2", "#ef4444"), flex: 1, textAlign: "center" }}>✕</button>
+                  <div style={{ display: "flex", gap: 2, justifyContent: "flex-end", marginTop: 4 }}>
+                    {onAddEvent && <IconBtn icon="chart"  color="var(--color-primary)"        onClick={() => startCopy(gift)}    title="הוסף לתקציב" />}
+                    <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(gift)}      title="ערוך" />
+                    <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeGift(gift.id)} title="מחק"  />
                   </div>
                 </div>
               )
@@ -2311,9 +2332,9 @@ ${eventRows}</table>
                     <div style={{ fontSize: 10, color: "#94a3b8" }}>יתרה ₪{entry.bal.toLocaleString('he-IL')}</div>
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
-                  <button onClick={() => startEdit(entry)} style={S.smallBtn("#e2e8f0", "#64748b")}>עריכה</button>
-                  <button onClick={() => removeEntry(entry.id)} style={S.smallBtn("#fee2e2", "#ef4444")}>✕ מחקי</button>
+                <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
+                  <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(entry)}       title="ערוך" />
+                  <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeEntry(entry.id)} title="מחק"  />
                 </div>
               </div>
             )
