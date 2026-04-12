@@ -1563,7 +1563,7 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     const EMPTY_STUDENT_FORM = { name: "", paid: false, amount: "", note: "", paidBy: "", paidBySplit: [], partial: false };
 
-    function CollectTab({ students, setStudents, feePerStudent = 500, setFeePerStudent, expectedStudents = 0, setExpectedStudents, payboxLink = "", setPayboxLink, classWhatsappLink = "", setClassWhatsappLink }) {
+    function CollectTab({ students, setStudents, feePerStudent = 500, setFeePerStudent, expectedStudents = 0, setExpectedStudents, payboxLink = "", setPayboxLink, classWhatsappLink = "", setClassWhatsappLink, members = [] }) {
       const [search,        setSearch]        = useState("");
       const [showAdd,       setShowAdd]       = useState(false);
       const [addForm,       setAddForm]       = useState(EMPTY_STUDENT_FORM);
@@ -1607,12 +1607,15 @@ ${eventRows}</table>
       const removeStudent   = (id) => setConfirmDeleteId(id);
       const doRemoveStudent = () => { setStudents(students.filter(s => s.id !== confirmDeleteId)); setConfirmDeleteId(null); };
 
-      const unpaidStudents = students.filter(s => !s.paid);
+      const unpaidStudents = students.filter(s => !s.paid || s.partial);
+      const membersText    = members.length > 0 ? ` ${members.join(', ')}` : '';
+      const paymentMethod  = `ניתן לשלם במזומן/ביט לאחת מבנות הועד${membersText}.`;
+      const payboxLine     = payboxLink ? `\nלהלן הקישור לתשלום: ${payboxLink}` : '';
       const whatsappMsg = unpaidStudents.length === 0
         ? null
         : paidCount === 0
-          ? `שלום כיתה יקרה! 😊\nנפתחה גבייה לדמי ועד הורים לשנה"ל: ₪${feePerStudent} לתלמיד.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`
-          : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${feePerStudent}).\nטרם שולם: ${unpaidStudents.map(s => s.name).join(', ')}.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`;
+          ? `שלום כיתה יקרה! 😊\nנפתחה גבייה לדמי ועד הורים לשנה"ל: ₪${feePerStudent} לתלמיד.\n${paymentMethod}${payboxLine}\nתודה! 🙏`
+          : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${feePerStudent}).\nטרם התקבל מ ${unpaidStudents.map(s => s.name).join(', ')}.\n${paymentMethod}${payboxLine}\nתודה! 🙏`;
 
       return (
         <React.Fragment>
@@ -2420,7 +2423,7 @@ ${eventRows}</table>
           {/* ── Tab content ── */}
           <div className="bs-tab-pad" style={{ padding: "14px 14px 96px" }}>
             {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} expectedStudents={budget.expectedStudents || 0} year={budget.year || ""} />}
-            {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent || 500} setFeePerStudent={setFeePerStudent} expectedStudents={budget.expectedStudents || 0} setExpectedStudents={setExpectedStudents} payboxLink={budget.payboxLink || ""} setPayboxLink={setPayboxLink} classWhatsappLink={budget.classWhatsappLink || ""} setClassWhatsappLink={setClassWhatsappLink} />}
+            {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent || 500} setFeePerStudent={setFeePerStudent} expectedStudents={budget.expectedStudents || 0} setExpectedStudents={setExpectedStudents} payboxLink={budget.payboxLink || ""} setPayboxLink={setPayboxLink} classWhatsappLink={budget.classWhatsappLink || ""} setClassWhatsappLink={setClassWhatsappLink} members={budget.members || []} />}
             {activeTab === "gifts"   && <GiftsTab   gifts={gifts} setGifts={setGifts} onAddEvent={(ev) => setEvents([...budget.events, { id: Date.now(), ...ev }])} />}
             {activeTab === "cash"    && <CashTab     cashLog={budget.cashLog}   setCashLog={setCashLog} students={budget.students} events={budget.events} />}
           </div>
