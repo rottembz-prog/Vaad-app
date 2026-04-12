@@ -786,7 +786,8 @@ ${eventRows}</table>
       const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.teal;
       const paidCount  = budget.students.filter(s => s.paid).length;
       const total      = budget.students.length;
-      const budgetSum  = budget.events.reduce((s, e) => s + e.budget, 0);
+      const totalExpBudget = budget.events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
+      const totalIncBudget = budget.events.filter(e => e.type === "income").reduce((s, e) => s + e.budget, 0);
       const collected  = budget.students.reduce((s, st) => s + (st.amount || 0), 0);
 
       return (
@@ -795,8 +796,9 @@ ${eventRows}</table>
           <div style={{ background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`, padding: "14px 16px 12px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div>
+                <div style={{ color: "rgba(255,255,255,0.8)", fontWeight: 800, fontSize: 13, marginBottom: 2 }}>{budget.year}</div>
                 <div style={{ color: "white", fontWeight: 900, fontSize: 18, marginBottom: 2 }}>{budget.name}</div>
-                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
+                <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 12 }}>{budget.className}</div>
               </div>
               <ActionButtons onReport={onReport} onCopy={onCopy} onEdit={onEdit} onDelete={onDelete} showReport showCopy showEdit showDelete />
             </div>
@@ -813,7 +815,8 @@ ${eventRows}</table>
               </>
             )}
             <div style={{ display: "flex", gap: 14, fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", alignItems: "center" }}>
-              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="var(--color-primary)" w={2} /> ₪{budgetSum.toLocaleString('he-IL')} תקציב</span>
+              {totalIncBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="income" s={13} c="var(--color-secondary)" w={2} /> ₪{totalIncBudget.toLocaleString('he-IL')} הכנסות</span>}
+              {totalExpBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="expense" s={13} c="var(--color-danger)" w={2} /> ₪{totalExpBudget.toLocaleString('he-IL')} הוצאות</span>}
               <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="wallet" s={13} c="var(--color-secondary)" w={2} /> ₪{collected.toLocaleString('he-IL')} נגבה</span>
               {budget.feePerStudent && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={13} c="var(--color-text-secondary)" w={2} /> ₪{budget.feePerStudent}/ילד</span>}
             </div>
@@ -1065,7 +1068,8 @@ ${eventRows}</table>
 
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
               <div>
-                <div style={{ color: "white", fontWeight: 800, fontSize: "var(--text-2xl)", letterSpacing: -0.5, lineHeight: 1.1 }}>התקציבים שלי</div>
+                <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "var(--text-xs)", fontWeight: 500, marginBottom: 4 }}>התקציבים של</div>
+                <div style={{ color: "white", fontWeight: 800, fontSize: "var(--text-2xl)", letterSpacing: -0.5, lineHeight: 1.1 }}>{currentClass?.name}</div>
                 <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "var(--text-xs)", marginTop: 4 }}>בחר תקציב לניהול</div>
               </div>
               <div style={{ display: "flex", gap: 6 }}>
