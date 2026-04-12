@@ -2737,8 +2737,8 @@ ${eventRows}</table>
                   שלום, {user.displayName || user.email?.split("@")[0]} 👋
                 </div>
                 <div style={{ color: "white", fontWeight: 800, fontSize: "var(--text-2xl)", lineHeight: 1.1 }}>הקבוצות שלי</div>
-                <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "var(--text-xs)", marginTop: 6, maxWidth: 260, lineHeight: 1.5 }}>
-                  כאן תפתח קבוצה לכל קבוצת אנשים שברצונך לשתף בניהול התקציבים
+                <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "var(--text-xs)", marginTop: 6, maxWidth: 340, lineHeight: 1.6 }}>
+                  כאן באפשרותך לפתוח קבוצה עבור כל קבוצת ועד בה תשמש כגזבר, אם אינך גזבר, תוכל להצטרף לצפות בתנועות הועד באמצעות קוד קבוצה שימסר לך ע"י הגזבר
                 </div>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-end" }}>
@@ -2764,7 +2764,7 @@ ${eventRows}</table>
                       background: "var(--color-primary-light)", color: "var(--color-primary)",
                       fontWeight: 700, fontSize: "var(--text-xs)", cursor: "pointer",
                       fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-                    }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> קבוצה חדשה</button>
+                    }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> פתח קבוצה חדשה</button>
                     <button onClick={() => setMode("join")} style={{
                       flex: 1, padding: "13px 0", borderRadius: 14,
                       border: "2px solid var(--color-border)",
@@ -2778,7 +2778,7 @@ ${eventRows}</table>
                 {/* Create form */}
                 {mode === "create" && (
                   <Card style={{ border: "2px solid var(--color-border)", marginBottom: 16 }}>
-                    <div style={{ fontWeight: 700, fontSize: "var(--text-base)", marginBottom: 4 }}>➕ קבוצה חדשה</div>
+                    <div style={{ fontWeight: 700, fontSize: "var(--text-base)", marginBottom: 4 }}>➕ פתח קבוצה חדשה</div>
                     <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 12 }}>פתח קבוצה לקבוצת אנשים שיחלקו גישה לתקציבים</div>
                     <FieldLabel>שם הקבוצה</FieldLabel>
                     <input value={createName} onChange={e => setCreateName(e.target.value)} placeholder="למשל: ועד הורים כיתה ו׳" style={S.input} autoFocus onKeyDown={e => e.key === "Enter" && createClass()} />
@@ -2794,7 +2794,7 @@ ${eventRows}</table>
                 {mode === "join" && (
                   <Card style={{ border: "2px solid var(--color-border)", marginBottom: 16 }}>
                     <div style={{ fontWeight: 700, fontSize: "var(--text-base)", marginBottom: 4 }}>🔗 הצטרפות לקבוצה</div>
-                    <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 12 }}>קבל קוד מחבר וצטרף לקבוצה קיימת</div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 12 }}>הזן את הקוד להצטרפות לקבוצה</div>
                     <FieldLabel>קוד הצטרפות (6 תווים)</FieldLabel>
                     <input value={joinCode} onChange={e => setJoinCode(e.target.value)} placeholder="ABC123" style={{ ...S.input, letterSpacing: 3, textAlign: "center", textTransform: "uppercase" }} autoFocus onKeyDown={e => e.key === "Enter" && joinClass()} />
                     {error && <div style={{ color: "var(--color-danger)", fontSize: "var(--text-xs)", marginBottom: 8 }}>{error}</div>}
@@ -2809,8 +2809,10 @@ ${eventRows}</table>
                 {classes.map(cls => {
                   const members   = cls.memberDetails || [];
                   const isAdmin   = cls.createdBy === user.uid;
-                  // Sort: admin first, then rest in join order
-                  const sorted    = [...members].sort((a, b) => (a.uid === cls.createdBy ? -1 : b.uid === cls.createdBy ? 1 : 0));
+                  // Deduplicate by uid (prefer admin role), then sort creator first
+                  const memberMap = new Map();
+                  members.forEach(m => { if (!memberMap.has(m.uid) || m.role === "admin") memberMap.set(m.uid, m); });
+                  const sorted    = [...memberMap.values()].sort((a, b) => (a.uid === cls.createdBy ? -1 : b.uid === cls.createdBy ? 1 : 0));
                   const expanded  = expandedMembersId === cls.id;
                   const visibleMembers = expanded ? sorted : sorted.slice(0, 3);
                   const extraCount = sorted.length - 3;
@@ -2867,19 +2869,6 @@ ${eventRows}</table>
                         <div style={{ marginBottom: 12 }}>
                           <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--color-text-secondary)", marginBottom: 8, display: "flex", alignItems: "center", gap: 5 }}>
                             <Icon n="users" s={12} c="var(--color-text-secondary)" w={2} /> חברי הקבוצה
-                          </div>
-                          {/* Avatar row */}
-                          <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 10 }}>
-                            {sorted.slice(0, 5).map((m, i) => (
-                              <div key={m.uid} style={{ marginRight: i > 0 ? -8 : 0, zIndex: 5 - i }}>
-                                <MemberAvatar name={m.displayName} size={32} />
-                              </div>
-                            ))}
-                            {sorted.length > 5 && (
-                              <div style={{ width: 32, height: 32, borderRadius: "50%", background: "var(--color-border)", border: "2px solid var(--color-surface)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.7rem", fontWeight: 700, color: "var(--color-text-secondary)", marginRight: -8 }}>
-                                +{sorted.length - 5}
-                              </div>
-                            )}
                           </div>
                           {/* Member list */}
                           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
