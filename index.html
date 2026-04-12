@@ -786,8 +786,9 @@ ${eventRows}</table>
       const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.teal;
       const paidCount  = budget.students.filter(s => s.paid).length;
       const total      = budget.students.length;
+      const collectionBudget = (budget.expectedStudents || 0) * (Number(budget.feePerStudent) || 0);
       const totalExpBudget = budget.events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
-      const totalIncBudget = budget.events.filter(e => e.type === "income").reduce((s, e) => s + e.budget, 0);
+      const totalIncBudget = collectionBudget + budget.events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
       const collected  = budget.students.reduce((s, st) => s + (st.amount || 0), 0);
 
       return (
