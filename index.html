@@ -814,8 +814,9 @@ ${eventRows}</table>
               </>
             )}
             <div style={{ display: "flex", gap: 14, fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", alignItems: "center" }}>
-              {totalIncBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="income" s={13} c="var(--color-secondary)" w={2} /> ₪{totalIncBudget.toLocaleString('he-IL')} הכנסות</span>}
-              {totalExpBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="expense" s={13} c="var(--color-danger)" w={2} /> ₪{totalExpBudget.toLocaleString('he-IL')} הוצאות</span>}
+              {totalIncBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="var(--color-secondary)" w={2} /> ₪{totalIncBudget.toLocaleString('he-IL')} תקציב הכנסות</span>}
+              {totalExpBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="var(--color-danger)" w={2} /> ₪{totalExpBudget.toLocaleString('he-IL')} תקציב הוצאות</span>}
+              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="wallet" s={13} c="var(--color-secondary)" w={2} /> ₪{collected.toLocaleString('he-IL')} סה״כ נגבה</span>
               {budget.feePerStudent && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={13} c="var(--color-text-secondary)" w={2} /> ₪{budget.feePerStudent}/ילד</span>}
             </div>
             <button onClick={onSelect} style={{
@@ -853,9 +854,6 @@ ${eventRows}</table>
         <Card style={{ border: "2px solid var(--color-border)" }}>
           <div style={{ fontWeight: 800, fontSize: "var(--text-base)", marginBottom: 12 }}>{title}</div>
 
-          {!isEdit && (<><FieldLabel>שם הועד / הקבוצה <Tooltip text="שם שיופיע בראש התקציב ובדוחות" /></FieldLabel>
-          <input placeholder="ועד הורים / ועדת ספורט / ..." value={form.name}
-            onChange={e => set("name", e.target.value)} style={S.input} autoFocus /></>)}
 
           <FieldLabel>כיתה / קבוצה</FieldLabel>
           <input placeholder='כיתה ו׳ / מחלקת א׳ / ...' value={form.className}
@@ -894,24 +892,9 @@ ${eventRows}</table>
             <Button onClick={addMember} style={{ flex: "none" }}>+ הוסף</Button>
           </div>
 
-          {!isEdit && (<><FieldLabel>קבוצות וואצאפ</FieldLabel>
-          {(form.whatsappGroups || []).map((g, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f0fdf4", borderRadius: 8, padding: "6px 10px" }}>
-              <span style={{ flex: 1, fontSize: 13, display:"flex", alignItems:"center", gap: 5 }}><Icon n="msg" s={13} c="#059669" w={1.8} /> {g.name}</span>
-              {g.link && <a href={g.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#0d9488" }}>🔗</a>}
-              <button onClick={() => set("whatsappGroups", (form.whatsappGroups || []).filter((_, j) => j !== i))} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 14, padding: 0 }}>✕</button>
-            </div>
-          ))}
-          <div style={{ marginBottom: 6 }}>
-            <input value={newGName} onChange={e => setNewGName(e.target.value)}
-              placeholder="שם הקבוצה" style={{ ...S.input, marginBottom: 6 }} />
-            <input value={newGLink} onChange={e => setNewGLink(e.target.value)}
-              placeholder="קישור לקבוצה (https://chat.whatsapp.com/...)" style={{ ...S.input, marginBottom: 6 }} />
-            <Button onClick={() => { if (!newGName.trim()) return; set("whatsappGroups", [...(form.whatsappGroups || []), { name: newGName.trim(), link: newGLink.trim() }]); setNewGName(""); setNewGLink(""); }} style={{ width: "100%" }}>+ הוסף קבוצה</Button>
-          </div></>)}
 
           <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-            <Button onClick={() => onSave(form)} disabled={!form.name.trim()}>שמור</Button>
+            <Button onClick={() => onSave({ ...form, name: form.name.trim() || form.className.trim() })} disabled={!form.className.trim()}>שמור</Button>
             <Button variant="secondary" onClick={onCancel}>ביטול</Button>
           </div>
         </Card>
