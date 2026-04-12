@@ -796,9 +796,8 @@ ${eventRows}</table>
           <div style={{ background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`, padding: "14px 16px 12px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div>
-                <div style={{ color: "rgba(255,255,255,0.8)", fontWeight: 800, fontSize: 13, marginBottom: 2 }}>{budget.year}</div>
-                <div style={{ color: "white", fontWeight: 900, fontSize: 18, marginBottom: 2 }}>{budget.name}</div>
-                <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 12 }}>{budget.className}</div>
+                <div style={{ color: "white", fontWeight: 900, fontSize: 24, lineHeight: 1, marginBottom: 4 }}>{budget.year}</div>
+                <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 12 }}>{budget.className}</div>
               </div>
               <ActionButtons onReport={onReport} onCopy={onCopy} onEdit={onEdit} onDelete={onDelete} showReport showCopy showEdit showDelete />
             </div>
@@ -817,7 +816,6 @@ ${eventRows}</table>
             <div style={{ display: "flex", gap: 14, fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", alignItems: "center" }}>
               {totalIncBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="income" s={13} c="var(--color-secondary)" w={2} /> ₪{totalIncBudget.toLocaleString('he-IL')} הכנסות</span>}
               {totalExpBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="expense" s={13} c="var(--color-danger)" w={2} /> ₪{totalExpBudget.toLocaleString('he-IL')} הוצאות</span>}
-              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="wallet" s={13} c="var(--color-secondary)" w={2} /> ₪{collected.toLocaleString('he-IL')} נגבה</span>
               {budget.feePerStudent && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={13} c="var(--color-text-secondary)" w={2} /> ₪{budget.feePerStudent}/ילד</span>}
             </div>
             <button onClick={onSelect} style={{
@@ -830,7 +828,7 @@ ${eventRows}</table>
       );
     }
 
-    function BudgetForm({ initial = EMPTY_BUDGET_FORM, onSave, onCancel, title }) {
+    function BudgetForm({ initial = EMPTY_BUDGET_FORM, onSave, onCancel, title, isEdit = false }) {
       const [form, setForm]           = useState({ ...EMPTY_BUDGET_FORM, ...initial });
       const [newMember, setNewMember] = useState("");
       const [newGName,  setNewGName]  = useState("");
@@ -855,9 +853,9 @@ ${eventRows}</table>
         <Card style={{ border: "2px solid var(--color-border)" }}>
           <div style={{ fontWeight: 800, fontSize: "var(--text-base)", marginBottom: 12 }}>{title}</div>
 
-          <FieldLabel>שם הועד / הקבוצה <Tooltip text="שם שיופיע בראש התקציב ובדוחות" /></FieldLabel>
+          {!isEdit && (<><FieldLabel>שם הועד / הקבוצה <Tooltip text="שם שיופיע בראש התקציב ובדוחות" /></FieldLabel>
           <input placeholder="ועד הורים / ועדת ספורט / ..." value={form.name}
-            onChange={e => set("name", e.target.value)} style={S.input} autoFocus />
+            onChange={e => set("name", e.target.value)} style={S.input} autoFocus /></>)}
 
           <FieldLabel>כיתה / קבוצה</FieldLabel>
           <input placeholder='כיתה ו׳ / מחלקת א׳ / ...' value={form.className}
@@ -896,7 +894,7 @@ ${eventRows}</table>
             <Button onClick={addMember} style={{ flex: "none" }}>+ הוסף</Button>
           </div>
 
-          <FieldLabel>קבוצות וואצאפ</FieldLabel>
+          {!isEdit && (<><FieldLabel>קבוצות וואצאפ</FieldLabel>
           {(form.whatsappGroups || []).map((g, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f0fdf4", borderRadius: 8, padding: "6px 10px" }}>
               <span style={{ flex: 1, fontSize: 13, display:"flex", alignItems:"center", gap: 5 }}><Icon n="msg" s={13} c="#059669" w={1.8} /> {g.name}</span>
@@ -910,7 +908,7 @@ ${eventRows}</table>
             <input value={newGLink} onChange={e => setNewGLink(e.target.value)}
               placeholder="קישור לקבוצה (https://chat.whatsapp.com/...)" style={{ ...S.input, marginBottom: 6 }} />
             <Button onClick={() => { if (!newGName.trim()) return; set("whatsappGroups", [...(form.whatsappGroups || []), { name: newGName.trim(), link: newGLink.trim() }]); setNewGName(""); setNewGLink(""); }} style={{ width: "100%" }}>+ הוסף קבוצה</Button>
-          </div>
+          </div></>)}
 
           <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
             <Button onClick={() => onSave(form)} disabled={!form.name.trim()}>שמור</Button>
@@ -1095,6 +1093,7 @@ ${eventRows}</table>
             {mode === "edit" && editingBudget && (
               <BudgetForm
                 title="✏️ עריכת תקציב"
+                isEdit
                 initial={{ ...editingBudget, feePerStudent: String(editingBudget.feePerStudent), members: editingBudget.members || [], whatsappGroups: editingBudget.whatsappGroups || [] }}
                 onSave={handleSave}
                 onCancel={() => { setMode("list"); setEditingId(null); }}
