@@ -849,8 +849,8 @@ ${eventRows}</table>
       const removeGroup = () => set("whatsappGroups", []);
 
       return (
-        <Card style={{ border: "2px solid #ccfbf1" }}>
-          <div style={{ fontWeight: 800, fontSize: 15, marginBottom: 12 }}>{title}</div>
+        <Card style={{ border: "2px solid var(--color-border)" }}>
+          <div style={{ fontWeight: 800, fontSize: "var(--text-base)", marginBottom: 12 }}>{title}</div>
 
           <FieldLabel>שם הועד / הקבוצה <Tooltip text="שם שיופיע בראש התקציב ובדוחות" /></FieldLabel>
           <input placeholder="ועד הורים / ועדת ספורט / ..." value={form.name}
@@ -890,7 +890,7 @@ ${eventRows}</table>
             <input value={newMember} onChange={e => setNewMember(e.target.value)}
               onKeyDown={e => e.key === "Enter" && addMember()}
               placeholder="שם חבר/ת ועד" style={{ ...S.input, marginBottom: 0, flex: 1 }} />
-            <button onClick={addMember} style={{ ...S.btn("#0d9488"), flex: "none", padding: "10px 14px" }}>+ הוסף</button>
+            <Button onClick={addMember} style={{ flex: "none" }}>+ הוסף</Button>
           </div>
 
           <FieldLabel>קבוצות וואצאפ</FieldLabel>
@@ -906,12 +906,12 @@ ${eventRows}</table>
               placeholder="שם הקבוצה" style={{ ...S.input, marginBottom: 6 }} />
             <input value={newGLink} onChange={e => setNewGLink(e.target.value)}
               placeholder="קישור לקבוצה (https://chat.whatsapp.com/...)" style={{ ...S.input, marginBottom: 6 }} />
-            <button onClick={() => { if (!newGName.trim()) return; set("whatsappGroups", [...(form.whatsappGroups || []), { name: newGName.trim(), link: newGLink.trim() }]); setNewGName(""); setNewGLink(""); }} style={{ ...S.btn("#059669"), width: "100%" }}>+ הוסף קבוצה</button>
+            <Button onClick={() => { if (!newGName.trim()) return; set("whatsappGroups", [...(form.whatsappGroups || []), { name: newGName.trim(), link: newGLink.trim() }]); setNewGName(""); setNewGLink(""); }} style={{ width: "100%" }}>+ הוסף קבוצה</Button>
           </div>
 
           <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-            <button onClick={() => onSave(form)} style={S.btn("#0d9488")} disabled={!form.name.trim()}>שמור</button>
-            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+            <Button onClick={() => onSave(form)} disabled={!form.name.trim()}>שמור</Button>
+            <Button variant="secondary" onClick={onCancel}>ביטול</Button>
           </div>
         </Card>
       );
@@ -1196,8 +1196,8 @@ ${eventRows}</table>
       const setAmt = (field, val) => onChange({ ...data, [field]: val.replace(/[^\d.]/g, '') });
       const pasteAmt = (field, e) => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); onChange({ ...data, [field]: t.replace(/[^\d.]/g, '') }); };
       return (
-        <Card style={{ border: "2px solid #ccfbf1" }}>
-          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+        <Card style={{ border: "2px solid var(--color-border)" }}>
+          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>{title}</div>
           <div style={{ display: "flex", gap: 8, marginBottom: 10 }}>
             {["expense", "income"].map(t => (
               <button key={t} onClick={() => onChange({ ...data, type: t })} style={{
@@ -1251,9 +1251,9 @@ ${eventRows}</table>
             הושלם ✅
           </label>
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={onSave} style={S.btn("#0d9488")} disabled={!data.name.trim()}>שמור</button>
-            {onSaveAndNew && <button onClick={onSaveAndNew} style={S.btn("#0f172a")} disabled={!data.name.trim()}>שמור + חדש</button>}
-            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+            <Button onClick={onSave} disabled={!data.name.trim()}>שמור</Button>
+            {onSaveAndNew && <Button variant="ghost" onClick={onSaveAndNew} disabled={!data.name.trim()}>שמור + חדש</Button>}
+            <Button variant="secondary" onClick={onCancel}>ביטול</Button>
           </div>
         </Card>
       );
@@ -1407,9 +1407,8 @@ ${eventRows}</table>
             onCancel={() => setConfirmDeleteId(null)}
           />
         <div>
-          {/* Summary — dark card */}
-          <div style={{ background: "linear-gradient(135deg,#1e293b,#0f172a)", borderRadius: 20, padding: 20, color: "white", marginBottom: 16 }}>
-            {/* Budget totals grid — 3 stats */}
+          {/* ── Summary card ── */}
+          <div style={{ background: "linear-gradient(135deg, var(--color-text-primary) 0%, #0f2420 100%)", borderRadius: 20, padding: 20, color: "white", marginBottom: 16 }}>
             <div className="summary-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
               {[
                 { l: "תקציב הוצאות", v: fmt(totalExpBudget), c: "#f87171" },
@@ -1417,33 +1416,30 @@ ${eventRows}</table>
                 { l: "יתרה תקציבית", v: fmt(balance),        c: balance >= 0 ? "#4ade80" : "#f87171" },
               ].map(x => (
                 <div key={x.l}>
-                  <div className="summary-val" style={{ fontSize: 24, fontWeight: 900, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
-                  <div className="summary-lbl" style={{ fontSize: 11, opacity: 0.55, marginTop: 2 }}>{x.l}</div>
+                  <div className="summary-val" style={{ fontWeight: 700, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
+                  <div className="summary-lbl" style={{ opacity: 0.55, marginTop: 2 }}>{x.l}</div>
                 </div>
               ))}
             </div>
-
-            {/* Actual rows — transferred to מזומן */}
             {[
               { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#c084fc" },
               { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#34d399" },
             ].map(x => (
               <div key={x.l} style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <div className="summary-lbl" style={{ fontSize: 11, opacity: 0.7 }}>{x.l}</div>
-                  <div style={{ fontSize: 10, opacity: 0.4 }}>מועבר ל״מזומן״</div>
+                  <div className="summary-lbl" style={{ opacity: 0.7 }}>{x.l}</div>
+                  <div style={{ fontSize: "0.7rem", opacity: 0.4 }}>מועבר ל״מזומן״</div>
                 </div>
-                <div className="summary-val" style={{ fontSize: 24, fontWeight: 900, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
+                <div className="summary-val" style={{ fontWeight: 700, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
               </div>
             ))}
-
             {budgetPerStudent !== null && (
               <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <div style={{ opacity: 0.55, fontSize: 11 }}>תקציב לתלמיד</div>
-                  <div style={{ opacity: 0.4, fontSize: 10 }}>הוצאות ÷ {expectedStudents} תלמידים</div>
+                  <div style={{ opacity: 0.55, fontSize: "var(--text-xs)" }}>תקציב לתלמיד</div>
+                  <div style={{ opacity: 0.4, fontSize: "0.7rem" }}>הוצאות ÷ {expectedStudents} תלמידים</div>
                 </div>
-                <div style={{ fontSize: 28, fontWeight: 900, color: "#60a5fa" }}>{fmt(budgetPerStudent)}</div>
+                <div style={{ fontWeight: 700, color: "#60a5fa", fontSize: "var(--text-xl)" }}>{fmt(budgetPerStudent)}</div>
               </div>
             )}
           </div>
@@ -1505,35 +1501,35 @@ ${eventRows}</table>
             return editId === ev.id ? (
               <EventForm key={ev.id} title="✏️ עריכת ארוע" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
             ) : (
-              <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "#22c55e" : "#0d9488"}` }}>
+              <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "var(--color-secondary)" : "var(--color-primary)"}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
                       <button onClick={() => toggleDone(ev.id)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1 }}>
                         {ev.done ? "✅" : "⬜"}
                       </button>
-                      <span className="ev-name" style={{ fontWeight: 700, fontSize: 14, color: "#0f172a" }}>{ev.name}</span>
-                      <span style={{ fontSize: 10, fontWeight: 700, padding: "1px 6px", borderRadius: 8, background: isIncome ? "#dcfce7" : "#fee2e2", color: isIncome ? "#059669" : "#ef4444" }}>
-                        <span style={{ display:"inline-flex", alignItems:"center", gap: 3 }}><Icon n={isIncome ? "income" : "expense"} s={10} c={isIncome ? "#059669" : "#ef4444"} w={2.2} />{isIncome ? "הכנסה" : "הוצאה"}</span>
+                      <span className="ev-name" style={{ fontWeight: 700, color: "var(--color-text-primary)" }}>{ev.name}</span>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 700, padding: "1px 6px", borderRadius: 8, background: isIncome ? "#dcfce7" : "#fee2e2", color: isIncome ? "var(--color-secondary)" : "var(--color-danger)" }}>
+                        <span style={{ display:"inline-flex", alignItems:"center", gap: 3 }}><Icon n={isIncome ? "income" : "expense"} s={10} c={isIncome ? "var(--color-secondary)" : "var(--color-danger)"} w={2.2} />{isIncome ? "הכנסה" : "הוצאה"}</span>
                       </span>
                     </div>
                     <div className="ev-meta" style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 4, flexWrap: "wrap" }}>
                       <Badge text={ev.category} cat={ev.category} />
-                      <span style={{ fontSize: 11, color: "#94a3b8" }}>{formatDate(ev.date)}</span>
-                      {ev.paidBy && <span style={{ fontSize: 11, color: "#64748b", display:"inline-flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {ev.paidBy}</span>}
+                      <span style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)" }}>{formatDate(ev.date)}</span>
+                      {ev.paidBy && <span style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", display:"inline-flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="var(--color-text-secondary)" w={1.8} /> {ev.paidBy}</span>}
                     </div>
-                    {ev.notes && <div style={{ fontSize: 11, color: "#64748b", display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="#94a3b8" w={1.8} /> {ev.notes}</div>}
+                    {ev.notes && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="var(--color-text-secondary)" w={1.8} /> {ev.notes}</div>}
                   </div>
                   <div className="ev-amount-col" style={{ textAlign: "left", flexShrink: 0, marginRight: 8, minWidth: 72 }}>
-                    <div className="ev-budget-val" style={{ fontWeight: 900, fontSize: 16, color: "#0f172a" }}>₪{ev.budget.toLocaleString('he-IL')}</div>
-                    <div style={{ fontSize: 10, color: "#94a3b8" }}>תקציב</div>
-                    {ev.spent > 0 && <div className="ev-paid-val" style={{ fontSize: 12, fontWeight: 700, color: isIncome ? "#059669" : "#ea580c", marginTop: 2 }}>₪{ev.spent.toLocaleString('he-IL')} {isIncome ? "התקבל" : "שולם"}</div>}
+                    <div className="ev-budget-val" style={{ fontWeight: 900, color: "var(--color-text-primary)" }}>₪{ev.budget.toLocaleString('he-IL')}</div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>תקציב</div>
+                    {ev.spent > 0 && <div className="ev-paid-val" style={{ fontWeight: 700, color: isIncome ? "var(--color-secondary)" : "var(--color-warning)", marginTop: 2 }}>₪{ev.spent.toLocaleString('he-IL')} {isIncome ? "התקבל" : "שולם"}</div>}
                   </div>
                 </div>
                 {ev.spent > 0 && ev.budget > 0 && (
                   <ProgressBar
                     pct={(ev.spent / ev.budget) * 100}
-                    color={isIncome ? "#22c55e" : ((ev.spent / ev.budget) > 1 ? "#ef4444" : (ev.spent / ev.budget) > 0.8 ? "#f59e0b" : "#0d9488")}
+                    color={isIncome ? "var(--color-secondary)" : ((ev.spent / ev.budget) > 1 ? "var(--color-danger)" : (ev.spent / ev.budget) > 0.8 ? "var(--color-warning)" : "var(--color-primary)")}
                     style={{ marginTop: 8, marginBottom: 4 }}
                   />
                 )}
@@ -1552,10 +1548,15 @@ ${eventRows}</table>
             <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onSaveAndNew={addEventAndNew} onCancel={() => { setShowAdd(false); setAddForm(EMPTY_EVENT); }} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
-              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
-              background: "transparent", color: "#0d9488", fontWeight: 700, fontSize: 14,
+              width: "100%", padding: 14, borderRadius: 14,
+              border: "2px dashed var(--color-border)",
+              background: "var(--color-primary-light)", color: "var(--color-primary)",
+              fontWeight: 600, fontSize: "var(--text-sm)",
               cursor: "pointer", fontFamily: "inherit",
-            }}>+ הוסיפי ארוע</button>
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            }}>
+              <Icon n="plus" s={18} c="var(--color-primary)" w={2.2} /> הוסף ארוע
+            </button>
           )}
         </div>
         </React.Fragment>
@@ -1661,32 +1662,31 @@ ${eventRows}</table>
             </div>
           </Card>
 
-          {/* Gradient summary header */}
-          <div style={{ background: "linear-gradient(135deg,#059669,#0d9488)", borderRadius: 20, padding: 20, color: "white", marginBottom: 12 }}>
-            <div style={{ opacity: 0.75, fontSize: 13, marginBottom: 2 }}>סה״כ נגבה</div>
-            <div style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
+          {/* ── Collection summary card ── */}
+          <div style={{ background: "linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%)", borderRadius: 20, padding: 20, color: "white", marginBottom: 12 }}>
+            <div style={{ opacity: 0.8, fontSize: "var(--text-xs)", marginBottom: 2 }}>סה״כ נגבה</div>
+            <div style={{ fontSize: "var(--text-2xl)", fontWeight: 700, letterSpacing: -1 }}>
               ₪{totalCollected.toLocaleString('he-IL')}
             </div>
             {collectionBudgetTotal > 0 && (
               <div style={{ marginTop: 10 }}>
                 <div style={{ background: "rgba(255,255,255,0.2)", borderRadius: 100, height: 7, overflow: "hidden" }}>
-                  <div style={{ height: "100%", borderRadius: 100, background: "rgba(255,255,255,0.7)", width: `${Math.min((totalCollected / collectionBudgetTotal) * 100, 100)}%`, transition: "width 0.4s ease" }} />
+                  <div style={{ height: "100%", borderRadius: 100, background: "rgba(255,255,255,0.75)", width: `${Math.min((totalCollected / collectionBudgetTotal) * 100, 100)}%`, transition: "width 0.4s ease" }} />
                 </div>
               </div>
             )}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 12 }}>
               <div>
-                <div style={{ opacity: 0.65, fontSize: 10 }}>שילמו</div>
-                <div style={{ fontWeight: 700, fontSize: 15, display:"flex", alignItems:"center", gap: 4 }}><Icon n="check" s={13} c="white" w={2.5} /> {paidCount}/{students.length}</div>
+                <div style={{ opacity: 0.65, fontSize: "0.7rem" }}>שילמו</div>
+                <div style={{ fontWeight: 700, fontSize: "var(--text-sm)", display: "flex", alignItems: "center", gap: 4 }}><Icon n="check" s={13} c="white" w={2.5} /> {paidCount}/{students.length}</div>
               </div>
               <div>
-                <div style={{ opacity: 0.65, fontSize: 10 }}>יעד גבייה</div>
-                <div style={{ fontWeight: 700, fontSize: 15 }}>₪{collectionBudgetTotal.toLocaleString('he-IL')}</div>
+                <div style={{ opacity: 0.65, fontSize: "0.7rem" }}>יעד גבייה</div>
+                <div style={{ fontWeight: 700, fontSize: "var(--text-sm)" }}>₪{collectionBudgetTotal.toLocaleString('he-IL')}</div>
               </div>
               <div>
-                <div style={{ opacity: 0.65, fontSize: 10 }}>ממתינים</div>
-                <div style={{ fontWeight: 700, fontSize: 15, color: students.length - paidCount > 0 ? "#fde68a" : "#86efac", display:"flex", alignItems:"center", gap: 4 }}>
-                  {students.length - paidCount > 0 && <Icon n="x" s={13} c="#fde68a" w={2.5} />}
+                <div style={{ opacity: 0.65, fontSize: "0.7rem" }}>ממתינים</div>
+                <div style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: students.length - paidCount > 0 ? "#fde68a" : "#86efac", display: "flex", alignItems: "center", gap: 4 }}>
                   {students.length - paidCount > 0 ? `${students.length - paidCount} ילדים` : "✓ הכל"}
                 </div>
               </div>
@@ -1710,8 +1710,8 @@ ${eventRows}</table>
           <div className="student-grid">
           {filtered.map(s => (
             editId === s.id ? (
-              <Card key={s.id} style={{ border: "2px solid #ccfbf1" }}>
-                <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>✏️ עריכת תלמיד</div>
+              <Card key={s.id} style={{ border: "2px solid var(--color-border)" }}>
+                <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>✏️ עריכת תלמיד</div>
                 <FieldLabel>שם</FieldLabel>
                 <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} style={S.input} autoFocus />
                 <FieldLabel>סכום ששולם ₪</FieldLabel>
@@ -1735,28 +1735,28 @@ ${eventRows}</table>
                   🟠 תשלום חלקי
                 </label>
                 <div style={{ display: "flex", gap: 8 }}>
-                  <button onClick={saveEdit} style={S.btn("#0d9488")}>שמור</button>
-                  <button onClick={cancelEdit} style={S.btn("#94a3b8")}>ביטול</button>
+                  <Button onClick={saveEdit}>שמור</Button>
+                  <Button variant="secondary" onClick={cancelEdit}>ביטול</Button>
                 </div>
               </Card>
             ) : (
               <div key={s.id} style={{
-                background: s.partial && !s.paid ? "#fff7ed" : "white",
+                background: s.partial && !s.paid ? "#fff7ed" : "var(--color-surface)",
                 borderRadius: 14, padding: "12px 14px", marginBottom: 8,
-                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-                borderRight: `4px solid ${s.paid ? "#059669" : s.partial ? "#f97316" : "#e2e8f0"}`,
+                boxShadow: "0 2px 10px rgba(0,0,0,0.06)", border: "1px solid var(--color-border)",
+                borderRight: `4px solid ${s.paid ? "var(--color-secondary)" : s.partial ? "#f97316" : "var(--color-border)"}`,
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div style={{ flex: 1 }}>
-                    <div className="ev-name" style={{ fontWeight: 700, fontSize: 14, color: "#0f172a", display: "flex", alignItems: "center", gap: 6 }}>
+                    <div className="ev-name" style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-text-primary)", display: "flex", alignItems: "center", gap: 6 }}>
                       {students.indexOf(s) + 1}. {s.name}
-                      {s.partial && !s.paid && <span style={{ fontSize: 10, background: "#fed7aa", color: "#c2410c", borderRadius: 6, padding: "1px 6px", fontWeight: 700 }}>חלקי</span>}
+                      {s.partial && !s.paid && <span style={{ fontSize: "0.75rem", background: "#fed7aa", color: "#c2410c", borderRadius: 6, padding: "1px 6px", fontWeight: 700 }}>חלקי</span>}
                     </div>
-                    {s.note   && <div style={{ fontSize: 11, color: "#f59e0b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="#f59e0b" w={1.8} /> {s.note}</div>}
-                    {s.paidBy && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="#94a3b8" w={1.8} /> {s.paidBy}</div>}
+                    {s.note   && <div style={{ fontSize: "0.8rem", color: "var(--color-warning)", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="var(--color-warning)" w={1.8} /> {s.note}</div>}
+                    {s.paidBy && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="var(--color-text-secondary)" w={1.8} /> {s.paidBy}</div>}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                    {(s.paid || s.amount > 0) && <span className="ev-paid-val" style={{ fontSize: 12, fontWeight: 700, color: s.paid ? "#059669" : "#f97316" }}>₪{(s.amount || 0).toLocaleString('he-IL')}</span>}
+                    {(s.paid || s.amount > 0) && <span className="ev-paid-val" style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: s.paid ? "var(--color-secondary)" : "#f97316" }}>₪{(s.amount || 0).toLocaleString('he-IL')}</span>}
                     <button onClick={() => toggle(s.id)} style={{
                       width: 36, height: 36, borderRadius: "50%", border: "none", cursor: "pointer",
                       background: s.paid ? "#dcfce7" : s.partial ? "#fed7aa" : "#fee2e2", fontSize: 18,
@@ -1773,8 +1773,8 @@ ${eventRows}</table>
           </div>{/* /student-grid */}
 
           {showAdd ? (
-            <Card style={{ border: "2px solid #ccfbf1" }}>
-              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>➕ תלמיד/ה חדש/ה</div>
+            <Card style={{ border: "2px solid var(--color-border)" }}>
+              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>➕ תלמיד/ה חדש/ה</div>
               <FieldLabel>שם התלמיד/ה *</FieldLabel>
               <input value={addForm.name} onChange={e => setAddForm({ ...addForm, name: e.target.value })}
                 placeholder="שם התלמיד/ה" style={S.input} autoFocus />
@@ -1800,27 +1800,29 @@ ${eventRows}</table>
                 🟠 תשלום חלקי
               </label>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={addStudent} style={S.btn("#0d9488")} disabled={!addForm.name.trim()}>הוסיפי</button>
-                <button onClick={addStudentAndNew} style={S.btn("#059669")} disabled={!addForm.name.trim()}>שמור + חדש</button>
-                <button onClick={() => { setShowAdd(false); setAddForm(EMPTY_STUDENT_FORM); }} style={S.btn("#94a3b8")}>ביטול</button>
+                <Button onClick={addStudent} disabled={!addForm.name.trim()}>הוסיפי</Button>
+                <Button variant="ghost" onClick={addStudentAndNew} disabled={!addForm.name.trim()}>שמור + חדש</Button>
+                <Button variant="secondary" onClick={() => { setShowAdd(false); setAddForm(EMPTY_STUDENT_FORM); }}>ביטול</Button>
               </div>
             </Card>
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
-              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #99f6e4",
-              background: "rgba(13,148,136,0.04)", color: "#0d9488", fontWeight: 700, fontSize: 14,
+              width: "100%", padding: 14, borderRadius: 14,
+              border: "2px dashed var(--color-border)",
+              background: "var(--color-primary-light)", color: "var(--color-primary)",
+              fontWeight: 700, fontSize: "var(--text-sm)",
               cursor: "pointer", fontFamily: "inherit", marginTop: 4, display:"flex", alignItems:"center", justifyContent:"center", gap: 8,
-            }}><Icon n="plus" s={14} c="#0d9488" w={2.5} /> הוסיפי תלמיד/ה</button>
+            }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> הוסיפי תלמיד/ה</button>
           )}
 
           {/* Dynamic WhatsApp reminder */}
           {students.length > 0 && (
-            <Card style={{ background: unpaidStudents.length === 0 ? "#f0fdf4" : "#f0fdf4", border: `1px solid ${unpaidStudents.length === 0 ? "#bbf7d0" : "#bbf7d0"}`, marginTop: 12 }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: "#166534", marginBottom: 6 }}>
-                <span style={{ display:"inline-flex", alignItems:"center", gap: 6 }}>{unpaidStudents.length === 0 ? <><Icon n="check" s={14} c="#166534" w={2.5} /> כולם שילמו!</> : <><Icon n="msg" s={14} c="#166534" w={2} /> תזכורת לוואצאפ</>}</span>
+            <Card style={{ background: "var(--color-primary-light)", border: `1px solid var(--color-border)`, marginTop: 12 }}>
+              <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-primary-dark)", marginBottom: 6 }}>
+                <span style={{ display:"inline-flex", alignItems:"center", gap: 6 }}>{unpaidStudents.length === 0 ? <><Icon n="check" s={14} c="var(--color-primary-dark)" w={2.5} /> כולם שילמו!</> : <><Icon n="msg" s={14} c="var(--color-primary-dark)" w={2} /> תזכורת לוואצאפ</>}</span>
               </div>
               {whatsappMsg && (
-                <div style={{ fontSize: 12, color: "#166534", lineHeight: 1.8, userSelect: "all", whiteSpace: "pre-wrap" }}>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--color-primary-dark)", lineHeight: 1.8, userSelect: "all", whiteSpace: "pre-wrap" }}>
                   {whatsappMsg}
                 </div>
               )}
@@ -1846,14 +1848,14 @@ ${eventRows}</table>
 
     function GiftForm({ data, onChange, onSave, onCancel, title }) {
       return (
-        <Card style={{ border: "2px solid #ccfbf1" }}>
-          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+        <Card style={{ border: "2px solid var(--color-border)" }}>
+          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>{title}</div>
           <FieldLabel>אמוג׳י</FieldLabel>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 10 }}>
             {EMOJIS.map(e => (
               <button key={e} onClick={() => onChange({ ...data, icon: e })} style={{
-                fontSize: 20, background: data.icon === e ? "#ccfbf1" : "#f8fafc",
-                border: data.icon === e ? "2px solid #0d9488" : "2px solid transparent",
+                fontSize: 20, background: data.icon === e ? "var(--color-primary-light)" : "var(--color-background)",
+                border: data.icon === e ? "2px solid var(--color-primary)" : "2px solid transparent",
                 borderRadius: 8, padding: 4, cursor: "pointer",
               }}>{e}</button>
             ))}
@@ -1879,8 +1881,8 @@ ${eventRows}</table>
           <input type="file" accept="image/*" onChange={e => handlePhotoUpload(e, data, onChange)}
             style={{ ...S.input, padding: "6px 12px", cursor: "pointer" }} />
           <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
-            <button onClick={onSave} style={S.btn("#0d9488")} disabled={!data.name.trim()}>שמור</button>
-            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+            <Button onClick={onSave} disabled={!data.name.trim()}>שמור</Button>
+            <Button variant="secondary" onClick={onCancel}>ביטול</Button>
           </div>
         </Card>
       );
@@ -1919,7 +1921,7 @@ ${eventRows}</table>
 
       return (
         <div>
-          <div style={{ fontSize: 12, color: "#94a3b8", marginBottom: 10, textAlign: "center" }}>
+          <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 10, textAlign: "center" }}>
             ספרייה משותפת לכל התקציבים • {gifts.length} רעיונות
           </div>
           <input placeholder="🔍 חפשי רעיון, ספק, תג..." value={search}
@@ -1928,22 +1930,22 @@ ${eventRows}</table>
           <div className="gift-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
             {filtered.map(gift => (
               editId === gift.id ? null : (
-                <div key={gift.id} style={{ background: "white", borderRadius: 16, padding: 14, boxShadow: "0 2px 14px rgba(0,0,0,0.08)", display: "flex", flexDirection: "column" }}>
+                <div key={gift.id} style={{ background: "var(--color-surface)", borderRadius: 16, padding: 14, boxShadow: "0 2px 14px rgba(0,0,0,0.08)", border: "1px solid var(--color-border)", display: "flex", flexDirection: "column" }}>
                   {gift.photo
                     ? <img src={gift.photo} alt="" style={{ width: "100%", borderRadius: 10, marginBottom: 8, height: 90, objectFit: "cover" }} />
                     : <div style={{ fontSize: 30, marginBottom: 6 }}>{gift.icon}</div>
                   }
-                  <div style={{ fontWeight: 700, fontSize: 13, color: "#0f172a", marginBottom: 4 }}>{gift.name}</div>
-                  {gift.forWhom    && <div style={{ fontSize: 11, color: "#94a3b8", marginBottom: 2 }}>עבור: {gift.forWhom}</div>}
-                  {gift.vendorName && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="store" s={11} c="#64748b" w={1.8} />{gift.vendorName}</div>}
-                  {gift.vendorPhone && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="phone" s={11} c="#64748b" w={1.8} />{gift.vendorPhone}</div>}
-                  {gift.notes      && <div style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}>{gift.notes}</div>}
+                  <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-text-primary)", marginBottom: 4 }}>{gift.name}</div>
+                  {gift.forWhom    && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2 }}>עבור: {gift.forWhom}</div>}
+                  {gift.vendorName && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="store" s={11} c="var(--color-text-secondary)" w={1.8} />{gift.vendorName}</div>}
+                  {gift.vendorPhone && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="phone" s={11} c="var(--color-text-secondary)" w={1.8} />{gift.vendorPhone}</div>}
+                  {gift.notes      && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 4 }}>{gift.notes}</div>}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 6, marginBottom: 8 }}>
-                    {gift.tag        && <span style={{ fontSize: 10, fontWeight: 700, background: "#f0fdf4", color: "#059669", borderRadius: 8, padding: "2px 6px" }}>{gift.tag}</span>}
-                    {gift.priceRange && <span style={{ fontSize: 12, fontWeight: 700, color: "#0d9488" }}>{gift.priceRange}</span>}
+                    {gift.tag        && <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "var(--color-primary-light)", color: "var(--color-primary-dark)", borderRadius: 8, padding: "2px 6px" }}>{gift.tag}</span>}
+                    {gift.priceRange && <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-primary)" }}>{gift.priceRange}</span>}
                   </div>
                   {gift.vendorLink && (
-                    <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#0d9488", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
+                    <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
                   )}
                   <div style={{ display: "flex", gap: 2, justifyContent: "flex-end", marginTop: 4 }}>
                     {onAddEvent && <IconBtn icon="chart"  color="var(--color-primary)"        onClick={() => startCopy(gift)}    title="הוסף לתקציב" />}
@@ -1962,8 +1964,8 @@ ${eventRows}</table>
 
           {/* Copy-to-budget form */}
           {copyGiftId !== null && (
-            <Card style={{ border: "2px solid #ccfbf1" }}>
-              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>📊 הוסיפי לתקציב</div>
+            <Card style={{ border: "2px solid var(--color-border)" }}>
+              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>📊 הוסיפי לתקציב</div>
               <FieldLabel>שם הארוע</FieldLabel>
               <input value={copyForm.name} onChange={e => setCopyForm({ ...copyForm, name: e.target.value })} style={S.input} />
               <FieldLabel>קטגוריה</FieldLabel>
@@ -1983,8 +1985,8 @@ ${eventRows}</table>
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={saveCopy} style={S.btn("#0d9488")} disabled={!copyForm.name.trim()}>הוסיפי לתקציב</button>
-                <button onClick={() => setCopyGiftId(null)} style={S.btn("#94a3b8")}>ביטול</button>
+                <Button onClick={saveCopy} disabled={!copyForm.name.trim()}>הוסיפי לתקציב</Button>
+                <Button variant="secondary" onClick={() => setCopyGiftId(null)}>ביטול</Button>
               </div>
             </Card>
           )}
@@ -1993,10 +1995,12 @@ ${eventRows}</table>
             <GiftForm title="➕ רעיון חדש" data={addForm} onChange={setAddForm} onSave={addGift} onCancel={() => setShowAdd(false)} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
-              width: "100%", padding: 14, borderRadius: 14, border: "2px dashed #e2e8f0",
-              background: "transparent", color: "#0d9488", fontWeight: 700, fontSize: 14,
-              cursor: "pointer", fontFamily: "inherit",
-            }}>+ הוסיפי רעיון</button>
+              width: "100%", padding: 14, borderRadius: 14,
+              border: "2px dashed var(--color-border)",
+              background: "var(--color-primary-light)", color: "var(--color-primary)",
+              fontWeight: 700, fontSize: "var(--text-sm)",
+              cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> הוסיפי רעיון</button>
           )}
         </div>
       );
@@ -2010,16 +2014,16 @@ ${eventRows}</table>
     function CashForm({ data, onChange, onSave, onSaveAndNew, onCancel, title }) {
       const pasteAmt = (e) => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); onChange({ ...data, amount: t.replace(/[^\d.]/g, '') }); };
       return (
-        <Card style={{ border: "2px solid #1e293b20" }}>
-          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: 14 }}>{title}</div>
+        <Card style={{ border: "2px solid var(--color-border)" }}>
+          <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>{title}</div>
           <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
             {["income", "expense"].map(t => (
               <button key={t} onClick={() => onChange({ ...data, type: t })} style={{
                 flex: 1, padding: "10px 0", borderRadius: 10, border: "none",
-                cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: 13,
-                background: data.type === t ? (t === "income" ? "#dcfce7" : "#fee2e2") : "#f1f5f9",
-                color:      data.type === t ? (t === "income" ? "#059669" : "#ef4444") : "#94a3b8",
-              }}><span style={{ display:"inline-flex", alignItems:"center", gap: 4 }}><Icon n={t === "income" ? "income" : "expense"} s={13} c={data.type === t ? (t === "income" ? "#059669" : "#ef4444") : "#94a3b8"} w={2} />{t === "income" ? "הכנסה" : "הוצאה"}</span></button>
+                cursor: "pointer", fontFamily: "inherit", fontWeight: 700, fontSize: "var(--text-xs)",
+                background: data.type === t ? (t === "income" ? "#dcfce7" : "#fee2e2") : "var(--color-background)",
+                color:      data.type === t ? (t === "income" ? "#059669" : "var(--color-danger)") : "var(--color-text-secondary)",
+              }}><span style={{ display:"inline-flex", alignItems:"center", gap: 4 }}><Icon n={t === "income" ? "income" : "expense"} s={13} c={data.type === t ? (t === "income" ? "#059669" : "var(--color-danger)") : "var(--color-text-secondary)"} w={2} />{t === "income" ? "הכנסה" : "הוצאה"}</span></button>
             ))}
           </div>
           <FieldLabel>תיאור *</FieldLabel>
@@ -2042,9 +2046,9 @@ ${eventRows}</table>
             onChange={splits => onChange({ ...data, paidBySplit: splits })}
           />
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={onSave} style={S.btn("#0f172a")} disabled={!data.desc.trim() || !data.amount}>שמור</button>
-            {onSaveAndNew && <button onClick={onSaveAndNew} style={S.btn("#059669")} disabled={!data.desc.trim() || !data.amount}>שמור + חדש</button>}
-            <button onClick={onCancel} style={S.btn("#94a3b8")}>ביטול</button>
+            <Button onClick={onSave} disabled={!data.desc.trim() || !data.amount}>שמור</Button>
+            {onSaveAndNew && <Button variant="ghost" onClick={onSaveAndNew} disabled={!data.desc.trim() || !data.amount}>שמור + חדש</Button>}
+            <Button variant="secondary" onClick={onCancel}>ביטול</Button>
           </div>
         </Card>
       );
@@ -2197,78 +2201,78 @@ ${eventRows}</table>
         <div>
           {/* סה"כ בקופה */}
           <div style={{
-            background: "linear-gradient(135deg,#1e293b,#0f172a)",
+            background: "linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-text-primary) 100%)",
             borderRadius: 20, padding: 20, color: "white", marginBottom: 12,
           }}>
-            <div className="cash-lbl" style={{ opacity: 0.6, fontSize: 13, marginBottom: 2 }}>סה״כ בקופה</div>
-            <div className="cash-total-val" style={{ fontSize: 36, fontWeight: 900, letterSpacing: -1 }}>
+            <div className="cash-lbl" style={{ opacity: 0.65, fontSize: "var(--text-xs)", marginBottom: 2 }}>סה״כ בקופה</div>
+            <div className="cash-total-val" style={{ fontSize: "var(--text-2xl)", fontWeight: 900, letterSpacing: -1 }}>
               {totalInKupa < 0 ? "-" : ""}₪{Math.abs(totalInKupa).toLocaleString('he-IL')}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14 }}>
               <div>
-                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>גבייה</div>
-                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: 13 }}>₪{collectedFromStudents.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>גבייה</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: "var(--text-xs)" }}>₪{collectedFromStudents.toLocaleString('he-IL')}</div>
               </div>
               <div>
-                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>הכנסות בפועל</div>
-                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#34d399", fontSize: 13 }}>+₪{budgetIncTotal.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>הכנסות בפועל</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#34d399", fontSize: "var(--text-xs)" }}>+₪{budgetIncTotal.toLocaleString('he-IL')}</div>
               </div>
               <div>
-                <div className="cash-sub-lbl" style={{ opacity: 0.5, fontSize: 10 }}>הוצאות בפועל</div>
-                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#f87171", fontSize: 13 }}>-₪{Math.abs(budgetExpTotal).toLocaleString('he-IL')}</div>
+                <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>הוצאות בפועל</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#f87171", fontSize: "var(--text-xs)" }}>-₪{Math.abs(budgetExpTotal).toLocaleString('he-IL')}</div>
               </div>
             </div>
           </div>
 
           {/* Breakdown by קופה */}
           {(kupaEntries.length > 0 || kupaTotal !== 0) && (
-            <Card style={{ background: "#f8fafc", marginBottom: 12 }}>
-              <div style={{ fontWeight: 700, fontSize: 13, color: "#1e293b", marginBottom: 8 }}>💼 לפי קופה</div>
+            <Card style={{ background: "var(--color-primary-light)", border: "1px solid var(--color-border)", marginBottom: 12 }}>
+              <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-text-primary)", marginBottom: 8 }}>💼 לפי קופה</div>
               {kupaEntries.map(([name, total]) => (
-                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>👤 {name}</span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: total >= 0 ? "#059669" : "#ef4444" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString('he-IL')}</span>
+                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid var(--color-border)" }}>
+                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-text-primary)" }}>👤 {name}</span>
+                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: total >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString('he-IL')}</span>
                 </div>
               ))}
               {kupaTotal !== 0 && (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid #f1f5f9" }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>🏦 קופת איסוף</span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: kupaTotal >= 0 ? "#059669" : "#ef4444" }}>{kupaTotal >= 0 ? "+" : ""}₪{kupaTotal.toLocaleString('he-IL')}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid var(--color-border)" }}>
+                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-text-primary)" }}>🏦 קופת איסוף</span>
+                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: kupaTotal >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{kupaTotal >= 0 ? "+" : ""}₪{kupaTotal.toLocaleString('he-IL')}</span>
                 </div>
               )}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0 2px" }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#64748b" }}>סה״כ</span>
-                <span style={{ fontSize: 13, fontWeight: 900, color: totalInKupa >= 0 ? "#059669" : "#ef4444" }}>{totalInKupa >= 0 ? "+" : ""}₪{totalInKupa.toLocaleString('he-IL')}</span>
+                <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-text-secondary)" }}>סה״כ</span>
+                <span style={{ fontSize: "var(--text-xs)", fontWeight: 900, color: totalInKupa >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{totalInKupa >= 0 ? "+" : ""}₪{totalInKupa.toLocaleString('he-IL')}</span>
               </div>
             </Card>
           )}
 
-          <h3 style={{ fontWeight: 800, fontSize: 15, color: "#1e293b", marginBottom: 10 }}>יומן תנועות</h3>
+          <h3 style={{ fontWeight: 800, fontSize: "var(--text-base)", color: "var(--color-text-primary)", marginBottom: 10 }}>יומן תנועות</h3>
 
           {/* Budget-derived entries — read-only */}
           {(budgetExpenses.length > 0 || budgetIncomes.length > 0) && (
             <>
               {budgetIncomes.length > 0 && (
                 <>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#059669", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
-                    <span style={{ display:"inline-flex", alignItems:"center", gap: 5 }}><Icon n="income" s={13} c="#059669" w={2} /> הכנסות מתקציב</span>
-                    <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 400 }}>עריכה רק מלשונית תקציב</span>
+                  <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-secondary)", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ display:"inline-flex", alignItems:"center", gap: 5 }}><Icon n="income" s={13} c="var(--color-secondary)" w={2} /> הכנסות מתקציב</span>
+                    <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", fontWeight: 400 }}>עריכה רק מלשונית תקציב</span>
                   </div>
                   {budgetIncomes.map(entry => (
                     <div key={entry.id} style={{
-                      background: "#f0fdf4", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
-                      boxShadow: "0 1px 6px rgba(0,0,0,0.05)", borderRight: "4px solid #22c55e",
+                      background: "var(--color-primary-light)", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
+                      boxShadow: "0 1px 6px rgba(0,0,0,0.05)", borderRight: "4px solid var(--color-secondary)",
                     }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontWeight: 600, fontSize: 14, color: "#0f172a" }}>{entry.desc}</div>
-                          <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
+                          <div style={{ fontWeight: 600, fontSize: "var(--text-xs)", color: "var(--color-text-primary)" }}>{entry.desc}</div>
+                          <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginTop: 2 }}>
                             {formatDate(entry.date)}{displayPaidBy(entry) && ` • ${displayPaidBy(entry)}`}
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                          <span style={{ background: "#dcfce7", color: "#059669", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>📊 תקציב</span>
-                          <div style={{ fontWeight: 800, fontSize: 15, color: "#059669" }}>+₪{entry.amount.toLocaleString('he-IL')}</div>
+                          <span style={{ background: "var(--color-border)", color: "var(--color-primary-dark)", borderRadius: 6, padding: "2px 7px", fontSize: "0.75rem", fontWeight: 700 }}>📊 תקציב</span>
+                          <div style={{ fontWeight: 800, fontSize: "var(--text-sm)", color: "var(--color-secondary)" }}>+₪{entry.amount.toLocaleString('he-IL')}</div>
                         </div>
                       </div>
                     </div>
@@ -2277,25 +2281,25 @@ ${eventRows}</table>
               )}
               {budgetExpenses.length > 0 && (
                 <>
-                  <div style={{ fontSize: 12, fontWeight: 700, color: "#0d9488", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-primary)", marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
                     📊 הוצאות מתקציב
-                    <span style={{ fontSize: 10, color: "#94a3b8", fontWeight: 400 }}>עריכה רק מלשונית תקציב</span>
+                    <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", fontWeight: 400 }}>עריכה רק מלשונית תקציב</span>
                   </div>
                   {budgetExpenses.map(entry => (
                     <div key={entry.id} style={{
-                      background: "#faf5ff", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
-                      boxShadow: "0 1px 6px rgba(0,0,0,0.05)", borderRight: "4px solid #a855f7",
+                      background: "var(--color-surface)", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
+                      boxShadow: "0 1px 6px rgba(0,0,0,0.05)", border: "1px solid var(--color-border)", borderRight: "4px solid var(--color-primary)",
                     }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontWeight: 600, fontSize: 14, color: "#0f172a" }}>{entry.desc}</div>
-                          <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
+                          <div style={{ fontWeight: 600, fontSize: "var(--text-xs)", color: "var(--color-text-primary)" }}>{entry.desc}</div>
+                          <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginTop: 2 }}>
                             {formatDate(entry.date)}{displayPaidBy(entry) && ` • ${displayPaidBy(entry)}`}
                           </div>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                          <span style={{ background: "#ccfbf1", color: "#0d9488", borderRadius: 6, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>📊 תקציב</span>
-                          <div style={{ fontWeight: 800, fontSize: 15, color: "#ef4444" }}>-₪{Math.abs(entry.amount).toLocaleString('he-IL')}</div>
+                          <span style={{ background: "var(--color-primary-light)", color: "var(--color-primary-dark)", borderRadius: 6, padding: "2px 7px", fontSize: "0.75rem", fontWeight: 700 }}>📊 תקציב</span>
+                          <div style={{ fontWeight: 800, fontSize: "var(--text-sm)", color: "var(--color-danger)" }}>-₪{Math.abs(entry.amount).toLocaleString('he-IL')}</div>
                         </div>
                       </div>
                     </div>
@@ -2303,7 +2307,7 @@ ${eventRows}</table>
                 </>
               )}
               {withBal.length > 0 && (
-                <div style={{ fontSize: 12, fontWeight: 700, color: "#64748b", marginBottom: 6, marginTop: 12 }}>📝 תנועות ידניות</div>
+                <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-text-secondary)", marginBottom: 6, marginTop: 12 }}>📝 תנועות ידניות</div>
               )}
             </>
           )}
@@ -2313,23 +2317,23 @@ ${eventRows}</table>
               <CashForm key={entry.id} title="עריכת תנועה" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
             ) : (
               <div key={entry.id} style={{
-                background: "white", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
-                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-                borderRight: `4px solid ${entry.amount > 0 ? "#4ade80" : "#f87171"}`,
+                background: "var(--color-surface)", borderRadius: 12, padding: "12px 14px", marginBottom: 8,
+                boxShadow: "0 2px 10px rgba(0,0,0,0.06)", border: "1px solid var(--color-border)",
+                borderRight: `4px solid ${entry.amount > 0 ? "var(--color-secondary)" : "var(--color-danger)"}`,
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, fontSize: 14, color: "#0f172a" }}>{entry.desc}</div>
-                    <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>
+                    <div style={{ fontWeight: 600, fontSize: "var(--text-xs)", color: "var(--color-text-primary)" }}>{entry.desc}</div>
+                    <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginTop: 2 }}>
                       {entry.date}
                     </div>
-                    {displayPaidBy(entry) && <div style={{ fontSize: 11, color: "#64748b", marginTop: 2 }}>👤 {displayPaidBy(entry)}</div>}
+                    {displayPaidBy(entry) && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginTop: 2 }}>👤 {displayPaidBy(entry)}</div>}
                   </div>
                   <div style={{ textAlign: "left", flexShrink: 0 }}>
-                    <div style={{ fontWeight: 800, fontSize: 15, color: entry.amount > 0 ? "#059669" : "#ef4444" }}>
+                    <div style={{ fontWeight: 800, fontSize: "var(--text-sm)", color: entry.amount > 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>
                       {entry.amount > 0 ? "+" : ""}₪{Math.abs(entry.amount).toLocaleString('he-IL')}
                     </div>
-                    <div style={{ fontSize: 10, color: "#94a3b8" }}>יתרה ₪{entry.bal.toLocaleString('he-IL')}</div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>יתרה ₪{entry.bal.toLocaleString('he-IL')}</div>
                   </div>
                 </div>
                 <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
@@ -2340,8 +2344,8 @@ ${eventRows}</table>
             )
           ))}
 
-          <div style={{ marginTop: 8, padding: "12px 16px", borderRadius: 12, background: "#f8fafc", border: "1px solid #e2e8f0", fontSize: 12, color: "#94a3b8", textAlign: "center" }}>
-            תנועות נוצרות אוטומטית מלשונית <strong style={{ color: "#0d9488" }}>תקציב</strong>
+          <div style={{ marginTop: 8, padding: "12px 16px", borderRadius: 12, background: "var(--color-primary-light)", border: "1px solid var(--color-border)", fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", textAlign: "center" }}>
+            תנועות נוצרות אוטומטית מלשונית <strong style={{ color: "var(--color-primary)" }}>תקציב</strong>
           </div>
         </div>
         </React.Fragment>
@@ -2373,41 +2377,47 @@ ${eventRows}</table>
 
       return (
         <div className="bs-screen" style={{ minHeight: "100vh", maxWidth: 480, margin: "0 auto", background: "var(--color-background)", fontFamily: "inherit", direction: "rtl" }}>
-          {/* Header */}
+          {/* ── Header ── */}
           <div style={{
             background: `linear-gradient(135deg, ${clr.from} 0%, ${clr.to} 100%)`,
-            padding: "14px 16px 62px", position: "relative", overflow: "hidden",
+            padding: "16px 16px 58px", position: "relative", overflow: "hidden",
           }}>
-            <div style={{ position: "absolute", top: -40, left: -20, width: 150, height: 150, borderRadius: "50%", background: "rgba(255,255,255,0.07)" }} />
+            <div style={{ position: "absolute", top: -40, left: -20, width: 150, height: 150, borderRadius: "50%", background: "rgba(255,255,255,0.07)", pointerEvents: "none" }} />
             <button onClick={onBack} style={{
-              background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 10,
-              padding: "6px 12px", color: "white", cursor: "pointer", fontFamily: "inherit",
-              fontSize: 13, fontWeight: 600, marginBottom: 10, display: "flex", alignItems: "center", gap: 4,
-            }}>← כל התקציבים</button>
-            <div style={{ color: "white", fontWeight: 900, fontSize: 20, marginBottom: 2 }}>{budget.name}</div>
-            <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
+              background: "rgba(255,255,255,0.18)", border: "1.5px solid rgba(255,255,255,0.3)",
+              borderRadius: 10, padding: "7px 14px", color: "white", cursor: "pointer",
+              fontFamily: "inherit", fontSize: "var(--text-xs)", fontWeight: 600,
+              marginBottom: 12, display: "inline-flex", alignItems: "center", gap: 6,
+              transition: "opacity 150ms",
+            }}>
+              <Icon n="arrowleft" s={14} c="white" w={2} /> כל התקציבים
+            </button>
+            <div style={{ color: "white", fontWeight: 700, fontSize: "var(--text-xl)", marginBottom: 2 }}>{budget.name}</div>
+            <div style={{ color: "rgba(255,255,255,0.75)", fontSize: "var(--text-xs)" }}>{budget.className} • {budget.year}</div>
           </div>
 
-          {/* Floating stat cards */}
-          <div style={{ display: "flex", gap: 8, padding: "0 14px", marginTop: -44, position: "relative", zIndex: 10, paddingBottom: 4 }}>
+          {/* ── Floating stat cards ── */}
+          <div style={{ display: "flex", gap: 8, padding: "0 14px", marginTop: -40, position: "relative", zIndex: 10, paddingBottom: 4 }}>
             {[
               { icon: "chart",   l: "תקציב", v: `₪${totalBudget.toLocaleString('he-IL')}`, c: clr.from },
-              { icon: "expense", l: "שולם",  v: `₪${totalSpent.toLocaleString('he-IL')}`,  c: "#ef4444" },
-              { icon: "users",   l: "שילמו", v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "#059669" },
-              { icon: "wallet",  l: "מזומן", v: `₪${totalInKupa.toLocaleString('he-IL')}`,   c: clr.to },
+              { icon: "expense", l: "שולם",  v: `₪${totalSpent.toLocaleString('he-IL')}`,  c: "var(--color-danger)" },
+              { icon: "users",   l: "שילמו", v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "var(--color-secondary)" },
+              { icon: "wallet",  l: "מזומן", v: `₪${totalInKupa.toLocaleString('he-IL')}`,  c: clr.to },
             ].map(s => (
               <div key={s.l} style={{
-                background: "white", borderRadius: 16, padding: "14px 6px", flex: 1, minWidth: 0,
-                boxShadow: "0 4px 18px rgba(0,0,0,0.13)", textAlign: "center",
+                background: "var(--color-surface)", borderRadius: 16, padding: "12px 6px", flex: 1, minWidth: 0,
+                boxShadow: "0 4px 18px rgba(26,46,42,0.12)", textAlign: "center",
               }}>
-                <div style={{ display:"flex", justifyContent:"center", marginBottom: 5 }}><Icon n={s.icon} s={22} c={s.c} w={2} /></div>
-                <div style={{ fontWeight: 900, fontSize: 14, color: s.c, marginTop: 2, lineHeight: 1.2 }}>{s.v}</div>
-                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{s.l}</div>
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 4 }}>
+                  <Icon n={s.icon} s={20} c={s.c} w={2} />
+                </div>
+                <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: s.c, lineHeight: 1.2 }}>{s.v}</div>
+                <div style={{ fontSize: "0.7rem", color: "var(--color-text-secondary)", marginTop: 2 }}>{s.l}</div>
               </div>
             ))}
           </div>
 
-          {/* Tab content */}
+          {/* ── Tab content ── */}
           <div className="bs-tab-pad" style={{ padding: "14px 14px 96px" }}>
             {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} expectedStudents={budget.expectedStudents || 0} year={budget.year || ""} />}
             {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent || 500} setFeePerStudent={setFeePerStudent} expectedStudents={budget.expectedStudents || 0} setExpectedStudents={setExpectedStudents} payboxLink={budget.payboxLink || ""} setPayboxLink={setPayboxLink} classWhatsappLink={budget.classWhatsappLink || ""} setClassWhatsappLink={setClassWhatsappLink} />}
