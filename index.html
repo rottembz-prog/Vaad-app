@@ -1607,15 +1607,15 @@ ${eventRows}</table>
       const removeStudent   = (id) => setConfirmDeleteId(id);
       const doRemoveStudent = () => { setStudents(students.filter(s => s.id !== confirmDeleteId)); setConfirmDeleteId(null); };
 
-      const unpaidStudents = students.filter(s => !s.paid || s.partial);
+      const unpaidStudents = students.filter(s => !s.paid);
       const membersText    = members.length > 0 ? ` ${members.join(', ')}` : '';
-      const paymentMethod  = `ניתן לשלם במזומן/ביט לאחת מבנות הועד${membersText}.`;
+      const paymentMethod  = `ניתן לשלם גם במזומן/ביט לאחת מבנות הועד${membersText}.`;
       const payboxLine     = payboxLink ? `\nלהלן הקישור לתשלום: ${payboxLink}` : '';
       const whatsappMsg = unpaidStudents.length === 0
         ? null
         : paidCount === 0
           ? `שלום כיתה יקרה! 😊\nנפתחה גבייה לדמי ועד הורים לשנה"ל: ₪${feePerStudent} לתלמיד.\n${paymentMethod}${payboxLine}\nתודה! 🙏`
-          : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${feePerStudent}).\nטרם התקבל מ ${unpaidStudents.map(s => s.name).join(', ')}.\n${paymentMethod}${payboxLine}\nתודה! 🙏`;
+          : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${feePerStudent}).\nטרם התקבל מ- ${unpaidStudents.map(s => s.name).join(', ')}.\n${paymentMethod}${payboxLine}\nתודה! 🙏`;
 
       return (
         <React.Fragment>
