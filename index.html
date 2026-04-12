@@ -1572,7 +1572,7 @@ ${eventRows}</table>
       const [studentsRaw,   setStudentsRaw]   = useState(String(expectedStudents));
       const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
-      const paidCount      = students.filter(s => s.paid && !s.partial).length;
+      const paidCount      = students.filter(s => s.paid).length;
       const totalCollected = students.reduce((s, st) => s + (st.amount || 0), 0);
       const collectionBudgetTotal = expectedStudents * feePerStudent;
       const filtered       = search ? students.filter(s => s.name.includes(search)) : students;
