@@ -1413,13 +1413,16 @@ ${eventRows}</table>
               </div>
             </div>
             {[
-              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#f87171" },
-              { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#4ade80" },
+              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#f87171", icon: "expense" },
+              { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#4ade80", icon: "income"  },
             ].map(x => (
               <div key={x.l} style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <div className="summary-lbl" style={{ opacity: 0.7 }}>{x.l}</div>
-                  <div style={{ fontSize: "0.7rem", opacity: 0.4 }}>מועבר ל״מזומן״</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <Icon n={x.icon} s={14} c={x.c} w={2.2} />
+                  <div>
+                    <div className="summary-lbl" style={{ opacity: 0.7 }}>{x.l}</div>
+                    <div style={{ fontSize: "0.7rem", opacity: 0.4 }}>מועבר ל״מזומן״</div>
+                  </div>
                 </div>
                 <div className="summary-val" style={{ fontWeight: 700, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
               </div>
@@ -2404,9 +2407,8 @@ ${eventRows}</table>
           {/* ── Floating stat cards ── */}
           <div style={{ display: "flex", gap: 6, padding: "0 14px", marginTop: -40, position: "relative", zIndex: 10, paddingBottom: 4 }}>
             {[
-              { icon: "income",  l: "הכנסות", v: `₪${hdrIncBudget.toLocaleString('he-IL')}`,   c: "var(--color-secondary)" },
-              { icon: "expense", l: "הוצאות", v: `₪${hdrExpBudget.toLocaleString('he-IL')}`,   c: "var(--color-danger)" },
-              { icon: "expense", l: "שולם",   v: `₪${totalSpent.toLocaleString('he-IL')}`,     c: "var(--color-danger)" },
+              { icon: "income",  l: "תקציב הכנסות", v: `₪${hdrIncBudget.toLocaleString('he-IL')}`,   c: "var(--color-secondary)" },
+              { icon: "expense", l: "תקציב הוצאות", v: `₪${hdrExpBudget.toLocaleString('he-IL')}`,   c: "var(--color-danger)" },
               { icon: "users",   l: "שילמו",  v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "var(--color-secondary)" },
               { icon: "wallet",  l: "יתרת מזומן", v: `₪${totalInKupa.toLocaleString('he-IL')}`, c: clr.to },
             ].map(s => (
