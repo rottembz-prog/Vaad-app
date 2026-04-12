@@ -1400,12 +1400,12 @@ ${eventRows}</table>
           <div style={{ background: "linear-gradient(135deg, var(--color-text-primary) 0%, #0f2420 100%)", borderRadius: 20, padding: 20, color: "white", marginBottom: 16 }}>
             <div className="summary-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
               <div style={{ textAlign: "right" }}>
-                <div className="summary-val" style={{ fontWeight: 700, color: "#f87171", letterSpacing: -0.5 }}>{fmt(totalExpBudget)}</div>
-                <div className="summary-lbl" style={{ opacity: 0.55, marginTop: 2 }}>תקציב הוצאות</div>
-              </div>
-              <div style={{ textAlign: "center" }}>
                 <div className="summary-val" style={{ fontWeight: 700, color: "#4ade80", letterSpacing: -0.5 }}>{fmt(totalIncBudget)}</div>
                 <div className="summary-lbl" style={{ opacity: 0.55, marginTop: 2 }}>תקציב הכנסות</div>
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <div className="summary-val" style={{ fontWeight: 700, color: "#f87171", letterSpacing: -0.5 }}>{fmt(totalExpBudget)}</div>
+                <div className="summary-lbl" style={{ opacity: 0.55, marginTop: 2 }}>תקציב הוצאות</div>
               </div>
               <div style={{ textAlign: "left" }}>
                 <div className="summary-val" style={{ fontWeight: 700, color: balance >= 0 ? "#4ade80" : "#f87171", letterSpacing: -0.5 }}>{fmt(balance)}</div>
@@ -1413,8 +1413,8 @@ ${eventRows}</table>
               </div>
             </div>
             {[
-              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#f87171", icon: "expense" },
               { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#4ade80", icon: "income"  },
+              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#f87171", icon: "expense" },
             ].map(x => (
               <div key={x.l} style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
