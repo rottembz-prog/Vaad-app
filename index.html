@@ -1578,7 +1578,7 @@ ${eventRows}</table>
       const filtered       = search ? students.filter(s => s.name.includes(search)) : students;
 
       const toggle = (id) => setStudents(students.map(s =>
-        s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? feePerStudent : s.amount } : s
+        s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? (s.amount > 0 ? s.amount : feePerStudent) : s.amount } : s
       ));
 
       const buildStudent = (form) => {
@@ -1623,28 +1623,12 @@ ${eventRows}</table>
             onCancel={() => setConfirmDeleteId(null)}
           />
         <div>
-          {/* Paybox / Bit link */}
-          <Card style={{ marginBottom: 10 }}>
-            <FieldLabel>קישור לפייבוקס / ביט</FieldLabel>
-            <input value={payboxLink} onChange={e => setPayboxLink && setPayboxLink(e.target.value)}
-              placeholder="https://paybox.me/..." style={{ ...S.input, marginBottom: payboxLink ? 6 : 0 }} />
-            {payboxLink && <a href={payboxLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#0d9488" }}>🔗 פתח קישור לתשלום</a>}
-          </Card>
-
-          {/* Class WhatsApp link */}
-          <Card style={{ marginBottom: 10 }}>
-            <FieldLabel>קישור לוואצאפ כיתה</FieldLabel>
-            <input value={classWhatsappLink} onChange={e => setClassWhatsappLink && setClassWhatsappLink(e.target.value)}
-              placeholder="https://chat.whatsapp.com/..." style={{ ...S.input, marginBottom: classWhatsappLink ? 6 : 0 }} />
-            {classWhatsappLink && <a href={classWhatsappLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#25d366" }}>💬 פתח קבוצת כיתה</a>}
-          </Card>
-
           {/* Collection budget settings */}
           <Card style={{ marginBottom: 12 }}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <div>
                 <FieldLabel>מספר תלמידים</FieldLabel>
-                <input type="text" inputMode="decimal" value={studentsRaw} onChange={e => { const raw = e.target.value; setStudentsRaw(raw); const num = parseFloat(raw); if (setExpectedStudents) setExpectedStudents(isNaN(num) ? 0 : num); }} style={{ ...S.input, marginBottom: 0 }} />
+                <input type="text" inputMode="numeric" value={studentsRaw} onChange={e => { const raw = e.target.value.replace(/[^\d]/g, ''); setStudentsRaw(raw); const num = parseInt(raw, 10); if (setExpectedStudents) setExpectedStudents(isNaN(num) ? 0 : num); }} style={{ ...S.input, marginBottom: 0 }} />
               </div>
               <div>
                 <FieldLabel>סכום לגבייה ₪</FieldLabel>
@@ -1811,9 +1795,17 @@ ${eventRows}</table>
           ))}
           </div>{/* /student-grid */}
 
+          {/* Paybox / Bit link */}
+          <Card style={{ marginBottom: 10, marginTop: 12 }}>
+            <FieldLabel>קישור לפייבוקס / ביט</FieldLabel>
+            <input value={payboxLink} onChange={e => setPayboxLink && setPayboxLink(e.target.value)}
+              placeholder="https://paybox.me/..." style={{ ...S.input, marginBottom: payboxLink ? 6 : 0 }} />
+            {payboxLink && <a href={payboxLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#0d9488" }}>🔗 פתח קישור לתשלום</a>}
+          </Card>
+
           {/* Dynamic WhatsApp reminder */}
           {students.length > 0 && (
-            <Card style={{ background: "var(--color-primary-light)", border: `1px solid var(--color-border)`, marginTop: 12 }}>
+            <Card style={{ background: "var(--color-primary-light)", border: `1px solid var(--color-border)`, marginTop: 0 }}>
               <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-primary-dark)", marginBottom: 6 }}>
                 <span style={{ display:"inline-flex", alignItems:"center", gap: 6 }}>{unpaidStudents.length === 0 ? <><Icon n="check" s={14} c="var(--color-primary-dark)" w={2.5} /> כולם שילמו!</> : <><Icon n="msg" s={14} c="var(--color-primary-dark)" w={2} /> תזכורת לוואצאפ</>}</span>
               </div>
