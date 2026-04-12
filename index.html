@@ -1399,25 +1399,30 @@ ${eventRows}</table>
           {/* ── Summary card ── */}
           <div style={{ background: "linear-gradient(135deg, var(--color-text-primary) 0%, #0f2420 100%)", borderRadius: 20, padding: 20, color: "white", marginBottom: 16 }}>
             <div className="summary-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
-              {[
-                { l: "תקציב הוצאות", v: fmt(totalExpBudget), c: "#f87171" },
-                { l: "תקציב הכנסות", v: fmt(totalIncBudget), c: "#4ade80" },
-                { l: "יתרה תקציבית", v: fmt(balance),        c: balance >= 0 ? "#4ade80" : "#f87171" },
-              ].map(x => (
-                <div key={x.l}>
-                  <div className="summary-val" style={{ fontWeight: 700, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
-                  <div className="summary-lbl" style={{ opacity: 0.55, marginTop: 2 }}>{x.l}</div>
-                </div>
-              ))}
+              <div style={{ textAlign: "right" }}>
+                <div className="summary-val" style={{ fontWeight: 700, color: "#4ade80", letterSpacing: -0.5 }}>{fmt(totalIncBudget)}</div>
+                <div className="summary-lbl" style={{ opacity: 0.55, marginTop: 2 }}>תקציב הכנסות</div>
+              </div>
+              <div style={{ textAlign: "center" }}>
+                <div className="summary-val" style={{ fontWeight: 700, color: "#f87171", letterSpacing: -0.5 }}>{fmt(totalExpBudget)}</div>
+                <div className="summary-lbl" style={{ opacity: 0.55, marginTop: 2 }}>תקציב הוצאות</div>
+              </div>
+              <div style={{ textAlign: "left" }}>
+                <div className="summary-val" style={{ fontWeight: 700, color: balance >= 0 ? "#4ade80" : "#f87171", letterSpacing: -0.5 }}>{fmt(balance)}</div>
+                <div className="summary-lbl" style={{ opacity: 0.55, marginTop: 2 }}>יתרה תקציבית</div>
+              </div>
             </div>
             {[
-              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#f87171" },
-              { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#4ade80" },
+              { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#4ade80", icon: "income"  },
+              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#f87171", icon: "expense" },
             ].map(x => (
               <div key={x.l} style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <div className="summary-lbl" style={{ opacity: 0.7 }}>{x.l}</div>
-                  <div style={{ fontSize: "0.7rem", opacity: 0.4 }}>מועבר ל״מזומן״</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <Icon n={x.icon} s={14} c={x.c} w={2.2} />
+                  <div>
+                    <div className="summary-lbl" style={{ opacity: 0.7 }}>{x.l}</div>
+                    <div style={{ fontSize: "0.7rem", opacity: 0.4 }}>מועבר ל״מזומן״</div>
+                  </div>
                 </div>
                 <div className="summary-val" style={{ fontWeight: 700, color: x.c, letterSpacing: -0.5 }}>{x.v}</div>
               </div>
@@ -2361,13 +2366,15 @@ ${eventRows}</table>
       const setClassWhatsappLink = (val)       => onUpdate({ classWhatsappLink: val });
 
       const paidCount             = budget.students.filter(s => s.paid).length;
-      const totalBudget           = budget.events.reduce((s, e) => s + e.budget, 0);
       const totalSpent            = budget.events.reduce((s, e) => s + e.spent, 0);
       const cashLogBalance        = budget.cashLog.reduce((s, c) => s + c.amount, 0);
       const collectedFromStudents = budget.students.reduce((s, st) => s + (st.amount || 0), 0);
       const budgetExpensesTotal   = budget.events.filter(ev => (ev.type || "expense") === "expense" && ev.spent > 0).reduce((s, ev) => s + ev.spent, 0);
       const budgetIncomesTotal    = budget.events.filter(ev => ev.type === "income" && ev.spent > 0).reduce((s, ev) => s + ev.spent, 0);
       const totalInKupa           = collectedFromStudents + cashLogBalance - budgetExpensesTotal + budgetIncomesTotal;
+      const hdrCollectionBudget   = (budget.expectedStudents || 0) * (Number(budget.feePerStudent) || 0);
+      const hdrExpBudget          = budget.events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
+      const hdrIncBudget          = hdrCollectionBudget + budget.events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
 
       return (
         <div className="bs-screen" style={{ minHeight: "100vh", maxWidth: 480, margin: "0 auto", background: "var(--color-background)", fontFamily: "inherit", direction: "rtl" }}>
@@ -2398,22 +2405,22 @@ ${eventRows}</table>
           </div>
 
           {/* ── Floating stat cards ── */}
-          <div style={{ display: "flex", gap: 8, padding: "0 14px", marginTop: -40, position: "relative", zIndex: 10, paddingBottom: 4 }}>
+          <div style={{ display: "flex", gap: 6, padding: "0 14px", marginTop: -40, position: "relative", zIndex: 10, paddingBottom: 4 }}>
             {[
-              { icon: "chart",   l: "תקציב", v: `₪${totalBudget.toLocaleString('he-IL')}`, c: clr.from },
-              { icon: "expense", l: "שולם",  v: `₪${totalSpent.toLocaleString('he-IL')}`,  c: "var(--color-danger)" },
-              { icon: "users",   l: "שילמו", v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "var(--color-secondary)" },
-              { icon: "wallet",  l: "מזומן", v: `₪${totalInKupa.toLocaleString('he-IL')}`,  c: clr.to },
+              { icon: "income",  l: "תקציב הכנסות", v: `₪${hdrIncBudget.toLocaleString('he-IL')}`,   c: "var(--color-secondary)" },
+              { icon: "expense", l: "תקציב הוצאות", v: `₪${hdrExpBudget.toLocaleString('he-IL')}`,   c: "var(--color-danger)" },
+              { icon: "users",   l: "שילמו",  v: budget.students.length > 0 ? `${paidCount}/${budget.students.length}` : "—", c: "var(--color-secondary)" },
+              { icon: "wallet",  l: "יתרת מזומן", v: `₪${totalInKupa.toLocaleString('he-IL')}`, c: clr.to },
             ].map(s => (
               <div key={s.l} style={{
-                background: "var(--color-surface)", borderRadius: 16, padding: "12px 6px", flex: 1, minWidth: 0,
+                background: "var(--color-surface)", borderRadius: 16, padding: "10px 4px", flex: 1, minWidth: 0,
                 boxShadow: "0 4px 18px rgba(26,46,42,0.12)", textAlign: "center",
               }}>
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: 4 }}>
-                  <Icon n={s.icon} s={20} c={s.c} w={2} />
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 3 }}>
+                  <Icon n={s.icon} s={18} c={s.c} w={2} />
                 </div>
-                <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: s.c, lineHeight: 1.2 }}>{s.v}</div>
-                <div style={{ fontSize: "0.7rem", color: "var(--color-text-secondary)", marginTop: 2 }}>{s.l}</div>
+                <div style={{ fontWeight: 700, fontSize: "0.68rem", color: s.c, lineHeight: 1.2 }}>{s.v}</div>
+                <div style={{ fontSize: "0.6rem", color: "var(--color-text-secondary)", marginTop: 2, lineHeight: 1.2 }}>{s.l}</div>
               </div>
             ))}
           </div>
