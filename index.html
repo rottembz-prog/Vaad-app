@@ -786,7 +786,9 @@ ${eventRows}</table>
       const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.teal;
       const paidCount  = budget.students.filter(s => s.paid).length;
       const total      = budget.students.length;
-      const budgetSum  = budget.events.reduce((s, e) => s + e.budget, 0);
+      const collectionBudget = (budget.expectedStudents || 0) * (Number(budget.feePerStudent) || 0);
+      const totalExpBudget = budget.events.filter(e => (e.type || "expense") === "expense").reduce((s, e) => s + e.budget, 0);
+      const totalIncBudget = collectionBudget + budget.events.filter(e => (e.type || "expense") === "income").reduce((s, e) => s + e.budget, 0);
       const collected  = budget.students.reduce((s, st) => s + (st.amount || 0), 0);
 
       return (
@@ -795,8 +797,8 @@ ${eventRows}</table>
           <div style={{ background: `linear-gradient(135deg, ${clr.from}, ${clr.to})`, padding: "14px 16px 12px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div>
-                <div style={{ color: "white", fontWeight: 900, fontSize: 18, marginBottom: 2 }}>{budget.name}</div>
-                <div style={{ color: "rgba(255,255,255,0.8)", fontSize: 13 }}>{budget.className} • {budget.year}</div>
+                <div style={{ color: "white", fontWeight: 900, fontSize: 24, lineHeight: 1, marginBottom: 4 }}>{budget.year}</div>
+                <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 12 }}>{budget.className}</div>
               </div>
               <ActionButtons onReport={onReport} onCopy={onCopy} onEdit={onEdit} onDelete={onDelete} showReport showCopy showEdit showDelete />
             </div>
@@ -812,10 +814,11 @@ ${eventRows}</table>
                 <ProgressBar pct={total > 0 ? (paidCount / total) * 100 : 0} color={clr.from} style={{ marginBottom: 10 }} />
               </>
             )}
-            <div style={{ display: "flex", gap: 14, fontSize: 12, color: "#64748b", alignItems: "center" }}>
-              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="#0d9488" w={2} /> ₪{budgetSum.toLocaleString('he-IL')} תקציב</span>
-              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="wallet" s={13} c="#0ea5e9" w={2} /> ₪{collected.toLocaleString('he-IL')} נגבה</span>
-              {budget.feePerStudent && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={13} c="#10b981" w={2} /> ₪{budget.feePerStudent}/ילד</span>}
+            <div style={{ display: "flex", gap: 14, fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", alignItems: "center" }}>
+              {totalIncBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="var(--color-secondary)" w={2} /> ₪{totalIncBudget.toLocaleString('he-IL')} תקציב הכנסות</span>}
+              {totalExpBudget > 0 && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="chart" s={13} c="var(--color-danger)" w={2} /> ₪{totalExpBudget.toLocaleString('he-IL')} תקציב הוצאות</span>}
+              <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="wallet" s={13} c="var(--color-secondary)" w={2} /> ₪{collected.toLocaleString('he-IL')} סה״כ נגבה</span>
+              {budget.feePerStudent && <span style={{ display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={13} c="var(--color-text-secondary)" w={2} /> ₪{budget.feePerStudent}/ילד</span>}
             </div>
             <button onClick={onSelect} style={{
               marginTop: 12, width: "100%", padding: "11px 0", borderRadius: 12, border: "none",
@@ -827,7 +830,7 @@ ${eventRows}</table>
       );
     }
 
-    function BudgetForm({ initial = EMPTY_BUDGET_FORM, onSave, onCancel, title }) {
+    function BudgetForm({ initial = EMPTY_BUDGET_FORM, onSave, onCancel, title, isEdit = false }) {
       const [form, setForm]           = useState({ ...EMPTY_BUDGET_FORM, ...initial });
       const [newMember, setNewMember] = useState("");
       const [newGName,  setNewGName]  = useState("");
@@ -852,9 +855,6 @@ ${eventRows}</table>
         <Card style={{ border: "2px solid var(--color-border)" }}>
           <div style={{ fontWeight: 800, fontSize: "var(--text-base)", marginBottom: 12 }}>{title}</div>
 
-          <FieldLabel>שם הועד / הקבוצה <Tooltip text="שם שיופיע בראש התקציב ובדוחות" /></FieldLabel>
-          <input placeholder="ועד הורים / ועדת ספורט / ..." value={form.name}
-            onChange={e => set("name", e.target.value)} style={S.input} autoFocus />
 
           <FieldLabel>כיתה / קבוצה</FieldLabel>
           <input placeholder='כיתה ו׳ / מחלקת א׳ / ...' value={form.className}
@@ -893,24 +893,9 @@ ${eventRows}</table>
             <Button onClick={addMember} style={{ flex: "none" }}>+ הוסף</Button>
           </div>
 
-          <FieldLabel>קבוצות וואצאפ</FieldLabel>
-          {(form.whatsappGroups || []).map((g, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, background: "#f0fdf4", borderRadius: 8, padding: "6px 10px" }}>
-              <span style={{ flex: 1, fontSize: 13, display:"flex", alignItems:"center", gap: 5 }}><Icon n="msg" s={13} c="#059669" w={1.8} /> {g.name}</span>
-              {g.link && <a href={g.link} target="_blank" rel="noopener noreferrer" style={{ fontSize: 11, color: "#0d9488" }}>🔗</a>}
-              <button onClick={() => set("whatsappGroups", (form.whatsappGroups || []).filter((_, j) => j !== i))} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: 14, padding: 0 }}>✕</button>
-            </div>
-          ))}
-          <div style={{ marginBottom: 6 }}>
-            <input value={newGName} onChange={e => setNewGName(e.target.value)}
-              placeholder="שם הקבוצה" style={{ ...S.input, marginBottom: 6 }} />
-            <input value={newGLink} onChange={e => setNewGLink(e.target.value)}
-              placeholder="קישור לקבוצה (https://chat.whatsapp.com/...)" style={{ ...S.input, marginBottom: 6 }} />
-            <Button onClick={() => { if (!newGName.trim()) return; set("whatsappGroups", [...(form.whatsappGroups || []), { name: newGName.trim(), link: newGLink.trim() }]); setNewGName(""); setNewGLink(""); }} style={{ width: "100%" }}>+ הוסף קבוצה</Button>
-          </div>
 
           <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-            <Button onClick={() => onSave(form)} disabled={!form.name.trim()}>שמור</Button>
+            <Button onClick={() => onSave({ ...form, name: form.name.trim() || form.className.trim() })} disabled={!form.className.trim()}>שמור</Button>
             <Button variant="secondary" onClick={onCancel}>ביטול</Button>
           </div>
         </Card>
@@ -1047,40 +1032,44 @@ ${eventRows}</table>
           {/* ── Header ── */}
           <div style={{
             background: "linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 60%, var(--color-secondary) 100%)",
-            padding: "28px 20px 30px", position: "relative", overflow: "hidden",
+            padding: "20px 20px 28px", position: "relative", overflow: "hidden",
           }}>
             <div style={{ position: "absolute", top: -30, left: -20, width: 140, height: 140, borderRadius: "50%", background: "rgba(255,255,255,0.07)", pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: -20, right: 30, width: 100, height: 100, borderRadius: "50%", background: "rgba(255,255,255,0.06)", pointerEvents: "none" }} />
 
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <KupatiLogo size={52} />
-                <div>
-                  <div style={{ color: "white", fontWeight: 700, fontSize: "var(--text-2xl)", letterSpacing: -0.5, lineHeight: 1.1 }}>Kupati</div>
-                  <div style={{ color: "rgba(255,255,255,0.75)", fontSize: "var(--text-xs)", marginTop: 3 }}>{currentClass?.name || "ניהול גזברות כיתתית"}</div>
-                </div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
-                <div style={{ display: "flex", gap: 6 }}>
-                  <button onClick={onBack} style={ghostNavBtn}>← קבוצות</button>
-                  <button onClick={onSignOut} style={ghostNavBtn}>יציאה</button>
-                </div>
-                {currentClass?.inviteCode && (
-                  <button onClick={() => copyToClipboard(currentClass.inviteCode, () => showToast("הקוד הועתק!"))} style={{ ...ghostNavBtn, display: "flex", alignItems: "center", gap: 5 }}>
-                    <Icon n="link" s={13} c="white" w={2} /> קוד הצטרפות
-                  </button>
-                )}
-              </div>
+            {/* Breadcrumb nav */}
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 16 }}>
+              <button onClick={onBack} style={{ ...ghostNavBtn, display: "inline-flex", alignItems: "center", gap: 5, padding: "6px 12px" }}>
+                <Icon n="arrowleft" s={13} c="white" w={2} /> קבוצות
+              </button>
+              <span style={{ color: "rgba(255,255,255,0.45)", fontSize: "var(--text-xs)" }}>›</span>
+              <span style={{ color: "rgba(255,255,255,0.85)", fontSize: "var(--text-xs)", fontWeight: 600 }}>{currentClass?.name}</span>
+              <div style={{ flex: 1 }} />
+              <button onClick={onSignOut} style={{ ...ghostNavBtn, padding: "6px 12px" }}>יציאה</button>
             </div>
 
-            <button onClick={() => setShowHelp(true)} style={{ ...ghostNavBtn, display: "inline-flex", alignItems: "center", gap: 6 }}>
-              <Icon n="help" s={14} c="white" w={2} /> הסברים
-            </button>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+              <div>
+                <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "var(--text-xs)", fontWeight: 500, marginBottom: 4 }}>התקציבים של</div>
+                <div style={{ color: "white", fontWeight: 800, fontSize: "var(--text-2xl)", letterSpacing: -0.5, lineHeight: 1.1 }}>{currentClass?.name}</div>
+                <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "var(--text-xs)", marginTop: 4 }}>בחר תקציב לניהול</div>
+              </div>
+              <div style={{ display: "flex", gap: 6 }}>
+                {currentClass?.inviteCode && (
+                  <button onClick={() => copyToClipboard(currentClass.inviteCode, () => showToast("הקוד הועתק!"))} style={{ ...ghostNavBtn, display: "flex", alignItems: "center", gap: 5 }}>
+                    <Icon n="link" s={13} c="white" w={2} /> קוד
+                  </button>
+                )}
+                <button onClick={() => setShowHelp(true)} style={{ ...ghostNavBtn, display: "inline-flex", alignItems: "center", gap: 6 }}>
+                  <Icon n="help" s={14} c="white" w={2} /> הסברים
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* ── Content ── */}
           <div style={{ padding: "20px 16px 32px", maxWidth: 960, margin: "0 auto" }}>
-            <HelpBanner pageKey="home" text="כאן תנהל את התקציבים של הקבוצה. לחץ על תקציב קיים כדי לפתוח אותו, או הוסף תקציב חדש בכפתור למטה." />
+            <HelpBanner pageKey="home" text="כאן תנהל את התקציבים של הקבוצה. לחץ על תקציב קיים כדי לפתוח אותו, או הוסף תקציב חדש." />
 
             {mode === "add" && (
               <BudgetForm title="➕ תקציב חדש" onSave={handleAdd} onCancel={() => setMode("list")} />
@@ -1088,23 +1077,37 @@ ${eventRows}</table>
             {mode === "edit" && editingBudget && (
               <BudgetForm
                 title="✏️ עריכת תקציב"
+                isEdit
                 initial={{ ...editingBudget, feePerStudent: String(editingBudget.feePerStudent), members: editingBudget.members || [], whatsappGroups: editingBudget.whatsappGroups || [] }}
                 onSave={handleSave}
                 onCancel={() => { setMode("list"); setEditingId(null); }}
               />
             )}
 
+            {/* Add button — top, always visible in list mode */}
+            {mode === "list" && (
+              <button onClick={() => setMode("add")} style={{
+                width: "100%", padding: 14, borderRadius: 14, marginBottom: 16,
+                border: "2px dashed var(--color-border)",
+                background: "var(--color-primary-light)", color: "var(--color-primary)",
+                fontWeight: 600, fontSize: "var(--text-sm)",
+                cursor: "pointer", fontFamily: "inherit",
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              }}>
+                <Icon n="plus" s={16} c="var(--color-primary)" w={2.2} /> הוספת תקציב חדש
+              </button>
+            )}
+
             {/* Empty state */}
             {budgets.length === 0 && mode === "list" && (
-              <div style={{ textAlign: "center", padding: "56px 0 32px" }}>
+              <div style={{ textAlign: "center", padding: "40px 0 24px" }}>
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
                   <div style={{ width: 72, height: 72, borderRadius: "50%", background: "var(--color-primary-light)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <Icon n="chart" s={36} c="var(--color-primary)" w={1.5} />
                   </div>
                 </div>
                 <div style={{ fontSize: "var(--text-lg)", fontWeight: 700, color: "var(--color-text-primary)", marginBottom: 6 }}>אין תקציבים עדיין</div>
-                <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 24 }}>לחץ על הכפתור למטה כדי להוסיף את התקציב הראשון</div>
-                <Button variant="primary" icon="plus" onClick={() => setMode("add")}>הוסף תקציב חדש</Button>
+                <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)" }}>לחץ על הכפתור למעלה כדי להוסיף את התקציב הראשון</div>
               </div>
             )}
 
@@ -1119,20 +1122,6 @@ ${eventRows}</table>
                 onReport={() => generateReport({ students: [], events: [], cashLog: [], ...b })}
               />
             ))}
-
-            {mode === "list" && budgets.length > 0 && (
-              <button onClick={() => setMode("add")} style={{
-                width: "100%", padding: 16, borderRadius: 16,
-                border: "2px dashed var(--color-border)",
-                background: "var(--color-primary-light)", color: "var(--color-primary)",
-                fontWeight: 600, fontSize: "var(--text-sm)",
-                cursor: "pointer", fontFamily: "inherit",
-                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                transition: "opacity 150ms",
-              }}>
-                <Icon n="plus" s={18} c="var(--color-primary)" w={2.2} /> הוסף תקציב חדש
-              </button>
-            )}
           </div>
 
           {/* Footer */}
@@ -1422,8 +1411,8 @@ ${eventRows}</table>
               ))}
             </div>
             {[
-              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#c084fc" },
-              { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#34d399" },
+              { l: "הוצאות בפועל", v: fmt(totalSpent),        c: "#f87171" },
+              { l: "הכנסות בפועל", v: fmt(totalIncomeActual), c: "#4ade80" },
             ].map(x => (
               <div key={x.l} style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
@@ -1443,6 +1432,22 @@ ${eventRows}</table>
               </div>
             )}
           </div>
+
+          {/* Add button / form — top, below summary */}
+          {showAdd ? (
+            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onSaveAndNew={addEventAndNew} onCancel={() => { setShowAdd(false); setAddForm(EMPTY_EVENT); }} />
+          ) : (
+            <button onClick={() => setShowAdd(true)} style={{
+              width: "100%", padding: 14, borderRadius: 14, marginBottom: 14,
+              border: "2px dashed var(--color-border)",
+              background: "var(--color-primary-light)", color: "var(--color-primary)",
+              fontWeight: 600, fontSize: "var(--text-sm)",
+              cursor: "pointer", fontFamily: "inherit",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            }}>
+              <Icon n="plus" s={16} c="var(--color-primary)" w={2.2} /> הוספת ארוע
+            </button>
+          )}
 
           {/* Filters + calendar toggle */}
           {(() => {
@@ -1501,7 +1506,7 @@ ${eventRows}</table>
             return editId === ev.id ? (
               <EventForm key={ev.id} title="✏️ עריכת ארוע" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
             ) : (
-              <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "var(--color-secondary)" : "var(--color-primary)"}` }}>
+              <Card key={ev.id} style={{ opacity: ev.done ? 0.65 : 1, padding: "12px 14px", borderRight: `3px solid ${isIncome ? "var(--color-secondary)" : "var(--color-danger)"}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
@@ -1543,21 +1548,6 @@ ${eventRows}</table>
 
           </div>{/* /event-grid */}
 
-          {/* Add form */}
-          {showAdd ? (
-            <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onSaveAndNew={addEventAndNew} onCancel={() => { setShowAdd(false); setAddForm(EMPTY_EVENT); }} />
-          ) : (
-            <button onClick={() => setShowAdd(true)} style={{
-              width: "100%", padding: 14, borderRadius: 14,
-              border: "2px dashed var(--color-border)",
-              background: "var(--color-primary-light)", color: "var(--color-primary)",
-              fontWeight: 600, fontSize: "var(--text-sm)",
-              cursor: "pointer", fontFamily: "inherit",
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-            }}>
-              <Icon n="plus" s={18} c="var(--color-primary)" w={2.2} /> הוסף ארוע
-            </button>
-          )}
         </div>
         </React.Fragment>
       );
@@ -1693,6 +1683,50 @@ ${eventRows}</table>
             </div>
           </div>
 
+          {/* Add student — top, below summary */}
+          {showAdd ? (
+            <Card style={{ border: "2px solid var(--color-border)", marginBottom: 12 }}>
+              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>➕ תלמיד/ה חדש/ה</div>
+              <FieldLabel>שם התלמיד/ה *</FieldLabel>
+              <input value={addForm.name} onChange={e => setAddForm({ ...addForm, name: e.target.value })}
+                placeholder="שם התלמיד/ה" style={S.input} autoFocus />
+              <FieldLabel>סכום ששולם ₪</FieldLabel>
+              <input type="text" inputMode="numeric" value={addForm.amount}
+                onChange={e => setAddForm({ ...addForm, amount: e.target.value.replace(/[^\d.]/g, '') })}
+                onPaste={e => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); setAddForm({ ...addForm, amount: t.replace(/[^\d.]/g, '') }); }}
+                placeholder="0" style={S.input} />
+              <FieldLabel>הערה</FieldLabel>
+              <input value={addForm.note} onChange={e => setAddForm({ ...addForm, note: e.target.value })}
+                placeholder="הערה..." style={S.input} />
+              <PaidBySplit
+                total={addForm.amount}
+                splits={addForm.paidBySplit || []}
+                onChange={splits => setAddForm({ ...addForm, paidBySplit: splits })}
+              />
+              <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, cursor: "pointer", fontSize: 13 }}>
+                <input type="checkbox" checked={!!addForm.paid} onChange={e => setAddForm({ ...addForm, paid: e.target.checked })} style={{ width: 16, height: 16 }} />
+                שולם ✅
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, cursor: "pointer", fontSize: 13 }}>
+                <input type="checkbox" checked={!!addForm.partial} onChange={e => setAddForm({ ...addForm, partial: e.target.checked })} style={{ width: 16, height: 16 }} />
+                🟠 תשלום חלקי
+              </label>
+              <div style={{ display: "flex", gap: 8 }}>
+                <Button onClick={addStudent} disabled={!addForm.name.trim()}>הוספת</Button>
+                <Button variant="ghost" onClick={addStudentAndNew} disabled={!addForm.name.trim()}>שמור + חדש</Button>
+                <Button variant="secondary" onClick={() => { setShowAdd(false); setAddForm(EMPTY_STUDENT_FORM); }}>ביטול</Button>
+              </div>
+            </Card>
+          ) : (
+            <button onClick={() => setShowAdd(true)} style={{
+              width: "100%", padding: 14, borderRadius: 14, marginBottom: 12,
+              border: "2px dashed var(--color-border)",
+              background: "var(--color-primary-light)", color: "var(--color-primary)",
+              fontWeight: 700, fontSize: "var(--text-sm)",
+              cursor: "pointer", fontFamily: "inherit", display:"flex", alignItems:"center", justifyContent:"center", gap: 8,
+            }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> הוספת תלמיד/ה</button>
+          )}
+
           <input placeholder="🔍 חפשי תלמיד..." value={search}
             onChange={e => setSearch(e.target.value)} style={{ ...S.input, marginBottom: 10 }} />
 
@@ -1771,49 +1805,6 @@ ${eventRows}</table>
             )
           ))}
           </div>{/* /student-grid */}
-
-          {showAdd ? (
-            <Card style={{ border: "2px solid var(--color-border)" }}>
-              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>➕ תלמיד/ה חדש/ה</div>
-              <FieldLabel>שם התלמיד/ה *</FieldLabel>
-              <input value={addForm.name} onChange={e => setAddForm({ ...addForm, name: e.target.value })}
-                placeholder="שם התלמיד/ה" style={S.input} autoFocus />
-              <FieldLabel>סכום ששולם ₪</FieldLabel>
-              <input type="text" inputMode="numeric" value={addForm.amount}
-                onChange={e => setAddForm({ ...addForm, amount: e.target.value.replace(/[^\d.]/g, '') })}
-                onPaste={e => { e.preventDefault(); const t = (e.clipboardData || window.clipboardData).getData('text'); setAddForm({ ...addForm, amount: t.replace(/[^\d.]/g, '') }); }}
-                placeholder="0" style={S.input} />
-              <FieldLabel>הערה</FieldLabel>
-              <input value={addForm.note} onChange={e => setAddForm({ ...addForm, note: e.target.value })}
-                placeholder="הערה..." style={S.input} />
-              <PaidBySplit
-                total={addForm.amount}
-                splits={addForm.paidBySplit || []}
-                onChange={splits => setAddForm({ ...addForm, paidBySplit: splits })}
-              />
-              <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8, cursor: "pointer", fontSize: 13 }}>
-                <input type="checkbox" checked={!!addForm.paid} onChange={e => setAddForm({ ...addForm, paid: e.target.checked })} style={{ width: 16, height: 16 }} />
-                שולם ✅
-              </label>
-              <label style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12, cursor: "pointer", fontSize: 13 }}>
-                <input type="checkbox" checked={!!addForm.partial} onChange={e => setAddForm({ ...addForm, partial: e.target.checked })} style={{ width: 16, height: 16 }} />
-                🟠 תשלום חלקי
-              </label>
-              <div style={{ display: "flex", gap: 8 }}>
-                <Button onClick={addStudent} disabled={!addForm.name.trim()}>הוסיפי</Button>
-                <Button variant="ghost" onClick={addStudentAndNew} disabled={!addForm.name.trim()}>שמור + חדש</Button>
-                <Button variant="secondary" onClick={() => { setShowAdd(false); setAddForm(EMPTY_STUDENT_FORM); }}>ביטול</Button>
-              </div>
-            </Card>
-          ) : (
-            <button onClick={() => setShowAdd(true)} style={{
-              width: "100%", padding: 14, borderRadius: 14,
-              border: "2px dashed var(--color-border)",
-              background: "var(--color-primary-light)", color: "var(--color-primary)",
-              fontWeight: 700, fontSize: "var(--text-sm)",
-              cursor: "pointer", fontFamily: "inherit", marginTop: 4, display:"flex", alignItems:"center", justifyContent:"center", gap: 8,
-            }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> הוסיפי תלמיד/ה</button>
-          )}
 
           {/* Dynamic WhatsApp reminder */}
           {students.length > 0 && (
@@ -1924,6 +1915,20 @@ ${eventRows}</table>
           <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 10, textAlign: "center" }}>
             ספרייה משותפת לכל התקציבים • {gifts.length} רעיונות
           </div>
+
+          {/* Add gift — top, above search */}
+          {showAdd ? (
+            <GiftForm title="➕ רעיון חדש" data={addForm} onChange={setAddForm} onSave={addGift} onCancel={() => setShowAdd(false)} />
+          ) : (
+            <button onClick={() => setShowAdd(true)} style={{
+              width: "100%", padding: 14, borderRadius: 14, marginBottom: 12,
+              border: "2px dashed var(--color-border)",
+              background: "var(--color-primary-light)", color: "var(--color-primary)",
+              fontWeight: 700, fontSize: "var(--text-sm)",
+              cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> הוספת רעיון</button>
+          )}
+
           <input placeholder="🔍 חפשי רעיון, ספק, תג..." value={search}
             onChange={e => setSearch(e.target.value)} style={{ ...S.input, marginBottom: 12 }} />
 
@@ -1965,7 +1970,7 @@ ${eventRows}</table>
           {/* Copy-to-budget form */}
           {copyGiftId !== null && (
             <Card style={{ border: "2px solid var(--color-border)" }}>
-              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>📊 הוסיפי לתקציב</div>
+              <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>📊 הוספת לתקציב</div>
               <FieldLabel>שם הארוע</FieldLabel>
               <input value={copyForm.name} onChange={e => setCopyForm({ ...copyForm, name: e.target.value })} style={S.input} />
               <FieldLabel>קטגוריה</FieldLabel>
@@ -1985,23 +1990,12 @@ ${eventRows}</table>
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <Button onClick={saveCopy} disabled={!copyForm.name.trim()}>הוסיפי לתקציב</Button>
+                <Button onClick={saveCopy} disabled={!copyForm.name.trim()}>הוספת לתקציב</Button>
                 <Button variant="secondary" onClick={() => setCopyGiftId(null)}>ביטול</Button>
               </div>
             </Card>
           )}
 
-          {showAdd ? (
-            <GiftForm title="➕ רעיון חדש" data={addForm} onChange={setAddForm} onSave={addGift} onCancel={() => setShowAdd(false)} />
-          ) : (
-            <button onClick={() => setShowAdd(true)} style={{
-              width: "100%", padding: 14, borderRadius: 14,
-              border: "2px dashed var(--color-border)",
-              background: "var(--color-primary-light)", color: "var(--color-primary)",
-              fontWeight: 700, fontSize: "var(--text-sm)",
-              cursor: "pointer", fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-            }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> הוסיפי רעיון</button>
-          )}
         </div>
       );
     }
@@ -2390,10 +2384,17 @@ ${eventRows}</table>
               marginBottom: 12, display: "inline-flex", alignItems: "center", gap: 6,
               transition: "opacity 150ms",
             }}>
-              <Icon n="arrowleft" s={14} c="white" w={2} /> כל התקציבים
+              <Icon n="arrowleft" s={14} c="white" w={2} /> התקציבים שלי
             </button>
-            <div style={{ color: "white", fontWeight: 700, fontSize: "var(--text-xl)", marginBottom: 2 }}>{budget.name}</div>
-            <div style={{ color: "rgba(255,255,255,0.75)", fontSize: "var(--text-xs)" }}>{budget.className} • {budget.year}</div>
+            <div style={{ color: "white", fontWeight: 800, fontSize: "var(--text-xl)", marginBottom: 2 }}>{budget.name}</div>
+            <div style={{ color: "rgba(255,255,255,0.75)", fontSize: "var(--text-xs)" }}>
+              {budget.className} • {budget.year}
+              {" · "}
+              {activeTab === "budget"  ? "ניהול תקציב" :
+               activeTab === "collect" ? "גבייה מתלמידים" :
+               activeTab === "gifts"   ? "ספריית רעיונות" :
+                                         "יומן קופה"}
+            </div>
           </div>
 
           {/* ── Floating stat cards ── */}
@@ -2571,6 +2572,22 @@ ${eventRows}</table>
 
 ניתן ליצור קבוצות חדשות או להצטרף לקיימות עם קוד.`;
 
+    // ── Member avatar — colored circle with initials ──
+    const AVATAR_COLORS = ["var(--color-primary)","var(--color-secondary)","var(--color-warning)","var(--color-danger)","#8b5cf6","#0ea5e9","#f43f5e","#14b8a6"];
+    function MemberAvatar({ name, size = 34 }) {
+      const initials = (name || "?").split(" ").map(w => w[0]).slice(0, 2).join("").toUpperCase() || "?";
+      const colorIdx = (name || "").charCodeAt(0) % AVATAR_COLORS.length;
+      return (
+        <div style={{
+          width: size, height: size, borderRadius: "50%",
+          background: AVATAR_COLORS[colorIdx], color: "white",
+          fontWeight: 700, fontSize: size * 0.36,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          flexShrink: 0, border: "2px solid var(--color-surface)",
+        }}>{initials}</div>
+      );
+    }
+
     function ClassScreen({ user, onSelectClass }) {
       const [mode, setMode]             = useState("list"); // list | create | join
       const [classes, setClasses]       = useState([]);
@@ -2583,6 +2600,8 @@ ${eventRows}</table>
       const [editingClassId, setEditingClassId] = useState(null);
       const [editingName, setEditingName]       = useState("");
       const [confirmDeleteCls, setConfirmDeleteCls] = useState(null);
+      const [expandedMembersId, setExpandedMembersId] = useState(null);
+      const [confirmLeaveId, setConfirmLeaveId] = useState(null);
       const [toast, setToast]           = useState("");
 
       useEffect(() => {
@@ -2672,93 +2691,87 @@ ${eventRows}</table>
         setConfirmDeleteCls(null);
       };
 
+      const leaveGroup = async (cls) => {
+        try {
+          const details = (cls.memberDetails || []).filter(m => m.uid !== user.uid);
+          const members = (cls.members || []).filter(id => id !== user.uid);
+          await firebase.firestore().collection("classes").doc(cls.id).update({ members, memberDetails: details });
+          setConfirmLeaveId(null);
+          setToast("עזבת את הקבוצה");
+          setTimeout(() => setToast(""), 2000);
+        } catch (_) {
+          setToast("שגיאה — נסה שוב");
+          setTimeout(() => setToast(""), 2000);
+        }
+      };
+
       return (
         <div style={{ minHeight: "100vh", background: "var(--color-background)", fontFamily: "inherit", direction: "rtl" }}>
           <Toast message={toast} />
           <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} title="הקבוצות שלי" content={GROUPS_HELP_CONTENT} closeLabel="הבנתי" />
           <ConfirmDeleteModal isOpen={!!confirmDeleteCls} itemName={confirmDeleteCls?.name || ""} onConfirm={doDeleteClass} onCancel={() => setConfirmDeleteCls(null)} />
+          {/* Leave confirm */}
+          <ConfirmDeleteModal isOpen={!!confirmLeaveId} itemName={`לעזוב את "${confirmLeaveId?.name || ""}"`} onConfirm={() => leaveGroup(confirmLeaveId)} onCancel={() => setConfirmLeaveId(null)} />
+
           {/* ── Header ── */}
-          <div style={{ background: "linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)", padding: "28px 20px 28px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ background: "linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)", padding: "28px 20px 32px", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: -40, left: -20, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.06)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", bottom: -30, right: 10, width: 110, height: 110, borderRadius: "50%", background: "rgba(255,255,255,0.05)", pointerEvents: "none" }} />
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div>
-                <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "var(--text-xs)", fontWeight: 500, marginBottom: 4 }}>שלום, {user.displayName || user.email?.split("@")[0]} 👋</div>
-                <div style={{ color: "white", fontWeight: 700, fontSize: "var(--text-2xl)" }}>הקבוצות שלי</div>
-                <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "var(--text-xs)", marginTop: 4 }}>בחר קבוצה לניהול תקציב</div>
+                <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "var(--text-xs)", fontWeight: 500, marginBottom: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                  <MemberAvatar name={user.displayName || user.email} size={26} />
+                  שלום, {user.displayName || user.email?.split("@")[0]} 👋
+                </div>
+                <div style={{ color: "white", fontWeight: 800, fontSize: "var(--text-2xl)", lineHeight: 1.1 }}>הקבוצות שלי</div>
+                <div style={{ color: "rgba(255,255,255,0.65)", fontSize: "var(--text-xs)", marginTop: 6, maxWidth: 340, lineHeight: 1.6 }}>
+                  כאן באפשרותך לפתוח קבוצה עבור כל קבוצת ועד בה תשמש כגזבר, אם אינך גזבר, תוכל להצטרף לצפות בתנועות הועד באמצעות קוד קבוצה שימסר לך ע"י הגזבר
+                </div>
               </div>
-              <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={() => setShowHelp(true)} style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 10, padding: "8px 14px", color: "white", cursor: "pointer", fontSize: "var(--text-xs)", fontFamily: "inherit", fontWeight: 600 }}>הסברים</button>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-end" }}>
                 <button onClick={() => firebase.auth().signOut()} style={{ background: "rgba(255,255,255,0.15)", border: "1.5px solid rgba(255,255,255,0.3)", borderRadius: 10, padding: "8px 14px", color: "white", cursor: "pointer", fontSize: "var(--text-xs)", fontFamily: "inherit", fontWeight: 600 }}>יציאה</button>
+                <button onClick={() => setShowHelp(true)} style={{ background: "rgba(255,255,255,0.1)", border: "1.5px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: "6px 12px", color: "rgba(255,255,255,0.8)", cursor: "pointer", fontSize: "0.75rem", fontFamily: "inherit" }}>הסברים</button>
               </div>
             </div>
           </div>
 
-          {/* Content with decorative circles */}
           {/* ── Content ── */}
-          <div style={{ padding: "20px 16px 32px", maxWidth: 960, margin: "0 auto" }}>
-            <HelpBanner pageKey="groups" text="בחר קבוצה כדי לנהל את התקציב שלה. שלח את קוד ההצטרפות לחברים כדי שיצטרפו." />
+          <div style={{ padding: "20px 16px 40px", maxWidth: 960, margin: "0 auto" }}>
 
             {loading ? (
               <div style={{ textAlign: "center", padding: 40, color: "var(--color-text-secondary)" }}>טוען...</div>
             ) : (
               <>
-                {classes.map(cls => (
-                  editingClassId === cls.id ? (
-                    <div key={cls.id} style={{ background: "var(--color-surface)", borderRadius: 16, padding: "16px 20px", marginBottom: 12, boxShadow: "0 2px 12px rgba(0,0,0,0.07)", border: "2px solid var(--color-warning)" }}>
-                      <div style={{ fontWeight: 600, fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 8 }}>עריכת שם קבוצה</div>
-                      <input value={editingName} onChange={e => setEditingName(e.target.value)} onKeyDown={e => { if (e.key === "Enter") saveEdit(cls.id, e); if (e.key === "Escape") cancelEdit(e); }} style={{ ...S.input, marginBottom: 10 }} autoFocus />
-                      <div style={{ display: "flex", gap: 8 }}>
-                        <Button variant="primary"   onClick={e => saveEdit(cls.id, e)} style={{ flex: 1 }}>שמור</Button>
-                        <Button variant="secondary" onClick={cancelEdit}               style={{ flex: 1 }}>ביטול</Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div key={cls.id} style={{ background: "var(--color-surface)", borderRadius: 16, padding: "16px 20px", marginBottom: 12, boxShadow: "0 2px 12px rgba(0,0,0,0.07)", borderRight: "4px solid var(--color-primary)" }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <div onClick={() => onSelectClass(cls)} style={{ flex: 1, cursor: "pointer" }}>
-                          <div style={{ fontWeight: 700, fontSize: "var(--text-lg)", color: "var(--color-text-primary)" }}>{cls.name}</div>
-                          <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginTop: 4, display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                            <span>{cls.members?.length || 1} חברים</span>
-                            <span style={{ color: "var(--color-border)" }}>·</span>
-                            <span>קוד: <strong style={{ color: "var(--color-primary)", letterSpacing: 2 }}>{cls.inviteCode}</strong></span>
-                            <button onClick={e => copyCode(cls.inviteCode, e)} title="העתק קוד" style={{ background: "none", border: "none", cursor: "pointer", padding: "1px 4px", color: "var(--color-primary)", lineHeight: 1 }}>
-                              <Icon n="copy" s={13} c="var(--color-primary)" w={2} />
-                            </button>
-                          </div>
-                        </div>
-                        <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
-                          <button onClick={e => startEdit(cls, e)} title="שנה שם" style={{ background: "none", border: "none", cursor: "pointer", padding: 6, borderRadius: 8 }}>
-                            <Icon n="pencil" s={16} c="var(--color-text-secondary)" w={1.8} />
-                          </button>
-                          <button onClick={e => { e.stopPropagation(); setConfirmDeleteCls(cls); }} title="מחק" style={{ background: "none", border: "none", cursor: "pointer", padding: 6, borderRadius: 8 }}>
-                            <Icon n="trash" s={16} c="var(--color-danger)" w={1.8} />
-                          </button>
-                          <div onClick={() => onSelectClass(cls)} style={{ cursor: "pointer", padding: "6px 4px" }}>
-                            <Icon n="arrow" s={18} c="var(--color-primary)" w={2} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                ))}
-
-                {/* Empty state */}
-                {classes.length === 0 && mode === "list" && (
-                  <div style={{ textAlign: "center", padding: "48px 0 24px" }}>
-                    <div style={{ fontSize: 48, marginBottom: 12 }}>👨‍👩‍👧‍👦</div>
-                    <div style={{ fontWeight: 700, fontSize: "var(--text-lg)", color: "var(--color-text-primary)", marginBottom: 6 }}>אין קבוצות עדיין</div>
-                    <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)" }}>צור קבוצה חדשה או הצטרף עם קוד</div>
+                {/* Add group buttons — top */}
+                {mode === "list" && (
+                  <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+                    <button onClick={() => setMode("create")} style={{
+                      flex: 1, padding: "13px 0", borderRadius: 14,
+                      border: "2px dashed var(--color-border)",
+                      background: "var(--color-primary-light)", color: "var(--color-primary)",
+                      fontWeight: 700, fontSize: "var(--text-xs)", cursor: "pointer",
+                      fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                    }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> פתח קבוצה חדשה</button>
+                    <button onClick={() => setMode("join")} style={{
+                      flex: 1, padding: "13px 0", borderRadius: 14,
+                      border: "2px solid var(--color-border)",
+                      background: "var(--color-surface)", color: "var(--color-text-secondary)",
+                      fontWeight: 700, fontSize: "var(--text-xs)", cursor: "pointer",
+                      fontFamily: "inherit", display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+                    }}><Icon n="link" s={14} c="var(--color-text-secondary)" w={2} /> הצטרף עם קוד</button>
                   </div>
                 )}
 
                 {/* Create form */}
                 {mode === "create" && (
-                  <Card style={{ border: "2px solid var(--color-primary-light)" }}>
-                    <div style={{ fontWeight: 700, fontSize: "var(--text-base)", marginBottom: 12 }}>קבוצה חדשה</div>
+                  <Card style={{ border: "2px solid var(--color-border)", marginBottom: 16 }}>
+                    <div style={{ fontWeight: 700, fontSize: "var(--text-base)", marginBottom: 4 }}>➕ פתח קבוצה חדשה</div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 12 }}>פתח קבוצה לקבוצת אנשים שיחלקו גישה לתקציבים</div>
                     <FieldLabel>שם הקבוצה</FieldLabel>
                     <input value={createName} onChange={e => setCreateName(e.target.value)} placeholder="למשל: ועד הורים כיתה ו׳" style={S.input} autoFocus onKeyDown={e => e.key === "Enter" && createClass()} />
                     {error && <div style={{ color: "var(--color-danger)", fontSize: "var(--text-xs)", marginBottom: 8 }}>{error}</div>}
                     <div style={{ display: "flex", gap: 8 }}>
-                      <Button variant="primary"   onClick={createClass}   disabled={saving || !createName.trim()} loading={saving} style={{ flex: 1 }}>צור קבוצה</Button>
+                      <Button onClick={createClass} disabled={saving || !createName.trim()} loading={saving} style={{ flex: 1 }}>צור קבוצה</Button>
                       <Button variant="secondary" onClick={cancelSubMode} style={{ flex: 1 }}>ביטול</Button>
                     </div>
                   </Card>
@@ -2766,23 +2779,134 @@ ${eventRows}</table>
 
                 {/* Join form */}
                 {mode === "join" && (
-                  <Card style={{ border: "2px solid var(--color-primary-light)" }}>
-                    <div style={{ fontWeight: 700, fontSize: "var(--text-base)", marginBottom: 12 }}>הצטרפות לקבוצה</div>
+                  <Card style={{ border: "2px solid var(--color-border)", marginBottom: 16 }}>
+                    <div style={{ fontWeight: 700, fontSize: "var(--text-base)", marginBottom: 4 }}>🔗 הצטרפות לקבוצה</div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 12 }}>הזן את הקוד להצטרפות לקבוצה</div>
                     <FieldLabel>קוד הצטרפות (6 תווים)</FieldLabel>
                     <input value={joinCode} onChange={e => setJoinCode(e.target.value)} placeholder="ABC123" style={{ ...S.input, letterSpacing: 3, textAlign: "center", textTransform: "uppercase" }} autoFocus onKeyDown={e => e.key === "Enter" && joinClass()} />
                     {error && <div style={{ color: "var(--color-danger)", fontSize: "var(--text-xs)", marginBottom: 8 }}>{error}</div>}
                     <div style={{ display: "flex", gap: 8 }}>
-                      <Button variant="primary"   onClick={joinClass}     disabled={saving || !joinCode.trim()} loading={saving} style={{ flex: 1 }}>הצטרף</Button>
+                      <Button onClick={joinClass} disabled={saving || !joinCode.trim()} loading={saving} style={{ flex: 1 }}>הצטרף</Button>
                       <Button variant="secondary" onClick={cancelSubMode} style={{ flex: 1 }}>ביטול</Button>
                     </div>
                   </Card>
                 )}
 
-                {/* Mode buttons */}
-                {mode === "list" && (
-                  <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
-                    <Button variant="primary"   onClick={() => setMode("create")} icon="plus" style={{ flex: 1 }}>קבוצה חדשה</Button>
-                    <Button variant="secondary" onClick={() => setMode("join")}   icon="link" style={{ flex: 1 }}>הצטרף עם קוד</Button>
+                {/* Group cards */}
+                {classes.map(cls => {
+                  const members   = cls.memberDetails || [];
+                  const isAdmin   = cls.createdBy === user.uid;
+                  // Deduplicate by uid (prefer admin role), then sort creator first
+                  const memberMap = new Map();
+                  members.forEach(m => { if (!memberMap.has(m.uid) || m.role === "admin") memberMap.set(m.uid, m); });
+                  const sorted    = [...memberMap.values()].sort((a, b) => (a.uid === cls.createdBy ? -1 : b.uid === cls.createdBy ? 1 : 0));
+                  const expanded  = expandedMembersId === cls.id;
+                  const visibleMembers = expanded ? sorted : sorted.slice(0, 3);
+                  const extraCount = sorted.length - 3;
+
+                  return editingClassId === cls.id ? (
+                    <div key={cls.id} style={{ background: "var(--color-surface)", borderRadius: 18, padding: "18px 20px", marginBottom: 14, boxShadow: "0 2px 12px rgba(0,0,0,0.07)", border: "2px solid var(--color-warning)" }}>
+                      <div style={{ fontWeight: 600, fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 8 }}>✏️ עריכת שם קבוצה</div>
+                      <input value={editingName} onChange={e => setEditingName(e.target.value)} onKeyDown={e => { if (e.key === "Enter") saveEdit(cls.id, e); if (e.key === "Escape") cancelEdit(e); }} style={{ ...S.input, marginBottom: 10 }} autoFocus />
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <Button onClick={e => saveEdit(cls.id, e)} style={{ flex: 1 }}>שמור</Button>
+                        <Button variant="secondary" onClick={cancelEdit} style={{ flex: 1 }}>ביטול</Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div key={cls.id} style={{ background: "var(--color-surface)", borderRadius: 18, marginBottom: 14, boxShadow: "0 3px 16px rgba(26,46,42,0.09)", border: "1px solid var(--color-border)", overflow: "hidden" }}>
+
+                      {/* Card header — colored stripe */}
+                      <div style={{ background: "linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%)", padding: "14px 18px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", flex: 1 }} onClick={() => onSelectClass(cls)}>
+                          {/* Group icon */}
+                          <div style={{ width: 42, height: 42, borderRadius: 12, background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            <span style={{ fontSize: 22 }}>👥</span>
+                          </div>
+                          <div>
+                            <div style={{ color: "white", fontWeight: 800, fontSize: "var(--text-base)", lineHeight: 1.2 }}>{cls.name}</div>
+                            <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "0.75rem", marginTop: 2 }}>
+                              {sorted.length} {sorted.length === 1 ? "חבר" : "חברים"}{isAdmin ? " · מנהל" : " · חבר"}
+                            </div>
+                          </div>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+                          <button onClick={e => startEdit(cls, e)} title="שנה שם" style={{ background: "rgba(255,255,255,0.15)", border: "none", cursor: "pointer", padding: 8, borderRadius: 8 }}>
+                            <Icon n="pencil" s={15} c="white" w={1.8} />
+                          </button>
+                          {isAdmin ? (
+                            <button onClick={e => { e.stopPropagation(); setConfirmDeleteCls(cls); }} title="מחק קבוצה" style={{ background: "rgba(255,255,255,0.15)", border: "none", cursor: "pointer", padding: 8, borderRadius: 8 }}>
+                              <Icon n="trash" s={15} c="white" w={1.8} />
+                            </button>
+                          ) : (
+                            <button onClick={e => { e.stopPropagation(); setConfirmLeaveId(cls); }} title="עזוב קבוצה" style={{ background: "rgba(255,255,255,0.15)", border: "none", cursor: "pointer", padding: 8, borderRadius: 8, color: "white", fontFamily: "inherit", fontSize: "0.75rem", fontWeight: 600 }}>
+                              עזוב
+                            </button>
+                          )}
+                          <button onClick={() => onSelectClass(cls)} style={{ background: "rgba(255,255,255,0.2)", border: "none", cursor: "pointer", padding: "8px 12px", borderRadius: 8, color: "white", fontFamily: "inherit", fontWeight: 700, fontSize: "var(--text-xs)", display: "flex", alignItems: "center", gap: 4 }}>
+                            כנס <Icon n="arrow" s={14} c="white" w={2} />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Card body */}
+                      <div style={{ padding: "14px 18px" }}>
+
+                        {/* Members section */}
+                        <div style={{ marginBottom: 12 }}>
+                          <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--color-text-secondary)", marginBottom: 8, display: "flex", alignItems: "center", gap: 5 }}>
+                            <Icon n="users" s={12} c="var(--color-text-secondary)" w={2} /> חברי הקבוצה
+                          </div>
+                          {/* Member list */}
+                          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                            {visibleMembers.map(m => (
+                              <div key={m.uid} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                                <MemberAvatar name={m.displayName} size={28} />
+                                <div style={{ flex: 1, minWidth: 0 }}>
+                                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                                    {m.displayName || m.uid}
+                                    {m.uid === user.uid && <span style={{ fontSize: "0.7rem", color: "var(--color-text-secondary)", marginRight: 4 }}>(אני)</span>}
+                                  </span>
+                                </div>
+                                <span style={{
+                                  fontSize: "0.7rem", fontWeight: 700, padding: "2px 8px", borderRadius: 20,
+                                  background: m.uid === cls.createdBy ? "var(--color-primary-light)" : "var(--color-background)",
+                                  color: m.uid === cls.createdBy ? "var(--color-primary-dark)" : "var(--color-text-secondary)",
+                                }}>
+                                  {m.uid === cls.createdBy ? "👑 מנהל" : "👤 חבר"}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                          {sorted.length > 3 && (
+                            <button onClick={() => setExpandedMembersId(expanded ? null : cls.id)} style={{ marginTop: 8, background: "none", border: "none", cursor: "pointer", color: "var(--color-primary)", fontSize: "0.75rem", fontWeight: 600, fontFamily: "inherit", padding: 0 }}>
+                              {expanded ? "הצג פחות ▲" : `הצג את כל ${sorted.length} החברים ▼`}
+                            </button>
+                          )}
+                        </div>
+
+                        {/* Invite code row */}
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 12px", background: "var(--color-primary-light)", borderRadius: 10 }}>
+                          <Icon n="link" s={14} c="var(--color-primary)" w={2} />
+                          <span style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", flex: 1 }}>קוד הצטרפות:</span>
+                          <strong style={{ color: "var(--color-primary)", letterSpacing: 3, fontSize: "var(--text-sm)", fontFamily: "monospace" }}>{cls.inviteCode}</strong>
+                          <button onClick={e => copyCode(cls.inviteCode, e)} style={{ background: "var(--color-primary)", border: "none", borderRadius: 8, padding: "5px 10px", cursor: "pointer", color: "white", fontSize: "0.75rem", fontWeight: 600, fontFamily: "inherit", display: "flex", alignItems: "center", gap: 4 }}>
+                            <Icon n="copy" s={12} c="white" w={2} /> העתק
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                {/* Empty state */}
+                {classes.length === 0 && mode === "list" && (
+                  <div style={{ textAlign: "center", padding: "48px 0 24px" }}>
+                    <div style={{ fontSize: 52, marginBottom: 14 }}>👥</div>
+                    <div style={{ fontWeight: 700, fontSize: "var(--text-lg)", color: "var(--color-text-primary)", marginBottom: 8 }}>אין קבוצות עדיין</div>
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", maxWidth: 240, margin: "0 auto", lineHeight: 1.6 }}>
+                      פתח קבוצה חדשה לכל קבוצת אנשים שברצונך לשתף בניהול התקציבים
+                    </div>
                   </div>
                 )}
               </>

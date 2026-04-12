@@ -15,8 +15,8 @@
 4. **Done** — the platform auto-creates a PR and auto-merges to `main`, which triggers GitHub Pages deployment
 
 ### Rules
-- Always push at the end of EVERY task — even if multiple tasks are done in one session
-- Never leave committed changes un-pushed
+- **NEVER push without explicit user approval.** After committing, always stop and ask the user to test the change locally first. Only push after the user explicitly says to (e.g. "push", "looks good", "go ahead").
+- Never leave committed changes un-pushed **once the user has approved**
 - Branch naming: `claude/<description>-<SESSION_ID>` (provided by the system per session)
 - Never push directly to `main` (blocked by the proxy)
 - The platform handles PR creation + merge to main automatically on each push
