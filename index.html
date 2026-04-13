@@ -1922,8 +1922,11 @@ ${eventRows}</table>
       const [search,      setSearch]      = useState("");
       const [showAdd,     setShowAdd]     = useState(false);
       const [addForm,     setAddForm]     = useState(EMPTY_GIFT);
+      const [addError,    setAddError]    = useState("");
       const [editId,      setEditId]      = useState(null);
       const [editForm,    setEditForm]    = useState({});
+      const [editError,   setEditError]   = useState("");
+      const [expandedId,  setExpandedId]  = useState(null);
       const [copyGiftId,  setCopyGiftId]  = useState(null);
       const [copyForm,    setCopyForm]    = useState({ ...EMPTY_EVENT });
 
@@ -1931,10 +1934,32 @@ ${eventRows}</table>
         ? gifts.filter(g => g.name.includes(search) || g.tag.includes(search) || g.forWhom.includes(search) || (g.vendorName || "").includes(search))
         : gifts;
 
-      const addGift    = () => { if (!addForm.name.trim()) return; setGifts([...gifts, { ...addForm, id: Date.now() }]); setAddForm(EMPTY_GIFT); setShowAdd(false); };
-      const startEdit  = (g) => { setEditId(g.id); setEditForm({ ...g }); };
-      const cancelEdit = () => setEditId(null);
-      const saveEdit   = () => { setGifts(gifts.map(g => g.id === editId ? { ...editForm, id: editId } : g)); setEditId(null); };
+      const findDuplicate = (form, excludeId = null) => {
+        const phone = (form.vendorPhone || "").trim();
+        const link  = (form.vendorLink  || "").trim();
+        if (!phone && !link) return null;
+        return gifts.find(g => g.id !== excludeId && (
+          (phone && (g.vendorPhone || "").trim() === phone) ||
+          (link  && (g.vendorLink  || "").trim() === link)
+        )) || null;
+      };
+
+      const addGift = () => {
+        if (!addForm.name.trim()) return;
+        const dup = findDuplicate(addForm);
+        if (dup) { setAddError(`ספק זה כבר קיים בשם "${dup.name}" — חפשי אותו בשורת החיפוש`); return; }
+        setGifts([...gifts, { ...addForm, id: Date.now() }]);
+        setAddForm(EMPTY_GIFT); setAddError(""); setShowAdd(false);
+      };
+
+      const startEdit  = (g) => { setEditId(g.id); setEditForm({ ...g }); setEditError(""); setExpandedId(null); };
+      const cancelEdit = () => { setEditId(null); setEditError(""); };
+      const saveEdit   = () => {
+        const dup = findDuplicate(editForm, editId);
+        if (dup) { setEditError(`ספק זה כבר קיים בשם "${dup.name}" — חפשי אותו בשורת החיפוש`); return; }
+        setGifts(gifts.map(g => g.id === editId ? { ...editForm, id: editId } : g));
+        setEditId(null); setEditError("");
+      };
       const removeGift = (id) => { if (window.confirm("למחוק רעיון זה?")) setGifts(gifts.filter(g => g.id !== id)); };
 
       const startCopy = (gift) => {
@@ -1950,12 +1975,15 @@ ${eventRows}</table>
       return (
         <div>
           <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 10, textAlign: "center" }}>
-            ספרייה משותפת לכל התקציבים • {gifts.length} רעיונות
+            🌐 ספרייה גלובלית — משותפת לכל הקבוצות והתקציבים • {gifts.length} רעיונות
           </div>
 
           {/* Add gift — top, above search */}
           {showAdd ? (
-            <GiftForm title="➕ רעיון חדש" data={addForm} onChange={setAddForm} onSave={addGift} onCancel={() => setShowAdd(false)} />
+            <>
+              <GiftForm title="➕ רעיון חדש" data={addForm} onChange={f => { setAddForm(f); setAddError(""); }} onSave={addGift} onCancel={() => { setShowAdd(false); setAddError(""); }} />
+              {addError && <div style={{ color: "var(--color-danger)", fontSize: "var(--text-xs)", fontWeight: 600, marginTop: -8, marginBottom: 10, padding: "8px 12px", background: "#fee2e2", borderRadius: 8 }}>⚠️ {addError}</div>}
+            </>
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, marginBottom: 12,
@@ -1972,28 +2000,41 @@ ${eventRows}</table>
           <div className="gift-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
             {filtered.map(gift => (
               editId === gift.id ? null : (
-                <div key={gift.id} style={{ background: "var(--color-surface)", borderRadius: 16, padding: 14, boxShadow: "0 2px 14px rgba(0,0,0,0.08)", border: "1px solid var(--color-border)", display: "flex", flexDirection: "column" }}>
-                  {gift.photo
-                    ? <img src={gift.photo} alt="" style={{ width: "100%", borderRadius: 10, marginBottom: 8, height: 90, objectFit: "cover" }} />
-                    : <div style={{ fontSize: 30, marginBottom: 6 }}>{gift.icon}</div>
-                  }
-                  <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-text-primary)", marginBottom: 4 }}>{gift.name}</div>
-                  {gift.forWhom    && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2 }}>עבור: {gift.forWhom}</div>}
-                  {gift.vendorName && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="store" s={11} c="var(--color-text-secondary)" w={1.8} />{gift.vendorName}</div>}
-                  {gift.vendorPhone && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="phone" s={11} c="var(--color-text-secondary)" w={1.8} />{gift.vendorPhone}</div>}
-                  {gift.notes      && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 4 }}>{gift.notes}</div>}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 6, marginBottom: 8 }}>
-                    {gift.tag        && <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "var(--color-primary-light)", color: "var(--color-primary-dark)", borderRadius: 8, padding: "2px 6px" }}>{gift.tag}</span>}
-                    {gift.priceRange && <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-primary)" }}>{gift.priceRange}</span>}
+                <div key={gift.id}
+                  onClick={() => setExpandedId(expandedId === gift.id ? null : gift.id)}
+                  style={{
+                    background: "var(--color-surface)", borderRadius: 16, padding: 14,
+                    boxShadow: "0 2px 14px rgba(0,0,0,0.08)",
+                    border: expandedId === gift.id ? "2px solid var(--color-primary)" : "1px solid var(--color-border)",
+                    display: "flex", flexDirection: "column", cursor: "pointer",
+                    transition: "border 150ms",
+                  }}>
+                  {/* Compact view — always visible */}
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+                    {gift.photo
+                      ? <img src={gift.photo} alt="" style={{ width: "100%", borderRadius: 10, marginBottom: 8, height: 80, objectFit: "cover" }} />
+                      : <div style={{ fontSize: 44, marginBottom: 6, lineHeight: 1 }}>{gift.icon}</div>
+                    }
+                    <div style={{ fontWeight: 800, fontSize: "var(--text-sm)", color: "var(--color-text-primary)", marginBottom: 3 }}>{gift.name}</div>
+                    {gift.vendorName && <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", display:"flex", alignItems:"center", gap: 3 }}><Icon n="store" s={10} c="var(--color-text-secondary)" w={1.8} />{gift.vendorName}</div>}
                   </div>
-                  {gift.vendorLink && (
-                    <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
+
+                  {/* Expanded view */}
+                  {expandedId === gift.id && (
+                    <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid var(--color-border)" }} onClick={e => e.stopPropagation()}>
+                      {gift.forWhom    && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 4 }}>👤 עבור: {gift.forWhom}</div>}
+                      {gift.priceRange && <div style={{ fontSize: "0.8rem", color: "var(--color-primary)", fontWeight: 700, marginBottom: 4 }}>💰 {gift.priceRange}</div>}
+                      {gift.tag        && <div style={{ fontSize: "0.8rem", marginBottom: 4 }}><span style={{ background: "var(--color-primary-light)", color: "var(--color-primary-dark)", borderRadius: 6, padding: "2px 6px", fontWeight: 700 }}>{gift.tag}</span></div>}
+                      {gift.vendorPhone && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 4, display:"flex", alignItems:"center", gap: 4 }}><Icon n="phone" s={11} c="var(--color-text-secondary)" w={1.8} />{gift.vendorPhone}</div>}
+                      {gift.vendorLink  && <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>}
+                      {gift.notes      && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 6, fontStyle: "italic" }}>{gift.notes}</div>}
+                      <div style={{ display: "flex", gap: 2, justifyContent: "flex-end", marginTop: 6 }}>
+                        {onAddEvent && <IconBtn icon="chart"  color="var(--color-primary)"        onClick={() => startCopy(gift)}    title="הוסף לתקציב" />}
+                        <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(gift)}      title="ערוך" />
+                        <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeGift(gift.id)} title="מחק"  />
+                      </div>
+                    </div>
                   )}
-                  <div style={{ display: "flex", gap: 2, justifyContent: "flex-end", marginTop: 4 }}>
-                    {onAddEvent && <IconBtn icon="chart"  color="var(--color-primary)"        onClick={() => startCopy(gift)}    title="הוסף לתקציב" />}
-                    <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(gift)}      title="ערוך" />
-                    <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeGift(gift.id)} title="מחק"  />
-                  </div>
                 </div>
               )
             ))}
@@ -2001,7 +2042,10 @@ ${eventRows}</table>
 
           {/* Edit form (full width, below grid) */}
           {editId !== null && (
-            <GiftForm title="✏️ עריכת רעיון" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+            <>
+              <GiftForm title="✏️ עריכת רעיון" data={editForm} onChange={f => { setEditForm(f); setEditError(""); }} onSave={saveEdit} onCancel={cancelEdit} />
+              {editError && <div style={{ color: "var(--color-danger)", fontSize: "var(--text-xs)", fontWeight: 600, marginTop: -8, marginBottom: 10, padding: "8px 12px", background: "#fee2e2", borderRadius: 8 }}>⚠️ {editError}</div>}
+            </>
           )}
 
           {/* Copy-to-budget form */}
