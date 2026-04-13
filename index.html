@@ -1947,7 +1947,7 @@ ${eventRows}</table>
       const addGift = () => {
         if (!addForm.name.trim()) return;
         const dup = findDuplicate(addForm);
-        if (dup) { setAddError(`ספק זה כבר קיים בשם "${dup.name}" — חפשי אותו בשורת החיפוש`); return; }
+        if (dup) { setAddError("ספק זה כבר קיים במאגר הרעיונות"); return; }
         setGifts([...gifts, { ...addForm, id: Date.now() }]);
         setAddForm(EMPTY_GIFT); setAddError(""); setShowAdd(false);
       };
@@ -1956,7 +1956,7 @@ ${eventRows}</table>
       const cancelEdit = () => { setEditId(null); setEditError(""); };
       const saveEdit   = () => {
         const dup = findDuplicate(editForm, editId);
-        if (dup) { setEditError(`ספק זה כבר קיים בשם "${dup.name}" — חפשי אותו בשורת החיפוש`); return; }
+        if (dup) { setEditError("ספק זה כבר קיים במאגר הרעיונות"); return; }
         setGifts(gifts.map(g => g.id === editId ? { ...editForm, id: editId } : g));
         setEditId(null); setEditError("");
       };
@@ -3020,14 +3020,20 @@ ${eventRows}</table>
 
       // Firestore real-time listeners for class data
       useEffect(() => {
-        if (!currentClass) { setBudgets([]); setGifts([]); return; }
+        if (!currentClass) { setBudgets([]); return; }
         const classRef = firebase.firestore().collection("classes").doc(currentClass.id);
         const unsubBudgets = classRef.collection("budgets")
           .onSnapshot(snap => setBudgets(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
-        const unsubGifts = classRef.collection("gifts")
-          .onSnapshot(snap => setGifts(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
-        return () => { unsubBudgets(); unsubGifts(); };
+        return () => { unsubBudgets(); };
       }, [currentClass?.id]);
+
+      // Global gifts — stored at user level, shared across all groups
+      useEffect(() => {
+        if (!user?.uid) { setGifts([]); return; }
+        const unsubGifts = firebase.firestore().collection("users").doc(user.uid).collection("gifts")
+          .onSnapshot(snap => setGifts(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
+        return () => unsubGifts();
+      }, [user?.uid]);
 
       const classRef = () => firebase.firestore().collection("classes").doc(currentClass.id);
 
@@ -3056,10 +3062,10 @@ ${eventRows}</table>
         }
       }, [currentClass?.id]);
 
-      // Gifts: update only what changed — per-document add/edit/delete
+      // Gifts: stored globally per user — shared across all groups
       const handleSetGifts = useCallback(async (updater) => {
         const newGifts = typeof updater === "function" ? updater(gifts) : updater;
-        const giftsRef = classRef().collection("gifts");
+        const giftsRef = firebase.firestore().collection("users").doc(user.uid).collection("gifts");
         const removedIds = gifts.filter(g => !newGifts.find(ng => ng.id === g.id)).map(g => g.id);
         const upserted   = newGifts.filter(ng => {
           const old = gifts.find(g => g.id === ng.id);
@@ -3071,9 +3077,9 @@ ${eventRows}</table>
             ...upserted.map(g  => giftsRef.doc(String(g.id)).set({ ...g })),
           ]);
         } catch (e) {
-          showToast("שגיאה בשמירת מתנות — נסה שוב");
+          showToast("שגיאה בשמירת רעיונות — נסה שוב");
         }
-      }, [currentClass?.id, gifts]);
+      }, [user?.uid, gifts]);
 
       // Loading
       if (user === undefined) {
