@@ -782,7 +782,7 @@ ${eventRows}</table>
       );
     }
 
-    function BudgetListCard({ budget, onSelect, onEdit, onDelete, onCopy, onReport }) {
+    function BudgetListCard({ budget, onSelect, onEdit, onDelete, onCopy, onReport, canEdit = true }) {
       const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.teal;
       const paidCount  = budget.students.filter(s => s.paid).length;
       const total      = budget.students.length;
@@ -800,7 +800,7 @@ ${eventRows}</table>
                 <div style={{ color: "white", fontWeight: 900, fontSize: 24, lineHeight: 1, marginBottom: 4 }}>{budget.year}</div>
                 <div style={{ color: "rgba(255,255,255,0.75)", fontSize: 12 }}>{budget.className}</div>
               </div>
-              <ActionButtons onReport={onReport} onCopy={onCopy} onEdit={onEdit} onDelete={onDelete} showReport showCopy showEdit showDelete />
+              <ActionButtons onReport={onReport} onCopy={onCopy} onEdit={onEdit} onDelete={onDelete} showReport showCopy={canEdit} showEdit={canEdit} showDelete={canEdit} />
             </div>
           </div>
           {/* Stats */}
@@ -967,7 +967,7 @@ ${eventRows}</table>
 
 שיתוף: שלח את קוד ההצטרפות לאחרים — הם יוכלו לצפות בלבד.`;
 
-    function HomeScreen({ budgets, currentClass, user, onSignOut, onBack, onAddBudget, onDeleteBudget, onUpdateBudgetMeta, onSelect }) {
+    function HomeScreen({ budgets, currentClass, user, onSignOut, onBack, onAddBudget, onDeleteBudget, onUpdateBudgetMeta, onSelect, canEdit = true }) {
       const [mode, setMode]                 = useState("list"); // list | add | edit
       const [editingId, setEditingId]       = useState(null);
       const [showHelp, setShowHelp]         = useState(false);
@@ -1085,7 +1085,7 @@ ${eventRows}</table>
             )}
 
             {/* Add button — top, always visible in list mode */}
-            {mode === "list" && (
+            {mode === "list" && canEdit && (
               <button onClick={() => setMode("add")} style={{
                 width: "100%", padding: 14, borderRadius: 14, marginBottom: 16,
                 border: "2px dashed var(--color-border)",
@@ -1120,6 +1120,7 @@ ${eventRows}</table>
                 onDelete={() => setDeleteConfirmId(b.id)}
                 onCopy={() => handleCopy(b.id)}
                 onReport={() => generateReport({ students: [], events: [], cashLog: [], ...b })}
+                canEdit={canEdit}
               />
             ))}
           </div>
@@ -1338,7 +1339,7 @@ ${eventRows}</table>
       );
     }
 
-    function BudgetTab({ events, setEvents, collectionBudget = 0, expectedStudents = 0, year = "" }) {
+    function BudgetTab({ events, setEvents, collectionBudget = 0, expectedStudents = 0, year = "", canEdit = true }) {
       const [showAdd,     setShowAdd]     = useState(false);
       const [filterCat,   setFilterCat]   = useState("הכל");
       const [filterStatus,setFilterStatus]= useState("הכל");
@@ -1439,7 +1440,7 @@ ${eventRows}</table>
           </div>
 
           {/* Add button / form — top, below summary */}
-          {showAdd ? (
+          {canEdit && (showAdd ? (
             <EventForm title="➕ ארוע חדש" data={addForm} onChange={setAddForm} onSave={addEvent} onSaveAndNew={addEventAndNew} onCancel={() => { setShowAdd(false); setAddForm(EMPTY_EVENT); }} />
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
@@ -1452,7 +1453,7 @@ ${eventRows}</table>
             }}>
               <Icon n="plus" s={16} c="var(--color-primary)" w={2.2} /> הוספת ארוע
             </button>
-          )}
+          ))}
 
           {/* Filters + calendar toggle */}
           {(() => {
@@ -1543,10 +1544,12 @@ ${eventRows}</table>
                     style={{ marginTop: 8, marginBottom: 4 }}
                   />
                 )}
-                <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
-                  <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(ev)}       title="ערוך"  />
-                  <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeEvent(ev.id)} title="מחק"   />
-                </div>
+                {canEdit && (
+                  <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
+                    <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(ev)}       title="ערוך"  />
+                    <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeEvent(ev.id)} title="מחק"   />
+                  </div>
+                )}
               </Card>
             );
           })}
@@ -1563,7 +1566,7 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     const EMPTY_STUDENT_FORM = { name: "", paid: false, amount: "", note: "", paidBy: "", paidBySplit: [], partial: false };
 
-    function CollectTab({ students, setStudents, feePerStudent = 500, setFeePerStudent, expectedStudents = 0, setExpectedStudents, payboxLink = "", setPayboxLink, classWhatsappLink = "", setClassWhatsappLink }) {
+    function CollectTab({ students, setStudents, feePerStudent = 500, setFeePerStudent, expectedStudents = 0, setExpectedStudents, payboxLink = "", setPayboxLink, classWhatsappLink = "", setClassWhatsappLink, members = [], canEdit = true }) {
       const [search,        setSearch]        = useState("");
       const [showAdd,       setShowAdd]       = useState(false);
       const [addForm,       setAddForm]       = useState(EMPTY_STUDENT_FORM);
@@ -1571,6 +1574,7 @@ ${eventRows}</table>
       const [editForm,      setEditForm]      = useState({});
       const [studentsRaw,   setStudentsRaw]   = useState(String(expectedStudents));
       const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+      const [showHelp,      setShowHelp]      = useState(false);
 
       const paidCount      = students.filter(s => s.paid).length;
       const totalCollected = students.reduce((s, st) => s + (st.amount || 0), 0);
@@ -1578,7 +1582,7 @@ ${eventRows}</table>
       const filtered       = search ? students.filter(s => s.name.includes(search)) : students;
 
       const toggle = (id) => setStudents(students.map(s =>
-        s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? feePerStudent : s.amount } : s
+        s.id === id ? { ...s, paid: !s.paid, amount: !s.paid ? (s.amount > 0 ? s.amount : feePerStudent) : s.amount } : s
       ));
 
       const buildStudent = (form) => {
@@ -1608,11 +1612,14 @@ ${eventRows}</table>
       const doRemoveStudent = () => { setStudents(students.filter(s => s.id !== confirmDeleteId)); setConfirmDeleteId(null); };
 
       const unpaidStudents = students.filter(s => !s.paid);
+      const membersText    = members.length > 0 ? ` ${members.join(', ')}` : '';
+      const paymentMethod  = `ניתן לשלם גם במזומן/ביט לאחת מבנות הועד${membersText}.`;
+      const payboxLine     = payboxLink ? `\nלהלן הקישור לתשלום: ${payboxLink}` : '';
       const whatsappMsg = unpaidStudents.length === 0
         ? null
         : paidCount === 0
-          ? `שלום כיתה יקרה! 😊\nנפתחה גבייה לדמי ועד הורים לשנה"ל: ₪${feePerStudent} לתלמיד.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`
-          : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${feePerStudent}).\nטרם שולם: ${unpaidStudents.map(s => s.name).join(', ')}.\n${payboxLink ? `ניתן לשלם דרך: ${payboxLink}` : 'ניתן להעביר בפייבוקס / העברה בנקאית.'}\nתודה! 🙏`;
+          ? `שלום כיתה יקרה! 😊\nנפתחה גבייה לדמי ועד הורים לשנה"ל: ₪${feePerStudent} לתלמיד.\n${paymentMethod}${payboxLine}\nתודה! 🙏`
+          : `שלום 😊 תזכורת ידידותית לתשלום דמי ועד הורים (₪${feePerStudent}).\nטרם התקבל מ- ${unpaidStudents.map(s => s.name).join(', ')}.\n${paymentMethod}${payboxLine}\nתודה! 🙏`;
 
       return (
         <React.Fragment>
@@ -1623,32 +1630,52 @@ ${eventRows}</table>
             onCancel={() => setConfirmDeleteId(null)}
           />
         <div>
-          {/* Paybox / Bit link */}
-          <Card style={{ marginBottom: 10 }}>
-            <FieldLabel>קישור לפייבוקס / ביט</FieldLabel>
-            <input value={payboxLink} onChange={e => setPayboxLink && setPayboxLink(e.target.value)}
-              placeholder="https://paybox.me/..." style={{ ...S.input, marginBottom: payboxLink ? 6 : 0 }} />
-            {payboxLink && <a href={payboxLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#0d9488" }}>🔗 פתח קישור לתשלום</a>}
-          </Card>
+          {/* Help button */}
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+            <button onClick={() => setShowHelp(h => !h)} style={{
+              background: showHelp ? "var(--color-primary)" : "var(--color-primary-light)",
+              color: showHelp ? "white" : "var(--color-primary)",
+              border: "1.5px solid var(--color-primary)", borderRadius: 10,
+              padding: "6px 14px", fontSize: "var(--text-xs)", fontWeight: 700,
+              cursor: "pointer", fontFamily: "inherit",
+              display: "inline-flex", alignItems: "center", gap: 6,
+            }}>
+              <Icon n="help" s={14} c={showHelp ? "white" : "var(--color-primary)"} w={2} /> הסברים
+            </button>
+          </div>
 
-          {/* Class WhatsApp link */}
-          <Card style={{ marginBottom: 10 }}>
-            <FieldLabel>קישור לוואצאפ כיתה</FieldLabel>
-            <input value={classWhatsappLink} onChange={e => setClassWhatsappLink && setClassWhatsappLink(e.target.value)}
-              placeholder="https://chat.whatsapp.com/..." style={{ ...S.input, marginBottom: classWhatsappLink ? 6 : 0 }} />
-            {classWhatsappLink && <a href={classWhatsappLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#25d366" }}>💬 פתח קבוצת כיתה</a>}
-          </Card>
+          {/* Help panel */}
+          {showHelp && (
+            <Card style={{ marginBottom: 12, border: "1.5px solid var(--color-primary)", background: "var(--color-primary-light)" }}>
+              <div style={{ fontWeight: 800, fontSize: "var(--text-sm)", color: "var(--color-primary-dark)", marginBottom: 10, display: "flex", alignItems: "center", gap: 6 }}>
+                <Icon n="info" s={16} c="var(--color-primary)" w={2} /> מדריך לניהול גבייה
+              </div>
+              {[
+                { title: "הגדרת יעד גבייה", text: "הזן מספר תלמידים וסכום לגבייה לחישוב תקציב הגבייה הכולל." },
+                { title: "הוספת תלמיד/ה", text: 'לחץ על "הוספת תלמיד/ה" להוספה ידנית. ניתן למלא שם, סכום ששולם והערה.' },
+                { title: "סימון תשלום", text: 'לחץ על ❌ / ✅ ליד התלמיד/ה כדי להחליף בין שולם ללא שולם. הסכום יתעדכן אוטומטית.' },
+                { title: "תשלום חלקי 🟠", text: "סמן \"תשלום חלקי\" כאשר הסכום ששולם אינו מלא. התלמיד יוצג באורנג׳ ולא יספר כמי ששילם — אלא אם כן מסומן גם \"שולם\"." },
+                { title: "תזכורת וואצאפ", text: "בתחתית הדף מופיע טקסט מוכן לשליחה בוואצאפ לתלמידים שטרם שילמו. ניתן לעדכן קישור לפייבוקס/ביט לתשלום ישיר." },
+              ].map(item => (
+                <div key={item.title} style={{ marginBottom: 8, paddingBottom: 8, borderBottom: "1px solid var(--color-border)" }}>
+                  <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-primary-dark)", marginBottom: 2 }}>• {item.title}</div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-primary)", lineHeight: 1.6 }}>{item.text}</div>
+                </div>
+              ))}
+              <button onClick={() => setShowHelp(false)} style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "var(--text-xs)", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, padding: 0, marginTop: 2 }}>סגור ✕</button>
+            </Card>
+          )}
 
           {/* Collection budget settings */}
           <Card style={{ marginBottom: 12 }}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <div>
                 <FieldLabel>מספר תלמידים</FieldLabel>
-                <input type="text" inputMode="decimal" value={studentsRaw} onChange={e => { const raw = e.target.value; setStudentsRaw(raw); const num = parseFloat(raw); if (setExpectedStudents) setExpectedStudents(isNaN(num) ? 0 : num); }} style={{ ...S.input, marginBottom: 0 }} />
+                <input type="text" inputMode="numeric" value={studentsRaw} onChange={e => { if (!canEdit) return; const raw = e.target.value.replace(/[^\d]/g, ''); setStudentsRaw(raw); const num = parseInt(raw, 10); if (setExpectedStudents) setExpectedStudents(isNaN(num) ? 0 : num); }} readOnly={!canEdit} style={{ ...S.input, marginBottom: 0, ...(canEdit ? {} : { background: "var(--color-primary-light)", cursor: "default" }) }} />
               </div>
               <div>
                 <FieldLabel>סכום לגבייה ₪</FieldLabel>
-                <input type="text" inputMode="numeric" value={feePerStudent} onChange={e => setFeePerStudent && setFeePerStudent(Number(e.target.value) || 0)} style={{ ...S.input, marginBottom: 0 }} />
+                <input type="text" inputMode="numeric" value={feePerStudent} onChange={e => { if (!canEdit) return; setFeePerStudent && setFeePerStudent(Number(e.target.value) || 0); }} readOnly={!canEdit} style={{ ...S.input, marginBottom: 0, ...(canEdit ? {} : { background: "var(--color-primary-light)", cursor: "default" }) }} />
               </div>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 10, padding: "10px 14px", background: "#f0fdf4", borderRadius: 10 }}>
@@ -1689,7 +1716,7 @@ ${eventRows}</table>
           </div>
 
           {/* Add student — top, below summary */}
-          {showAdd ? (
+          {canEdit && showAdd ? (
             <Card style={{ border: "2px solid var(--color-border)", marginBottom: 12 }}>
               <div style={{ fontWeight: 700, marginBottom: 10, fontSize: "var(--text-sm)" }}>➕ תלמיד/ה חדש/ה</div>
               <FieldLabel>שם התלמיד/ה *</FieldLabel>
@@ -1722,7 +1749,7 @@ ${eventRows}</table>
                 <Button variant="secondary" onClick={() => { setShowAdd(false); setAddForm(EMPTY_STUDENT_FORM); }}>ביטול</Button>
               </div>
             </Card>
-          ) : (
+          ) : canEdit ? (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, marginBottom: 12,
               border: "2px dashed var(--color-border)",
@@ -1730,7 +1757,7 @@ ${eventRows}</table>
               fontWeight: 700, fontSize: "var(--text-sm)",
               cursor: "pointer", fontFamily: "inherit", display:"flex", alignItems:"center", justifyContent:"center", gap: 8,
             }}><Icon n="plus" s={14} c="var(--color-primary)" w={2.5} /> הוספת תלמיד/ה</button>
-          )}
+          ) : null}
 
           <input placeholder="🔍 חפשי תלמיד..." value={search}
             onChange={e => setSearch(e.target.value)} style={{ ...S.input, marginBottom: 10 }} />
@@ -1780,40 +1807,51 @@ ${eventRows}</table>
               </Card>
             ) : (
               <div key={s.id} style={{
-                background: s.partial && !s.paid ? "#fff7ed" : "var(--color-surface)",
+                background: s.partial ? "#fff7ed" : "var(--color-surface)",
                 borderRadius: 14, padding: "12px 14px", marginBottom: 8,
                 boxShadow: "0 2px 10px rgba(0,0,0,0.06)", border: "1px solid var(--color-border)",
-                borderRight: `4px solid ${s.paid ? "var(--color-secondary)" : s.partial ? "#f97316" : "var(--color-border)"}`,
+                borderRight: `4px solid ${s.partial ? "#f97316" : s.paid ? "var(--color-secondary)" : "var(--color-border)"}`,
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div style={{ flex: 1 }}>
                     <div className="ev-name" style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-text-primary)", display: "flex", alignItems: "center", gap: 6 }}>
                       {students.indexOf(s) + 1}. {s.name}
-                      {s.partial && !s.paid && <span style={{ fontSize: "0.75rem", background: "#fed7aa", color: "#c2410c", borderRadius: 6, padding: "1px 6px", fontWeight: 700 }}>חלקי</span>}
+                      {s.partial && <span style={{ fontSize: "0.75rem", background: "#fed7aa", color: "#c2410c", borderRadius: 6, padding: "1px 6px", fontWeight: 700 }}>חלקי</span>}
                     </div>
                     {s.note   && <div style={{ fontSize: "0.8rem", color: "var(--color-warning)", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="pencil" s={11} c="var(--color-warning)" w={1.8} /> {s.note}</div>}
                     {s.paidBy && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginTop: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="user" s={11} c="var(--color-text-secondary)" w={1.8} /> {s.paidBy}</div>}
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                    {(s.paid || s.amount > 0) && <span className="ev-paid-val" style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: s.paid ? "var(--color-secondary)" : "#f97316" }}>₪{(s.amount || 0).toLocaleString('he-IL')}</span>}
-                    <button onClick={() => toggle(s.id)} style={{
+                    {(s.paid || s.amount > 0) && <span className="ev-paid-val" style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: s.partial ? "#f97316" : "var(--color-secondary)" }}>₪{(s.amount || 0).toLocaleString('he-IL')}</span>}
+                    {canEdit && <button onClick={() => toggle(s.id)} style={{
                       width: 36, height: 36, borderRadius: "50%", border: "none", cursor: "pointer",
-                      background: s.paid ? "#dcfce7" : s.partial ? "#fed7aa" : "#fee2e2", fontSize: 18,
-                    }}>{s.paid ? "✅" : s.partial ? "🟠" : "❌"}</button>
+                      background: s.partial ? "#fed7aa" : s.paid ? "#dcfce7" : "#fee2e2", fontSize: 18,
+                    }}>{s.partial ? "🟠" : s.paid ? "✅" : "❌"}</button>}
+                    {!canEdit && <span style={{ fontSize: 18 }}>{s.partial ? "🟠" : s.paid ? "✅" : "❌"}</span>}
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
-                  <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(s)}          title="ערוך" />
-                  <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeStudent(s.id)}  title="מחק"  />
-                </div>
+                {canEdit && (
+                  <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
+                    <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(s)}          title="ערוך" />
+                    <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeStudent(s.id)}  title="מחק"  />
+                  </div>
+                )}
               </div>
             )
           ))}
           </div>{/* /student-grid */}
 
+          {/* Paybox / Bit link */}
+          <Card style={{ marginBottom: 10, marginTop: 12 }}>
+            <FieldLabel>קישור לפייבוקס / ביט</FieldLabel>
+            <input value={payboxLink} onChange={e => { if (!canEdit) return; setPayboxLink && setPayboxLink(e.target.value); }}
+              readOnly={!canEdit} placeholder="https://paybox.me/..." style={{ ...S.input, marginBottom: payboxLink ? 6 : 0, ...(canEdit ? {} : { background: "var(--color-primary-light)", cursor: "default" }) }} />
+            {payboxLink && <a href={payboxLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#0d9488" }}>🔗 פתח קישור לתשלום</a>}
+          </Card>
+
           {/* Dynamic WhatsApp reminder */}
           {students.length > 0 && (
-            <Card style={{ background: "var(--color-primary-light)", border: `1px solid var(--color-border)`, marginTop: 12 }}>
+            <Card style={{ background: "var(--color-primary-light)", border: `1px solid var(--color-border)`, marginTop: 0 }}>
               <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-primary-dark)", marginBottom: 6 }}>
                 <span style={{ display:"inline-flex", alignItems:"center", gap: 6 }}>{unpaidStudents.length === 0 ? <><Icon n="check" s={14} c="var(--color-primary-dark)" w={2.5} /> כולם שילמו!</> : <><Icon n="msg" s={14} c="var(--color-primary-dark)" w={2} /> תזכורת לוואצאפ</>}</span>
               </div>
@@ -1890,8 +1928,11 @@ ${eventRows}</table>
       const [search,      setSearch]      = useState("");
       const [showAdd,     setShowAdd]     = useState(false);
       const [addForm,     setAddForm]     = useState(EMPTY_GIFT);
+      const [addError,    setAddError]    = useState("");
       const [editId,      setEditId]      = useState(null);
       const [editForm,    setEditForm]    = useState({});
+      const [editError,   setEditError]   = useState("");
+      const [expandedId,  setExpandedId]  = useState(null);
       const [copyGiftId,  setCopyGiftId]  = useState(null);
       const [copyForm,    setCopyForm]    = useState({ ...EMPTY_EVENT });
 
@@ -1899,10 +1940,32 @@ ${eventRows}</table>
         ? gifts.filter(g => g.name.includes(search) || g.tag.includes(search) || g.forWhom.includes(search) || (g.vendorName || "").includes(search))
         : gifts;
 
-      const addGift    = () => { if (!addForm.name.trim()) return; setGifts([...gifts, { ...addForm, id: Date.now() }]); setAddForm(EMPTY_GIFT); setShowAdd(false); };
-      const startEdit  = (g) => { setEditId(g.id); setEditForm({ ...g }); };
-      const cancelEdit = () => setEditId(null);
-      const saveEdit   = () => { setGifts(gifts.map(g => g.id === editId ? { ...editForm, id: editId } : g)); setEditId(null); };
+      const findDuplicate = (form, excludeId = null) => {
+        const phone = (form.vendorPhone || "").trim();
+        const link  = (form.vendorLink  || "").trim();
+        if (!phone && !link) return null;
+        return gifts.find(g => g.id !== excludeId && (
+          (phone && (g.vendorPhone || "").trim() === phone) ||
+          (link  && (g.vendorLink  || "").trim() === link)
+        )) || null;
+      };
+
+      const addGift = () => {
+        if (!addForm.name.trim()) return;
+        const dup = findDuplicate(addForm);
+        if (dup) { setAddError("ספק זה כבר קיים במאגר הרעיונות"); return; }
+        setGifts([...gifts, { ...addForm, id: Date.now() }]);
+        setAddForm(EMPTY_GIFT); setAddError(""); setShowAdd(false);
+      };
+
+      const startEdit  = (g) => { setEditId(g.id); setEditForm({ ...g }); setEditError(""); setExpandedId(null); };
+      const cancelEdit = () => { setEditId(null); setEditError(""); };
+      const saveEdit   = () => {
+        const dup = findDuplicate(editForm, editId);
+        if (dup) { setEditError("ספק זה כבר קיים במאגר הרעיונות"); return; }
+        setGifts(gifts.map(g => g.id === editId ? { ...editForm, id: editId } : g));
+        setEditId(null); setEditError("");
+      };
       const removeGift = (id) => { if (window.confirm("למחוק רעיון זה?")) setGifts(gifts.filter(g => g.id !== id)); };
 
       const startCopy = (gift) => {
@@ -1918,12 +1981,15 @@ ${eventRows}</table>
       return (
         <div>
           <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)", marginBottom: 10, textAlign: "center" }}>
-            ספרייה משותפת לכל התקציבים • {gifts.length} רעיונות
+            🌐 ספרייה גלובלית — משותפת לכל הקבוצות והתקציבים • {gifts.length} רעיונות
           </div>
 
           {/* Add gift — top, above search */}
           {showAdd ? (
-            <GiftForm title="➕ רעיון חדש" data={addForm} onChange={setAddForm} onSave={addGift} onCancel={() => setShowAdd(false)} />
+            <>
+              <GiftForm title="➕ רעיון חדש" data={addForm} onChange={f => { setAddForm(f); setAddError(""); }} onSave={addGift} onCancel={() => { setShowAdd(false); setAddError(""); }} />
+              {addError && <div style={{ color: "var(--color-danger)", fontSize: "var(--text-xs)", fontWeight: 600, marginTop: -8, marginBottom: 10, padding: "8px 12px", background: "#fee2e2", borderRadius: 8 }}>⚠️ {addError}</div>}
+            </>
           ) : (
             <button onClick={() => setShowAdd(true)} style={{
               width: "100%", padding: 14, borderRadius: 14, marginBottom: 12,
@@ -1940,28 +2006,41 @@ ${eventRows}</table>
           <div className="gift-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 12 }}>
             {filtered.map(gift => (
               editId === gift.id ? null : (
-                <div key={gift.id} style={{ background: "var(--color-surface)", borderRadius: 16, padding: 14, boxShadow: "0 2px 14px rgba(0,0,0,0.08)", border: "1px solid var(--color-border)", display: "flex", flexDirection: "column" }}>
-                  {gift.photo
-                    ? <img src={gift.photo} alt="" style={{ width: "100%", borderRadius: 10, marginBottom: 8, height: 90, objectFit: "cover" }} />
-                    : <div style={{ fontSize: 30, marginBottom: 6 }}>{gift.icon}</div>
-                  }
-                  <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-text-primary)", marginBottom: 4 }}>{gift.name}</div>
-                  {gift.forWhom    && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2 }}>עבור: {gift.forWhom}</div>}
-                  {gift.vendorName && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="store" s={11} c="var(--color-text-secondary)" w={1.8} />{gift.vendorName}</div>}
-                  {gift.vendorPhone && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 2, display:"flex", alignItems:"center", gap: 4 }}><Icon n="phone" s={11} c="var(--color-text-secondary)" w={1.8} />{gift.vendorPhone}</div>}
-                  {gift.notes      && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 4 }}>{gift.notes}</div>}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", paddingTop: 6, marginBottom: 8 }}>
-                    {gift.tag        && <span style={{ fontSize: "0.75rem", fontWeight: 700, background: "var(--color-primary-light)", color: "var(--color-primary-dark)", borderRadius: 8, padding: "2px 6px" }}>{gift.tag}</span>}
-                    {gift.priceRange && <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-primary)" }}>{gift.priceRange}</span>}
+                <div key={gift.id}
+                  onClick={() => setExpandedId(expandedId === gift.id ? null : gift.id)}
+                  style={{
+                    background: "var(--color-surface)", borderRadius: 16, padding: 14,
+                    boxShadow: "0 2px 14px rgba(0,0,0,0.08)",
+                    border: expandedId === gift.id ? "2px solid var(--color-primary)" : "1px solid var(--color-border)",
+                    display: "flex", flexDirection: "column", cursor: "pointer",
+                    transition: "border 150ms",
+                  }}>
+                  {/* Compact view — always visible */}
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
+                    {gift.photo
+                      ? <img src={gift.photo} alt="" style={{ width: "100%", borderRadius: 10, marginBottom: 8, height: 80, objectFit: "cover" }} />
+                      : <div style={{ fontSize: 44, marginBottom: 6, lineHeight: 1 }}>{gift.icon}</div>
+                    }
+                    <div style={{ fontWeight: 800, fontSize: "var(--text-sm)", color: "var(--color-text-primary)", marginBottom: 3 }}>{gift.name}</div>
+                    {gift.vendorName && <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)", display:"flex", alignItems:"center", gap: 3 }}><Icon n="store" s={10} c="var(--color-text-secondary)" w={1.8} />{gift.vendorName}</div>}
                   </div>
-                  {gift.vendorLink && (
-                    <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>
+
+                  {/* Expanded view */}
+                  {expandedId === gift.id && (
+                    <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid var(--color-border)" }} onClick={e => e.stopPropagation()}>
+                      {gift.forWhom    && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 4 }}>👤 עבור: {gift.forWhom}</div>}
+                      {gift.priceRange && <div style={{ fontSize: "0.8rem", color: "var(--color-primary)", fontWeight: 700, marginBottom: 4 }}>💰 {gift.priceRange}</div>}
+                      {gift.tag        && <div style={{ fontSize: "0.8rem", marginBottom: 4 }}><span style={{ background: "var(--color-primary-light)", color: "var(--color-primary-dark)", borderRadius: 6, padding: "2px 6px", fontWeight: 700 }}>{gift.tag}</span></div>}
+                      {gift.vendorPhone && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 4, display:"flex", alignItems:"center", gap: 4 }}><Icon n="phone" s={11} c="var(--color-text-secondary)" w={1.8} />{gift.vendorPhone}</div>}
+                      {gift.vendorLink  && <a href={gift.vendorLink} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} style={{ fontSize: "0.8rem", color: "var(--color-primary)", marginBottom: 6, display: "block", wordBreak: "break-all" }}>🔗 קישור לספק</a>}
+                      {gift.notes      && <div style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)", marginBottom: 6, fontStyle: "italic" }}>{gift.notes}</div>}
+                      <div style={{ display: "flex", gap: 2, justifyContent: "flex-end", marginTop: 6 }}>
+                        {onAddEvent && <IconBtn icon="chart"  color="var(--color-primary)"        onClick={() => startCopy(gift)}    title="הוסף לתקציב" />}
+                        <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(gift)}      title="ערוך" />
+                        <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeGift(gift.id)} title="מחק"  />
+                      </div>
+                    </div>
                   )}
-                  <div style={{ display: "flex", gap: 2, justifyContent: "flex-end", marginTop: 4 }}>
-                    {onAddEvent && <IconBtn icon="chart"  color="var(--color-primary)"        onClick={() => startCopy(gift)}    title="הוסף לתקציב" />}
-                    <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(gift)}      title="ערוך" />
-                    <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeGift(gift.id)} title="מחק"  />
-                  </div>
                 </div>
               )
             ))}
@@ -1969,7 +2048,10 @@ ${eventRows}</table>
 
           {/* Edit form (full width, below grid) */}
           {editId !== null && (
-            <GiftForm title="✏️ עריכת רעיון" data={editForm} onChange={setEditForm} onSave={saveEdit} onCancel={cancelEdit} />
+            <>
+              <GiftForm title="✏️ עריכת רעיון" data={editForm} onChange={f => { setEditForm(f); setEditError(""); }} onSave={saveEdit} onCancel={cancelEdit} />
+              {editError && <div style={{ color: "var(--color-danger)", fontSize: "var(--text-xs)", fontWeight: 600, marginTop: -8, marginBottom: 10, padding: "8px 12px", background: "#fee2e2", borderRadius: 8 }}>⚠️ {editError}</div>}
+            </>
           )}
 
           {/* Copy-to-budget form */}
@@ -2053,7 +2135,7 @@ ${eventRows}</table>
       );
     }
 
-    function CashTab({ cashLog, setCashLog, students = [], events = [] }) {
+    function CashTab({ cashLog, setCashLog, students = [], events = [], canEdit = true }) {
       const [editId,   setEditId]   = useState(null);
       const [editForm, setEditForm] = useState({});
       const [confirmDeleteId, setConfirmDeleteId] = useState(null);
@@ -2203,20 +2285,20 @@ ${eventRows}</table>
             background: "linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-text-primary) 100%)",
             borderRadius: 20, padding: 20, color: "white", marginBottom: 12,
           }}>
-            <div className="cash-lbl" style={{ opacity: 0.65, fontSize: "var(--text-xs)", marginBottom: 2 }}>סה״כ בקופה</div>
+            <div className="cash-lbl" style={{ opacity: 0.65, fontSize: "var(--text-xs)", marginBottom: 2 }}>יתרת מזומן כוללת</div>
             <div className="cash-total-val" style={{ fontSize: "var(--text-2xl)", fontWeight: 900, letterSpacing: -1 }}>
               {totalInKupa < 0 ? "-" : ""}₪{Math.abs(totalInKupa).toLocaleString('he-IL')}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14 }}>
-              <div>
+              <div style={{ textAlign: "right" }}>
                 <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>גבייה</div>
                 <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: "var(--text-xs)" }}>₪{collectedFromStudents.toLocaleString('he-IL')}</div>
               </div>
-              <div>
+              <div style={{ textAlign: "center" }}>
                 <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>הכנסות בפועל</div>
-                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#34d399", fontSize: "var(--text-xs)" }}>+₪{budgetIncTotal.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: "var(--text-xs)" }}>+₪{budgetIncTotal.toLocaleString('he-IL')}</div>
               </div>
-              <div>
+              <div style={{ textAlign: "left" }}>
                 <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>הוצאות בפועל</div>
                 <div className="cash-sub-val" style={{ fontWeight: 700, color: "#f87171", fontSize: "var(--text-xs)" }}>-₪{Math.abs(budgetExpTotal).toLocaleString('he-IL')}</div>
               </div>
@@ -2226,22 +2308,22 @@ ${eventRows}</table>
           {/* Breakdown by קופה */}
           {(kupaEntries.length > 0 || kupaTotal !== 0) && (
             <Card style={{ background: "var(--color-primary-light)", border: "1px solid var(--color-border)", marginBottom: 12 }}>
-              <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-text-primary)", marginBottom: 8 }}>💼 לפי קופה</div>
+              <div style={{ fontWeight: 800, fontSize: "var(--text-base)", color: "var(--color-text-primary)", marginBottom: 10 }}>💼 לפי קופה</div>
               {kupaEntries.map(([name, total]) => (
-                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid var(--color-border)" }}>
-                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-text-primary)" }}>👤 {name}</span>
-                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: total >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString('he-IL')}</span>
+                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid var(--color-border)" }}>
+                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--color-text-primary)" }}>👤 {name}</span>
+                  <span style={{ fontSize: "var(--text-base)", fontWeight: 800, color: total >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString('he-IL')}</span>
                 </div>
               ))}
               {kupaTotal !== 0 && (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid var(--color-border)" }}>
-                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-text-primary)" }}>🏦 קופת איסוף</span>
-                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: kupaTotal >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{kupaTotal >= 0 ? "+" : ""}₪{kupaTotal.toLocaleString('he-IL')}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid var(--color-border)" }}>
+                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--color-text-primary)" }}>🏦 קופת איסוף</span>
+                  <span style={{ fontSize: "var(--text-base)", fontWeight: 800, color: kupaTotal >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{kupaTotal >= 0 ? "+" : ""}₪{kupaTotal.toLocaleString('he-IL')}</span>
                 </div>
               )}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0 2px" }}>
-                <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-text-secondary)" }}>סה״כ</span>
-                <span style={{ fontSize: "var(--text-xs)", fontWeight: 900, color: totalInKupa >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{totalInKupa >= 0 ? "+" : ""}₪{totalInKupa.toLocaleString('he-IL')}</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0 2px" }}>
+                <span style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "var(--color-text-secondary)" }}>סה״כ</span>
+                <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: totalInKupa >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{totalInKupa >= 0 ? "+" : ""}₪{totalInKupa.toLocaleString('he-IL')}</span>
               </div>
             </Card>
           )}
@@ -2335,10 +2417,12 @@ ${eventRows}</table>
                     <div style={{ fontSize: "0.75rem", color: "var(--color-text-secondary)" }}>יתרה ₪{entry.bal.toLocaleString('he-IL')}</div>
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
-                  <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(entry)}       title="ערוך" />
-                  <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeEntry(entry.id)} title="מחק"  />
-                </div>
+                {canEdit && (
+                  <div style={{ display: "flex", gap: 2, marginTop: 8 }}>
+                    <IconBtn icon="pencil" color="var(--color-text-secondary)" onClick={() => startEdit(entry)}       title="ערוך" />
+                    <IconBtn icon="trash"  color="var(--color-danger)"          onClick={() => removeEntry(entry.id)} title="מחק"  />
+                  </div>
+                )}
               </div>
             )
           ))}
@@ -2354,7 +2438,7 @@ ${eventRows}</table>
     // ─────────────────────────────────────────
     // BUDGET SCREEN — 4-tab layout for a single budget
     // ─────────────────────────────────────────
-    function BudgetScreen({ budget, onUpdate, onBack, activeTab, setActiveTab, gifts, setGifts }) {
+    function BudgetScreen({ budget, onUpdate, onBack, activeTab, setActiveTab, gifts, setGifts, canEdit = true }) {
       const clr = BUDGET_COLORS[budget.colorKey] || BUDGET_COLORS.teal;
 
       const setStudents          = (students)  => onUpdate({ students });
@@ -2427,10 +2511,10 @@ ${eventRows}</table>
 
           {/* ── Tab content ── */}
           <div className="bs-tab-pad" style={{ padding: "14px 14px 96px" }}>
-            {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} expectedStudents={budget.expectedStudents || 0} year={budget.year || ""} />}
-            {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent || 500} setFeePerStudent={setFeePerStudent} expectedStudents={budget.expectedStudents || 0} setExpectedStudents={setExpectedStudents} payboxLink={budget.payboxLink || ""} setPayboxLink={setPayboxLink} classWhatsappLink={budget.classWhatsappLink || ""} setClassWhatsappLink={setClassWhatsappLink} />}
+            {activeTab === "budget"  && <BudgetTab  events={budget.events} setEvents={setEvents} collectionBudget={(budget.expectedStudents || 0) * (budget.feePerStudent || 0)} expectedStudents={budget.expectedStudents || 0} year={budget.year || ""} canEdit={canEdit} />}
+            {activeTab === "collect" && <CollectTab students={budget.students} setStudents={setStudents} feePerStudent={budget.feePerStudent || 500} setFeePerStudent={setFeePerStudent} expectedStudents={budget.expectedStudents || 0} setExpectedStudents={setExpectedStudents} payboxLink={budget.payboxLink || ""} setPayboxLink={setPayboxLink} classWhatsappLink={budget.classWhatsappLink || ""} setClassWhatsappLink={setClassWhatsappLink} members={budget.members || []} canEdit={canEdit} />}
             {activeTab === "gifts"   && <GiftsTab   gifts={gifts} setGifts={setGifts} onAddEvent={(ev) => setEvents([...budget.events, { id: Date.now(), ...ev }])} />}
-            {activeTab === "cash"    && <CashTab     cashLog={budget.cashLog}   setCashLog={setCashLog} students={budget.students} events={budget.events} />}
+            {activeTab === "cash"    && <CashTab     cashLog={budget.cashLog}   setCashLog={setCashLog} students={budget.students} events={budget.events} canEdit={canEdit} />}
           </div>
 
           <BottomNav tabs={BUDGET_TABS} activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -2944,14 +3028,20 @@ ${eventRows}</table>
 
       // Firestore real-time listeners for class data
       useEffect(() => {
-        if (!currentClass) { setBudgets([]); setGifts([]); return; }
+        if (!currentClass) { setBudgets([]); return; }
         const classRef = firebase.firestore().collection("classes").doc(currentClass.id);
         const unsubBudgets = classRef.collection("budgets")
           .onSnapshot(snap => setBudgets(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
-        const unsubGifts = classRef.collection("gifts")
-          .onSnapshot(snap => setGifts(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
-        return () => { unsubBudgets(); unsubGifts(); };
+        return () => { unsubBudgets(); };
       }, [currentClass?.id]);
+
+      // Global gifts — stored at user level, shared across all groups
+      useEffect(() => {
+        if (!user?.uid) { setGifts([]); return; }
+        const unsubGifts = firebase.firestore().collection("users").doc(user.uid).collection("gifts")
+          .onSnapshot(snap => setGifts(snap.docs.map(d => ({ id: d.id, ...d.data() }))));
+        return () => unsubGifts();
+      }, [user?.uid]);
 
       const classRef = () => firebase.firestore().collection("classes").doc(currentClass.id);
 
@@ -2980,10 +3070,10 @@ ${eventRows}</table>
         }
       }, [currentClass?.id]);
 
-      // Gifts: update only what changed — per-document add/edit/delete
+      // Gifts: stored globally per user — shared across all groups
       const handleSetGifts = useCallback(async (updater) => {
         const newGifts = typeof updater === "function" ? updater(gifts) : updater;
-        const giftsRef = classRef().collection("gifts");
+        const giftsRef = firebase.firestore().collection("users").doc(user.uid).collection("gifts");
         const removedIds = gifts.filter(g => !newGifts.find(ng => ng.id === g.id)).map(g => g.id);
         const upserted   = newGifts.filter(ng => {
           const old = gifts.find(g => g.id === ng.id);
@@ -2995,9 +3085,9 @@ ${eventRows}</table>
             ...upserted.map(g  => giftsRef.doc(String(g.id)).set({ ...g })),
           ]);
         } catch (e) {
-          showToast("שגיאה בשמירת מתנות — נסה שוב");
+          showToast("שגיאה בשמירת רעיונות — נסה שוב");
         }
-      }, [currentClass?.id, gifts]);
+      }, [user?.uid, gifts]);
 
       // Loading
       if (user === undefined) {
@@ -3007,6 +3097,9 @@ ${eventRows}</table>
       if (!user) return <AuthScreen />;
 
       if (!currentClass) return <ClassScreen user={user} onSelectClass={setCurrentClass} />;
+
+      const isAdmin = currentClass.createdBy === user?.uid ||
+        (currentClass.memberDetails || []).find(m => m.uid === user?.uid)?.role === "admin";
 
       const activeBudget = budgets.find(b => b.id === activeBudgetId) || null;
 
@@ -3024,6 +3117,7 @@ ${eventRows}</table>
               onDeleteBudget={handleDeleteBudget}
               onUpdateBudgetMeta={(id, data) => classRef().collection("budgets").doc(String(id)).update(data)}
               onSelect={(id) => { setActiveBudgetId(id); setActiveTab("budget"); }}
+              canEdit={isAdmin}
             />
           </React.Fragment>
         );
@@ -3040,6 +3134,7 @@ ${eventRows}</table>
             setActiveTab={setActiveTab}
             gifts={gifts}
             setGifts={handleSetGifts}
+            canEdit={isAdmin}
           />
         </React.Fragment>
       );
