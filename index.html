@@ -1571,6 +1571,7 @@ ${eventRows}</table>
       const [editForm,      setEditForm]      = useState({});
       const [studentsRaw,   setStudentsRaw]   = useState(String(expectedStudents));
       const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+      const [showHelp,      setShowHelp]      = useState(false);
 
       const paidCount      = students.filter(s => s.paid).length;
       const totalCollected = students.reduce((s, st) => s + (st.amount || 0), 0);
@@ -1626,6 +1627,42 @@ ${eventRows}</table>
             onCancel={() => setConfirmDeleteId(null)}
           />
         <div>
+          {/* Help button */}
+          <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+            <button onClick={() => setShowHelp(h => !h)} style={{
+              background: showHelp ? "var(--color-primary)" : "var(--color-primary-light)",
+              color: showHelp ? "white" : "var(--color-primary)",
+              border: "1.5px solid var(--color-primary)", borderRadius: 10,
+              padding: "6px 14px", fontSize: "var(--text-xs)", fontWeight: 700,
+              cursor: "pointer", fontFamily: "inherit",
+              display: "inline-flex", alignItems: "center", gap: 6,
+            }}>
+              <Icon n="help" s={14} c={showHelp ? "white" : "var(--color-primary)"} w={2} /> הסברים
+            </button>
+          </div>
+
+          {/* Help panel */}
+          {showHelp && (
+            <Card style={{ marginBottom: 12, border: "1.5px solid var(--color-primary)", background: "var(--color-primary-light)" }}>
+              <div style={{ fontWeight: 800, fontSize: "var(--text-sm)", color: "var(--color-primary-dark)", marginBottom: 10, display: "flex", alignItems: "center", gap: 6 }}>
+                <Icon n="info" s={16} c="var(--color-primary)" w={2} /> מדריך לניהול גבייה
+              </div>
+              {[
+                { title: "הגדרת יעד גבייה", text: "הזן מספר תלמידים וסכום לגבייה לחישוב תקציב הגבייה הכולל." },
+                { title: "הוספת תלמיד/ה", text: 'לחץ על "הוספת תלמיד/ה" להוספה ידנית. ניתן למלא שם, סכום ששולם והערה.' },
+                { title: "סימון תשלום", text: 'לחץ על ❌ / ✅ ליד התלמיד/ה כדי להחליף בין שולם ללא שולם. הסכום יתעדכן אוטומטית.' },
+                { title: "תשלום חלקי 🟠", text: "סמן \"תשלום חלקי\" כאשר הסכום ששולם אינו מלא. התלמיד יוצג באורנג׳ ולא יספר כמי ששילם — אלא אם כן מסומן גם \"שולם\"." },
+                { title: "תזכורת וואצאפ", text: "בתחתית הדף מופיע טקסט מוכן לשליחה בוואצאפ לתלמידים שטרם שילמו. ניתן לעדכן קישור לפייבוקס/ביט לתשלום ישיר." },
+              ].map(item => (
+                <div key={item.title} style={{ marginBottom: 8, paddingBottom: 8, borderBottom: "1px solid var(--color-border)" }}>
+                  <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-primary-dark)", marginBottom: 2 }}>• {item.title}</div>
+                  <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-primary)", lineHeight: 1.6 }}>{item.text}</div>
+                </div>
+              ))}
+              <button onClick={() => setShowHelp(false)} style={{ background: "none", border: "none", color: "var(--color-primary)", fontSize: "var(--text-xs)", cursor: "pointer", fontFamily: "inherit", fontWeight: 600, padding: 0, marginTop: 2 }}>סגור ✕</button>
+            </Card>
+          )}
+
           {/* Collection budget settings */}
           <Card style={{ marginBottom: 12 }}>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
