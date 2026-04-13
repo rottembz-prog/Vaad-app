@@ -2235,20 +2235,20 @@ ${eventRows}</table>
             background: "linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-text-primary) 100%)",
             borderRadius: 20, padding: 20, color: "white", marginBottom: 12,
           }}>
-            <div className="cash-lbl" style={{ opacity: 0.65, fontSize: "var(--text-xs)", marginBottom: 2 }}>סה״כ בקופה</div>
+            <div className="cash-lbl" style={{ opacity: 0.65, fontSize: "var(--text-xs)", marginBottom: 2 }}>יתרת מזומן כוללת</div>
             <div className="cash-total-val" style={{ fontSize: "var(--text-2xl)", fontWeight: 900, letterSpacing: -1 }}>
               {totalInKupa < 0 ? "-" : ""}₪{Math.abs(totalInKupa).toLocaleString('he-IL')}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 14 }}>
-              <div>
+              <div style={{ textAlign: "right" }}>
                 <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>גבייה</div>
                 <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: "var(--text-xs)" }}>₪{collectedFromStudents.toLocaleString('he-IL')}</div>
               </div>
-              <div>
+              <div style={{ textAlign: "center" }}>
                 <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>הכנסות בפועל</div>
-                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#34d399", fontSize: "var(--text-xs)" }}>+₪{budgetIncTotal.toLocaleString('he-IL')}</div>
+                <div className="cash-sub-val" style={{ fontWeight: 700, color: "#4ade80", fontSize: "var(--text-xs)" }}>+₪{budgetIncTotal.toLocaleString('he-IL')}</div>
               </div>
-              <div>
+              <div style={{ textAlign: "left" }}>
                 <div className="cash-sub-lbl" style={{ opacity: 0.55, fontSize: "0.75rem" }}>הוצאות בפועל</div>
                 <div className="cash-sub-val" style={{ fontWeight: 700, color: "#f87171", fontSize: "var(--text-xs)" }}>-₪{Math.abs(budgetExpTotal).toLocaleString('he-IL')}</div>
               </div>
@@ -2258,22 +2258,22 @@ ${eventRows}</table>
           {/* Breakdown by קופה */}
           {(kupaEntries.length > 0 || kupaTotal !== 0) && (
             <Card style={{ background: "var(--color-primary-light)", border: "1px solid var(--color-border)", marginBottom: 12 }}>
-              <div style={{ fontWeight: 700, fontSize: "var(--text-xs)", color: "var(--color-text-primary)", marginBottom: 8 }}>💼 לפי קופה</div>
+              <div style={{ fontWeight: 800, fontSize: "var(--text-base)", color: "var(--color-text-primary)", marginBottom: 10 }}>💼 לפי קופה</div>
               {kupaEntries.map(([name, total]) => (
-                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid var(--color-border)" }}>
-                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-text-primary)" }}>👤 {name}</span>
-                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: total >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString('he-IL')}</span>
+                <div key={name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid var(--color-border)" }}>
+                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--color-text-primary)" }}>👤 {name}</span>
+                  <span style={{ fontSize: "var(--text-base)", fontWeight: 800, color: total >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{total >= 0 ? "+" : ""}₪{total.toLocaleString('he-IL')}</span>
                 </div>
               ))}
               {kupaTotal !== 0 && (
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: "1px solid var(--color-border)" }}>
-                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-text-primary)" }}>🏦 קופת איסוף</span>
-                  <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: kupaTotal >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{kupaTotal >= 0 ? "+" : ""}₪{kupaTotal.toLocaleString('he-IL')}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid var(--color-border)" }}>
+                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--color-text-primary)" }}>🏦 קופת איסוף</span>
+                  <span style={{ fontSize: "var(--text-base)", fontWeight: 800, color: kupaTotal >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{kupaTotal >= 0 ? "+" : ""}₪{kupaTotal.toLocaleString('he-IL')}</span>
                 </div>
               )}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0 2px" }}>
-                <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "var(--color-text-secondary)" }}>סה״כ</span>
-                <span style={{ fontSize: "var(--text-xs)", fontWeight: 900, color: totalInKupa >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{totalInKupa >= 0 ? "+" : ""}₪{totalInKupa.toLocaleString('he-IL')}</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0 2px" }}>
+                <span style={{ fontSize: "var(--text-sm)", fontWeight: 700, color: "var(--color-text-secondary)" }}>סה״כ</span>
+                <span style={{ fontSize: "var(--text-xl)", fontWeight: 900, color: totalInKupa >= 0 ? "var(--color-secondary)" : "var(--color-danger)" }}>{totalInKupa >= 0 ? "+" : ""}₪{totalInKupa.toLocaleString('he-IL')}</span>
               </div>
             </Card>
           )}
